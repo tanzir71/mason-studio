@@ -914,3 +914,11 @@ checkpoint.
 - Deviations: none
 - Learnings: startServer now returns startMason({ port: 0, project, homeDir: app.getPath("userData"), uiDir: dist/ui }); the --smoke run proves the desktop shell boots the real server and answers an RPC.
 - 2026-11-27 18:10 [ide] S008 PASSED
+
+### C12: Phase 12 checkpoint: everything, browser and desktop
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all passed; npx tsc --noEmit -> exit 0; npx storybook build --quiet -> build completed successfully; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test agent/canvas/checks/code/design/elements/site/start/tokens -> 22 passed; node src/desktop/build.ts -> built dist/desktop; npx electron dist/desktop/main.mjs --smoke -> MASON SMOKE OK
+- Deviations: none
+- Learnings: The whole handover is green: 113 cards, the browser app, the landing page and the packaged Electron shell all verify in one final gate.
+- 2026-11-27 18:20 [ide] C12 PASSED
