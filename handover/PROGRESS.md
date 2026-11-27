@@ -634,3 +634,11 @@ checkpoint.
 - Deviations: none
 - Learnings: CodeDrawer renders the open file in CodeEditor with an unsaved dot, Save (disabled when clean/busy) and Close; the Playwright code suite proves edit+Ctrl-S+Undo restoring styles.css.
 - 2026-11-27 15:53 [ide] T063 PASSED
+
+### C7: Phase 7 checkpoint: inspect and code
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all passed; npx tsc --noEmit -> exit 0; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test canvas/code/design/elements/tokens -> 11 passed
+- Deviations: none
+- Learnings: Phase 7 is green: file access, code-drawer actions, Inspect panel, CodeMirror and the code drawer all pass (11 Playwright tests total).
+- 2026-11-27 15:57 [ide] C7 PASSED
