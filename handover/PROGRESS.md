@@ -786,3 +786,11 @@ checkpoint.
 - Deviations: none
 - Learnings: AgentPrompt names the configured model and selected layer, sends on Mod+Enter, closes on Escape, and disables Ask while empty or busy; renders nothing while closed.
 - 2026-11-27 16:55 [ide] T079 PASSED
+
+### T080: Add settings and the agent UI to the workspace
+- Result: GATE PASS
+- Files changed: src/ui/agent/SettingsDialog.tsx, src/ui/app/Workspace.tsx, tests/e2e/agent.spec.ts, tests/ui/settings-dialog.test.tsx
+- Commands run: npx vitest run tests/ui/settings-dialog.test.tsx -> 3 passed (3); npx vitest run tests/ui/app.test.tsx tests/ui/code-drawer.test.tsx -> passed; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test agent.spec.ts --project=chromium -> 2 passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: The settings dialog edits endpoint/model/key/MCP/theme (empty key keeps stored key) and the workspace mounts ReviewCard, AgentPrompt and SettingsDialog; the agent e2e enables MCP, proposes over HTTP, accepts one change and undoes it.
+- 2026-11-27 16:57 [ide] T080 PASSED

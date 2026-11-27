@@ -1,5 +1,8 @@
 import { Canvas } from "../canvas/Canvas.tsx";
 import { CodeDrawer } from "../code/CodeDrawer.tsx";
+import { AgentPrompt } from "../agent/AgentPrompt.tsx";
+import { ReviewCard } from "../agent/ReviewCard.tsx";
+import { SettingsDialog } from "../agent/SettingsDialog.tsx";
 import { LeftPanel } from "../panels/LeftPanel.tsx";
 import { RightPanel } from "../panels/RightPanel.tsx";
 import { TopBar } from "./TopBar.tsx";
@@ -18,9 +21,12 @@ export function Workspace() {
           <ToolDock />
           <Toast />
           <CodeDrawer />
+          <ReviewCard />
+          <AgentPrompt />
         </main>
         <RightPanel />
       </div>
+      <SettingsDialog />
     </div>
   );
 }
