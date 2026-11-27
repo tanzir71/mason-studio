@@ -3,6 +3,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { RunningMason } from "../contracts/ports.ts";
 import { PICK_FOLDER_CHANNEL, decideWindowOpen, isSmoke, projectFromArgs, windowOptions } from "./window.ts";
+import { startMason } from "../server/start.ts";
 // @seam:imports
 
 /** dist/desktop when bundled; the UI build sits next to it in dist/ui. */
@@ -12,6 +13,7 @@ let running: RunningMason | null = null;
 /** Starts the local Mason server for the desktop app (composed by the desktop seam card). */
 async function startServer(project: string | null): Promise<RunningMason> {
   void project;
+  return startMason({ port: 0, project, homeDir: app.getPath("userData"), uiDir: join(here, "..", "ui") });
   // @seam:compose-desktop
   throw new Error("The Mason server is not composed yet.");
 }

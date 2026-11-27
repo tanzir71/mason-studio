@@ -906,3 +906,11 @@ checkpoint.
 - Deviations: none
 - Learnings: main.ts handles boot/window/folder picker/link policy and the --smoke RPC check; build.ts emits dist/desktop/main.mjs (ESM, electron external) and preload.cjs (CommonJS).
 - 2026-11-27 18:08 [ide] T093 PASSED
+
+### S008: Compose the Mason server in the desktop app
+- Result: GATE PASS
+- Files changed: src/desktop/main.ts
+- Commands run: npx tsc --noEmit -> exit 0; npx vite build -> built; node src/desktop/build.ts -> built dist/desktop; npx electron dist/desktop/main.mjs --smoke -> MASON SMOKE OK
+- Deviations: none
+- Learnings: startServer now returns startMason({ port: 0, project, homeDir: app.getPath("userData"), uiDir: dist/ui }); the --smoke run proves the desktop shell boots the real server and answers an RPC.
+- 2026-11-27 18:10 [ide] S008 PASSED
