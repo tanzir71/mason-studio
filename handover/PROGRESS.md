@@ -714,3 +714,11 @@ checkpoint.
 - Deviations: none
 - Learnings: settings() never returns the stored API key (hasApiKey instead); saveSettings validates http(s) URL and non-empty model, trims URL/model, keeps the stored key when the new key is empty, and set mcpEnabled/theme.
 - 2026-11-27 16:20 [ide] T071 PASSED
+
+### T072: Implement agent proposals
+- Result: GATE PASS
+- Files changed: src/engine/studio/proposal-group.ts, src/engine/studio/create-studio.ts, tests/engine/proposal-group.test.ts
+- Commands run: npx vitest run tests/engine/proposal-group.test.ts -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: propose validates/labels each change with its current value and first taste ban and emits a proposal; acceptProposal writes only allowed changes as one undo step ("Applied N changes from <source>"); reject/closed handling uses PROPOSAL_CLOSED/NOT_FOUND.
+- 2026-11-27 16:21 [ide] T072 PASSED

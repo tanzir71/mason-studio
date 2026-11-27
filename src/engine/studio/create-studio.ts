@@ -12,6 +12,7 @@ import { createTokensGroup } from "./tokens-group.ts";
 import { createFilesGroup } from "./files-group.ts";
 import { createChecksGroup } from "./checks-group.ts";
 import { createSettingsGroup } from "./settings-group.ts";
+import { createProposalGroup } from "./proposal-group.ts";
 // @seam:imports
 
 /** Every method rejects NOT_IMPLEMENTED until its group is assigned above `@seam:groups`. */
@@ -29,6 +30,7 @@ export const createStudio: CreateStudio = (deps: StudioDeps): StudioService => {
   Object.assign(studio, createFilesGroup(ctx));
   Object.assign(studio, createChecksGroup(ctx));
   Object.assign(studio, createSettingsGroup(ctx));
+  Object.assign(studio, createProposalGroup(ctx));
   // @seam:groups
   return studio as unknown as StudioService;
 };
