@@ -330,3 +330,11 @@ checkpoint.
 - Deviations: none
 - Learnings: LeftPanel has Layers/Assets tabs, the Pages list with an inline New page field (Enter → createPage), and the layers tree under a Layers group.
 - 2026-11-27 13:00 [ide] T030 PASSED
+
+### T031: Build the tool dock, toast and keyboard shortcuts
+- Result: GATE PASS
+- Files changed: src/ui/app/shortcuts.ts, src/ui/app/Toast.tsx, src/ui/app/ToolDock.tsx, tests/ui/dock-shortcuts.test.tsx
+- Commands run: npx vitest run tests/ui/dock-shortcuts.test.tsx -> 7 passed (7); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `comboOf` orders shift→mod→key (Digit codes map to digits), shortcuts skip typing targets and the start screen, and Toast auto-dismisses after 5 s with Undo for undoable writes.
+- 2026-11-27 13:02 [ide] T031 PASSED
