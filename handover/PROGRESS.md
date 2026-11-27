@@ -594,3 +594,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Phase 6 is green: DTCG round-trip, Tokens Studio import, tokens.css, Assets panel and token suggestions all pass (10 Playwright tests total).
 - 2026-11-27 15:45 [ide] C6 PASSED
+
+### T059: Implement reading and writing project files
+- Result: GATE PASS
+- Files changed: src/engine/studio/files-group.ts, src/engine/studio/create-studio.ts, tests/engine/files-group.test.ts
+- Commands run: npx vitest run tests/engine/files-group.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: readFile/writeFile clean paths, reject missing/escaping paths, save as one undo step, and writing a top-level .html refreshes page titles via scanPages.
+- 2026-11-27 15:46 [ide] T059 PASSED
