@@ -754,3 +754,11 @@ checkpoint.
 - Deviations: none
 - Learnings: The handler answers initialize (echoing a supported protocol version), ping, tools/list and tools/call (tool errors as isError text), 202 for notifications, and 403 -32001 while MCP is off.
 - 2026-11-27 16:25 [ide] T076 PASSED
+
+### S006: Compose the MCP handler in startMason
+- Result: GATE PASS
+- Files changed: src/server/start.ts, tests/integration/mcp.test.ts
+- Commands run: npx vitest run tests/integration/mcp.test.ts -> 2 passed (2); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: startMason now builds the real MCP handler above compose-mcp, gated by settings.mcpEnabled; /mcp returns 403 until enabled, then files proposals end-to-end.
+- 2026-11-27 16:27 [ide] S006 PASSED

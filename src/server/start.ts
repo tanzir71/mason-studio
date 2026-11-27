@@ -14,6 +14,7 @@ import { createFileSettingsStore } from "./infra/settings.ts";
 import { createEventHub } from "./infra/events.ts";
 import { createHttpServer } from "./http/server.ts";
 import type { LlmClient } from "../contracts/ports.ts";
+import { createMcpHandler } from "./mcp/handler.ts";
 // @seam:imports
 
 export const MASON_VERSION = "0.1.0";
@@ -44,6 +45,7 @@ export const startMason: StartMason = async (options: StartOptions): Promise<Run
     newId: () => randomUUID(),
   });
   // @seam:compose-core
+  mcp = createMcpHandler(studio, { version: MASON_VERSION, enabled: async () => (await settings.load()).settings.mcpEnabled });
   // @seam:compose-mcp
   server = createHttpServer({ studio, events: hub, uiDir: existsSync(uiDir) ? uiDir : null, mcp });
   // @seam:compose-server
