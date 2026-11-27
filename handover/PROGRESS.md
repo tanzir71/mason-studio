@@ -442,3 +442,11 @@ checkpoint.
 - Deviations: none
 - Learnings: DESIGN_FIELDS maps every INSPECT_PROPS property once; fieldView reads the scope's breakpoint and flags overrides; sectionsFor hides Text for non-text kinds; ScopeControl reports setScope.
 - 2026-11-27 14:09 [ide] T042 PASSED
+
+### T043: Build the Design panel
+- Result: GATE PASS
+- Files changed: src/ui/panels/DesignPanel.tsx, tests/ui/design-panel.test.tsx
+- Commands run: npx vitest run tests/ui/design-panel.test.tsx -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: DesignPanel reads the selection's inspect/tree, renders the scope switch + kind-appropriate Layout/Text/Fill/Stroke/Effects sections, shows override notes with Reset, and writes through applyStyle/resetStyle.
+- 2026-11-27 14:10 [ide] T043 PASSED
