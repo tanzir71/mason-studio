@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import type { ReactNode } from "react";
 import { cx } from "./Button.tsx";
 import "./primitives.css";
@@ -17,12 +17,15 @@ export interface FieldProps {
   mono?: boolean;
   placeholder?: string;
   testId?: string;
+  /** Suggestions shown by the browser while typing (a <datalist>). */
+  options?: readonly string[];
 }
 /**
  * Text field that commits on Enter or blur (only when the trimmed draft is not empty, differs from `value` and was
  * not just committed) and reverts on Escape.
  */
-export function Field({ label, value, onCommit, prefix, suffix, override = false, mono = false, placeholder, testId }: FieldProps) {
+export function Field({ label, value, onCommit, prefix, suffix, override = false, mono = false, placeholder, testId, options }: FieldProps) {
+  const listId = useId();
   const [draft, setDraft] = useState(value);
   const committed = useRef<string | null>(null);
   useEffect(() => { setDraft(value); committed.current = null; }, [value]);
@@ -38,6 +41,7 @@ export function Field({ label, value, onCommit, prefix, suffix, override = false
       {prefix && <span className="m-field__prefix">{prefix}</span>}
       <input
         className="m-field__input" aria-label={label} value={draft} placeholder={placeholder} spellCheck={false}
+        list={options && options.length > 0 ? listId : undefined}
         onChange={(e) => setDraft(e.target.value)}
         onBlur={commit}
         onKeyDown={(e) => {
@@ -46,6 +50,9 @@ export function Field({ label, value, onCommit, prefix, suffix, override = false
         }}
       />
       {suffix && <span className="m-field__suffix">{suffix}</span>}
+      {options && options.length > 0 && (
+        <datalist id={listId}>{options.map((o) => <option key={o} value={o} />)}</datalist>
+      )}
     </label>
   );
 }

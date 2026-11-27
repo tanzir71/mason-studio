@@ -578,3 +578,11 @@ checkpoint.
 - Deviations: none
 - Learnings: AssetsPanel groups tokens by type with swatches/chips, detects Tokens Studio vs DTCG, imports a chosen file and writes tokens.css; LeftPanel now renders it for the Assets tab.
 - 2026-11-27 15:40 [ide] T057 PASSED
+
+### T058: Suggest tokens in Design panel fields
+- Result: GATE PASS
+- Files changed: src/ui/panels/token-options.ts, src/ui/components/Field.tsx, src/ui/panels/DesignPanel.tsx, tests/e2e/tokens.spec.ts, tests/ui/token-options.test.tsx
+- Commands run: npx vitest run tests/ui/token-options.test.tsx -> 4 passed (4); npx vitest run tests/ui/inputs.test.tsx tests/ui/design-panel.test.tsx -> passed; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test tokens.spec.ts -> 2 passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: Field takes an optional `options` datalist; DesignPanel offers typed `var(--token)` suggestions and shows the resolved token value; the Playwright tokens suite proves import+undo and applying a token variable (resolved in the panel).
+- 2026-11-27 15:42 [ide] T058 PASSED

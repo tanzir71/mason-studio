@@ -7,6 +7,7 @@ import { Button, cx } from "../components/Button.tsx";
 import { Field, Section } from "../components/Field.tsx";
 import { DESIGN_FIELDS, SCOPE_LABELS, SECTION_TITLES, fieldView, nodeAt, sectionsFor } from "./design-fields.ts";
 import { ScopeControl } from "./ScopeControl.tsx";
+import { tokenForValue, tokenOptions } from "./token-options.ts";
 import "./design.css";
 
 const KIND_ICONS: Record<LayerKind, LucideIcon> = { frame: Hash, stack: Rows3, text: Type, image: Image, link: Link };
@@ -18,6 +19,7 @@ export function DesignPanel() {
   const inspect = useStudio((s) => s.inspect);
   const tree = useStudio((s) => s.tree);
   const scope = useStudio((s) => s.scope);
+  const tokens = useStudio((s) => s.tokens);
   if (selection === null) return <div className="m-empty" data-testid={TEST_IDS.designPanel}>Select a layer to edit its style.</div>;
   if (!inspect || inspect.path !== selection) return <div className="m-empty" data-testid={TEST_IDS.designPanel}>Loading styles…</div>;
   const kind = (tree && nodeAt(tree, selection)?.kind) || "frame";
@@ -38,10 +40,12 @@ export function DesignPanel() {
             <div className="m-grid2">
               {fields.map((f) => {
                 const view = fieldView(inspect, f.prop, scope);
+                const token = tokenForValue(tokens, view.value);
                 return (
                   <div key={f.prop} className={f.wide ? "is-wide" : undefined}>
                     <Field label={f.label} prefix={f.prefix} value={view.value} override={view.override}
-                      mono={MONO.has(f.prop)} onCommit={(value) => { void actions.applyStyle(f.prop, value); }} />
+                      mono={MONO.has(f.prop) || token !== null} suffix={token?.value} options={tokenOptions(tokens, f.prop)}
+                      onCommit={(value) => { void actions.applyStyle(f.prop, value); }} />
                   </div>
                 );
               })}
