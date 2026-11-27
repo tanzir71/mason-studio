@@ -890,3 +890,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Electron 45.5.0 / electron-builder 26.18.0 are pinned dev dependencies, main points at dist/desktop/main.mjs, and electron-builder packages dist + templates with asar off.
 - 2026-11-27 18:04 [ide] T091 PASSED
+
+### T092: Build the desktop window rules and preload bridge
+- Result: GATE PASS
+- Files changed: src/desktop/window.ts, src/desktop/preload.ts, tests/desktop/window.test.ts, tests/desktop/preload.test.ts
+- Commands run: npx vitest run tests/desktop/window.test.ts tests/desktop/preload.test.ts -> 4 passed (4); npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: windowOptions sandboxes the renderer with context isolation and the preload bridge; projectFromArgs/isSmoke parse the CLI; decideWindowOpen allows same-origin, sends other http(s) out and denies the rest; preload exposes only isDesktop + pickFolder over mason:pick-folder.
+- 2026-11-27 18:05 [ide] T092 PASSED
