@@ -658,3 +658,11 @@ checkpoint.
 - Deviations: none
 - Learnings: parseCssColor handles hex (3/4/6/8), rgb()/rgba() with commas or spaces + `/ alpha`, and white/black/transparent; contrastRatio composites fg alpha onto bg and rounds to 2 decimals.
 - 2026-11-27 16:00 [ide] T065 PASSED
+
+### T066: Check page structure and raw colors
+- Result: GATE PASS
+- Files changed: src/engine/checks/structure.ts, tests/engine/structure-checks.test.ts
+- Commands run: npx vitest run tests/engine/structure-checks.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: checkPageStructure flags extra H1s, heading jumps and missing alt (warning/a11y, passed labels per category); checkRawColors reports hex outside :root with the matching color token or "Not a token.".
+- 2026-11-27 16:01 [ide] T066 PASSED
