@@ -498,3 +498,11 @@ checkpoint.
 - Deviations: none
 - Learnings: insert/move/wrap select the returned path; insert resets the tool to move; remove clears selection/hover/inspect; the body (path "") is never removed or wrapped.
 - 2026-11-27 15:08 [ide] T048 PASSED
+
+### T049: Add the insert tools to the canvas pointer logic
+- Result: GATE PASS
+- Files changed: src/ui/canvas/tools.ts, tests/ui/insert-tools.test.ts
+- Commands run: npx vitest run tests/ui/insert-tools.test.ts -> 3 passed (3); npx vitest run tests/ui/canvas.test.tsx -> 6 passed (6); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: insertTarget appends inside frame/stack/body and inserts right after other elements; boardPointerDown runs insertElement for insert tools; editablePath only on text/link under the move tool.
+- 2026-11-27 15:09 [ide] T049 PASSED
