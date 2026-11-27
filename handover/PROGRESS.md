@@ -354,3 +354,11 @@ checkpoint.
 - Deviations: none
 - Learnings: The browser entry now builds the store from the HTTP client, subscribes events into `handleEvent`, runs `init()`, and renders `<App/>`; the first Playwright suite proves boards, selection outlines and shortcuts end to end.
 - 2026-11-27 13:04 [ide] S005 PASSED
+
+### C3: Phase 3 checkpoint: the canvas shows real pages
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all passed; npx tsc --noEmit -> exit 0; npx storybook build -> success; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test canvas.spec.ts -> 3 passed
+- Deviations: none
+- Learnings: Phase 3 is green: canvas, boards, layers, panels, dock, shortcuts and the browser entry all work together, proven by unit, Storybook, Vite build and Playwright.
+- 2026-11-27 13:58 [ide] C3 PASSED
