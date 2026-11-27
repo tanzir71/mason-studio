@@ -826,3 +826,11 @@ checkpoint.
 - Deviations: none
 - Learnings: refreshGit is a silent background refresh (keeps last status, no toast on failure) and reloadPage now kicks it off; commit stores the new status and toasts "Committed".
 - 2026-11-27 17:01 [ide] T083 PASSED
+
+### T084: Add the Git chip to the top bar
+- Result: GATE PASS
+- Files changed: src/ui/app/GitChip.tsx, src/ui/app/app.css, src/ui/app/TopBar.tsx, tests/ui/git-chip.test.tsx
+- Commands run: npx vitest run tests/ui/git-chip.test.tsx -> 3 passed (3); npx vitest run tests/ui/top-bar.test.tsx -> passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: GitChip shows "N changes" and a commit box (Enter commits and closes), disables Commit at zero changes, and shows "No Git" when git is null or not a repository.
+- 2026-11-27 17:02 [ide] T084 PASSED

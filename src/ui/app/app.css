@@ -50,3 +50,8 @@
 .m-start-placeholder h1 { margin: 0; font: var(--heading-24); color: var(--text-strong); }
 .m-start-placeholder p { margin: 0; color: var(--text-muted); }
 .m-right-placeholder { border-left: 1px solid var(--border-subtle); background: var(--bg-panel); }
+
+.m-git { display: inline-flex; align-items: center; gap: 4px; }
+.m-git.is-off { color: var(--text-faint); }
+.m-commit { right: 0; top: 34px; display: grid; gap: var(--space-2); width: 260px; padding: var(--space-2); }
+.m-commit .m-input { height: 32px; padding: 0 var(--space-2); border: 1px solid var(--border-default); border-radius: var(--radius-6); background: var(--bg-inset); color: var(--text-strong); }

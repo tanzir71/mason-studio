@@ -3,6 +3,7 @@ import { ChevronDown, Play } from "lucide-react";
 import { TEST_IDS, useActions, useStudio } from "../../contracts/ui.tsx";
 import { BREAKPOINTS } from "../../contracts/model.ts";
 import { Chip, IconButton } from "../components/Button.tsx";
+import { GitChip } from "./GitChip.tsx";
 import "./app.css";
 
 export function TopBar() {
@@ -59,7 +60,7 @@ export function TopBar() {
           <span className="m-dot" style={{ background: mcpEnabled ? "var(--success)" : "var(--text-faint)" }} />
           {mcpEnabled ? "MCP on" : "MCP off"}
         </button>
-        {/* git chip: added by the Git card */}
+        <GitChip />
         <IconButton label="Preview page" disabled={!info} onClick={() => { if (info) window.open(`/p/${info.file}`, "_blank", "noopener"); }}>
           <Play />
         </IconButton>
