@@ -2,6 +2,7 @@ import { TEST_IDS, useActions, useStudio } from "../../contracts/ui.tsx";
 import type { RightTab } from "../../contracts/ui.tsx";
 import { Tabs } from "../components/Tabs.tsx";
 import { DesignPanel } from "./DesignPanel.tsx";
+import { InspectPanel } from "./InspectPanel.tsx";
 import "./panels.css";
 
 const TABS: readonly { id: RightTab; label: string }[] = [
@@ -17,7 +18,7 @@ export function RightPanel() {
         <Tabs<RightTab> label="Right panel" value={tab} onChange={actions.setRightTab} items={TABS} />
       </div>
       {tab === "design" && <DesignPanel />}
-      {tab === "inspect" && <div className="m-empty" data-testid={TEST_IDS.inspectPanel}>Select a layer to see its CSS.</div>}
+      {tab === "inspect" && <InspectPanel />}
       {tab === "checks" && <div className="m-empty" data-testid={TEST_IDS.checksPanel}>Checks run on the open page.</div>}
     </aside>
   );

@@ -610,3 +610,11 @@ checkpoint.
 - Deviations: none
 - Learnings: openCode/editCode/saveCode/closeCode track the code `{open,file,line,text,dirty}`, save only when dirty through ctx.write, and a read failure leaves the drawer closed with an error toast.
 - 2026-11-27 15:47 [ide] T060 PASSED
+
+### T061: Build the Inspect panel
+- Result: GATE PASS
+- Files changed: src/ui/panels/inspect.css, src/ui/panels/InspectPanel.tsx, src/ui/panels/RightPanel.tsx, tests/ui/inspect-panel.test.tsx
+- Commands run: npx vitest run tests/ui/inspect-panel.test.tsx -> 4 passed (4); npx vitest run tests/ui/right-panel.test.tsx -> 1 passed (1); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: InspectPanel lists rules at the active breakpoint (struck overridden decls, dimmed non-applying rules) and opens the code drawer at file:line; it is now the Inspect tab of RightPanel.
+- 2026-11-27 15:49 [ide] T061 PASSED
