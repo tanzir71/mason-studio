@@ -306,3 +306,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Canvas renders three boards per page with `translate(pan) scale(zoom)`, pointer logic in `tools.ts` (open page → select/hover, other page → selectPage), and selection/mirror overlays on the open page.
 - 2026-11-27 12:56 [ide] T027 PASSED
+
+### T028: Build the top bar
+- Result: GATE PASS
+- Files changed: src/ui/app/app.css, src/ui/app/TopBar.tsx, tests/ui/top-bar.test.tsx
+- Commands run: npx vitest run tests/ui/top-bar.test.tsx -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `app.css` holds shell/topbar/menu/dock/toast styles; TopBar has project+page menus, the breakpoint strip, MCP status and Preview, with a `{/* git chip: added by the Git card */}` marker for phase 10.
+- 2026-11-27 12:57 [ide] T028 PASSED
