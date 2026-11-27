@@ -194,3 +194,11 @@ checkpoint.
 - Deviations: none
 - Learnings: startMason now wires the real studio (fs/settings/events), a lazy LLM client, and the HTTP server; end-to-end open+serve+recents works on a temp fixture.
 - 2026-11-27 12:42 [ide] S003 PASSED
+
+### T016: Parse the mason command line and open the browser
+- Result: GATE PASS
+- Files changed: src/cli/args.ts, src/cli/open-browser.ts, tests/cli/args.test.ts
+- Commands run: npx vitest run tests/cli/args.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `parseCliArgs` returns a discriminated union help/error/run; the opener spawns a detached, unref'd, error-swallowing child per platform.
+- 2026-11-27 12:43 [ide] T016 PASSED
