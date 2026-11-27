@@ -34,3 +34,11 @@ checkpoint.
 - Deviations: none
 - Learnings: The `void ...;` lines and @seam anchors are load-bearing for seam cards; later cards insert above them without removing them.
 - 2026-11-27 11:54 [ide] T002 PASSED
+
+### C1: Phase 1 checkpoint: skeleton is green
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all suites passed; npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: Phase 1 skeleton is green; ready for engine implementation cards in phase 2.
+- 2026-11-27 11:54 [ide] C1 PASSED
