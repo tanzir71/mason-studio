@@ -7,6 +7,7 @@ import { createPageGroup } from "./page-group.ts";
 import { createHistoryGroup } from "./write.ts";
 import { createInspectGroup } from "./inspect-group.ts";
 import { createStyleGroup } from "./style-group.ts";
+import { createElementGroup } from "./element-group.ts";
 // @seam:imports
 
 /** Every method rejects NOT_IMPLEMENTED until its group is assigned above `@seam:groups`. */
@@ -19,6 +20,7 @@ export const createStudio: CreateStudio = (deps: StudioDeps): StudioService => {
   Object.assign(studio, createHistoryGroup(ctx));
   Object.assign(studio, createInspectGroup(ctx));
   Object.assign(studio, createStyleGroup(ctx));
+  Object.assign(studio, createElementGroup(ctx));
   // @seam:groups
   return studio as unknown as StudioService;
 };

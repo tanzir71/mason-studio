@@ -482,3 +482,11 @@ checkpoint.
 - Deviations: none
 - Learnings: planInsertElement gives a free class + starter rule and handles before-child / after-last / empty-parent cases; planMoveElement reorders via remove+insert; planWrapInStack wraps with a new flex stack class.
 - 2026-11-27 15:06 [ide] T046 PASSED
+
+### T047: Implement the element group
+- Result: GATE PASS
+- Files changed: src/engine/studio/element-group.ts, src/engine/studio/create-studio.ts, tests/engine/element-group.test.ts
+- Commands run: npx vitest run tests/engine/element-group.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: The element group writes insert/text/remove/move/wrap through writeEdits as one undo step each; `pageCss` returns the last linked stylesheet ("" if absent); a no-op move rejects INVALID_INPUT.
+- 2026-11-27 15:07 [ide] T047 PASSED
