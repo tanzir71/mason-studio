@@ -82,3 +82,11 @@ checkpoint.
 - Deviations: none
 - Learnings: humanize collapses runs of `-`/`_`/whitespace to a single space before lowercasing, so `site--header` → `Site header`.
 - 2026-11-27 11:58 [ide] T007 PASSED
+
+### T008: Implement the HTML page parser
+- Result: GATE PASS
+- Files changed: src/engine/html/parse.ts, tests/engine/parse-page.test.ts
+- Commands run: npx vitest run tests/engine/parse-page.test.ts -> 6 passed (6); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: typed the parse5 htmlparser2 `sourceCodeLocation` via a local interface cast, since domhandler's `Element` type does not declare it.
+- Learnings: parse5 with the htmlparser2 adapter plus `sourceCodeLocationInfo` gives exact startTag/endTag offsets; void elements (img) have no endTag so innerRange is null.
+- 2026-11-27 11:59 [ide] T008 PASSED
