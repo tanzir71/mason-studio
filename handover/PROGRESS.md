@@ -362,3 +362,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Phase 3 is green: canvas, boards, layers, panels, dock, shortcuts and the browser entry all work together, proven by unit, Storybook, Vite build and Playwright.
 - 2026-11-27 13:58 [ide] C3 PASSED
+
+### T033: Implement media matching, specificity and selector splitting
+- Result: GATE PASS
+- Files changed: src/types/bramus-specificity.d.ts, src/engine/css/media.ts, tests/engine/media.test.ts
+- Commands run: npx vitest run tests/engine/media.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: added an ambient declaration for `@bramus/specificity` because its exports hide its types under nodenext.
+- Learnings: mediaApplies treats comma lists as OR and unknown terms as false (em/rem = 16px); splitSelectorList only splits top-level commas.
+- 2026-11-27 13:59 [ide] T033 PASSED
