@@ -242,3 +242,11 @@ checkpoint.
 - Deviations: none
 - Learnings: The store fills every STORE_ACTION_NAMES entry with a placeholder toast first, then slices `Object.assign` over them at `// @seam:slices`; `ctx.write` funnels busy/revision/toast/reload.
 - 2026-11-27 12:48 [ide] T019 PASSED
+
+### T020: Add the view actions to the store
+- Result: GATE PASS
+- Files changed: src/ui/state/view-actions.ts, src/ui/state/create-store.ts, tests/ui/view-actions.test.ts
+- Commands run: npx vitest run tests/ui/view-actions.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `select` sets the selection immediately and loads inspect asynchronously (guarded against stale page/selection, errors swallowed); scope and activeBoard move together; zoom clamps to 0.1–2 at 2 decimals.
+- 2026-11-27 12:49 [ide] T020 PASSED
