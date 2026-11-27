@@ -6,6 +6,7 @@ import { createViewActions } from "./view-actions.ts";
 import { createEventActions } from "./event-actions.ts";
 import { createWriteActions } from "./write-actions.ts";
 import { createElementActions } from "./element-actions.ts";
+import { createAssetActions } from "./asset-actions.ts";
 // @seam:imports
 
 export const createStudioStore: CreateStudioStore = (client) => {
@@ -33,6 +34,7 @@ export const createStudioStore: CreateStudioStore = (client) => {
   Object.assign(actions, createEventActions(ctx));
   Object.assign(actions, createWriteActions(ctx));
   Object.assign(actions, createElementActions(ctx));
+  Object.assign(actions, createAssetActions(ctx));
   // @seam:slices
   return store;
 };

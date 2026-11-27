@@ -562,3 +562,11 @@ checkpoint.
 - Deviations: none
 - Learnings: tokens/importTokens/exportTokens read tokens.json, import DTCG or Tokens Studio files writing tokens.json+tokens.css as one undo step, and report "tokens.css is up to date." when nothing changed.
 - 2026-11-27 15:20 [ide] T055 PASSED
+
+### T056: Add token actions to the store
+- Result: GATE PASS
+- Files changed: src/ui/state/asset-actions.ts, src/ui/state/create-store.ts, tests/ui/asset-actions.test.ts
+- Commands run: npx vitest run tests/ui/asset-actions.test.ts -> 2 passed (2); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: loadTokens/importTokens/exportTokens store tokens, toast "Imported N tokens", and for an up-to-date export show an info toast without Undo (otherwise afterWrite).
+- 2026-11-27 15:21 [ide] T056 PASSED
