@@ -163,3 +163,23 @@ h3 { font-size: 15px; letter-spacing: 0; }
 @media (max-width: 900px) {
   .trio { grid-template-columns: minmax(0, 1fr); }
 }
+/* Sections: download */
+.get { display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+.get__intro { padding: 40px; border-right: 1px solid var(--line); }
+.get__intro h2 { font-size: 40px; }
+.get__intro p { margin: 16px 0 24px; color: var(--muted); }
+.get__sponsor { font-size: 13px; text-decoration: none; }
+.get__sponsor::before { content: "♡"; margin-right: 6px; }
+.get__list { margin: 0; padding: 12px 32px; list-style: none; }
+.get__list li { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+.get__list li:last-child { border-bottom: 0; }
+.get__list h3 { font-size: 16px; }
+.get__list p { margin: 2px 0 0; font-size: 13px; color: var(--muted); }
+.get__source code { display: inline-block; margin-top: 8px; padding: 6px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); font-size: 12px; overflow-wrap: anywhere; }
+@media (max-width: 900px) {
+  .get { grid-template-columns: minmax(0, 1fr); }
+  .get__intro { border-right: 0; border-bottom: 1px solid var(--line); }
+}
+@media (max-width: 480px) {
+  .get__intro, .get__list { padding-left: 20px; padding-right: 20px; }
+}
