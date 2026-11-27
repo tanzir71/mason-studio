@@ -802,3 +802,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Phase 9 is green end to end: settings, proposals, LLM ask, MCP tools + handler composed, store actions and the review/settings UI all pass together (15 Playwright tests).
 - 2026-11-27 16:59 [ide] C9 PASSED
+
+### T081: Implement the Git runner
+- Result: GATE PASS
+- Files changed: src/server/infra/git.ts, tests/infra/git.test.ts
+- Commands run: npx vitest run tests/infra/git.test.ts -> 2 passed (2); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: createNodeGitRunner spawns git in the project root with GIT_TERMINAL_PROMPT=0 and always resolves { code, stdout, stderr } (127 when the binary is missing).
+- 2026-11-27 17:00 [ide] T081 PASSED
