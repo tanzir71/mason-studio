@@ -346,3 +346,11 @@ checkpoint.
 - Deviations: none
 - Learnings: App picks the start placeholder or Workspace by `screen`, applies `data-theme` from settings, and installs the window shortcut listener; Workspace is TopBar + LeftPanel + stage(Canvas/ToolDock/Toast) + right-panel placeholder.
 - 2026-11-27 13:03 [ide] T032 PASSED
+
+### S005: Mount the store and app in the browser entry
+- Result: GATE PASS
+- Files changed: src/ui/main.tsx, tests/e2e/canvas.spec.ts, tests/ui/mount.test.tsx
+- Commands run: npx vitest run tests/ui/mount.test.tsx -> 2 passed (2); node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test canvas.spec.ts -> 3 passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: The browser entry now builds the store from the HTTP client, subscribes events into `handleEvent`, runs `init()`, and renders `<App/>`; the first Playwright suite proves boards, selection outlines and shortcuts end to end.
+- 2026-11-27 13:04 [ide] S005 PASSED
