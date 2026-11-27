@@ -170,3 +170,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `#agents` and `#penpot` now resolve; all nav anchors except `#download` work. 7 site tests pass total.
 - 2026-11-27 12:37 [ide] T089 PASSED
+
+### T014: Serve project files and the built UI
+- Result: GATE PASS
+- Files changed: src/server/http/static.ts, src/server/http/server.ts, tests/http/static.test.ts
+- Commands run: npx vitest run tests/http/static.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: static.ts imports `sendText` from server.ts (a call-time circular import; fine because it is a hoisted function declaration).
+- Learnings: `/p/` serves raw project files with MIME + `cache-control: no-store`; all other GETs serve `uiDir` with an `index.html` fallback.
+- 2026-11-27 12:40 [ide] T014 PASSED
