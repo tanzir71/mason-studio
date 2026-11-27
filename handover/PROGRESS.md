@@ -178,3 +178,11 @@ checkpoint.
 - Deviations: static.ts imports `sendText` from server.ts (a call-time circular import; fine because it is a hoisted function declaration).
 - Learnings: `/p/` serves raw project files with MIME + `cache-control: no-store`; all other GETs serve `uiDir` with an `index.html` fallback.
 - 2026-11-27 12:40 [ide] T014 PASSED
+
+### T015: Stream studio events to the browser
+- Result: GATE PASS
+- Files changed: src/server/http/events.ts, src/server/http/server.ts, tests/http/events.test.ts
+- Commands run: npx vitest run tests/http/events.test.ts -> 2 passed (2); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `/api/events` writes `: connected`, streams `data: <json>\n\n`, pings every 15 s, and unsubscribes/clears the timer on request close.
+- 2026-11-27 12:41 [ide] T015 PASSED

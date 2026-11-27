@@ -5,6 +5,7 @@ import { HOST, ROUTES } from "../../contracts/http.ts";
 import type { CreateHttpServer, HttpServer, HttpServerOptions } from "../../contracts/ports.ts";
 import { handleRpc } from "./rpc.ts";
 import { serveProjectFile, serveUi } from "./static.ts";
+import { handleEvents } from "./events.ts";
 // @seam:imports
 
 export type RouteHandler = (req: IncomingMessage, res: ServerResponse, url: URL) => Promise<void> | void;
@@ -68,6 +69,7 @@ export const createHttpServer: CreateHttpServer = (options: HttpServerOptions): 
     }
   } });
   routes.push({ method: "GET", prefix: ROUTES.project, exact: false, handle: (_req, res, url) => serveProjectFile(options.studio, url.pathname.slice(ROUTES.project.length), res) });
+  routes.push({ method: "GET", prefix: ROUTES.events, exact: true, handle: (req, res) => handleEvents(req, res, options.events) });
   // @seam:routes
   let fallback: RouteHandler = (_req, res) => sendText(res, 404, "Not found");
   fallback = (_req, res, url) => serveUi(options.uiDir, url.pathname, res);
