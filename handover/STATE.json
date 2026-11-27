@@ -426,6 +426,12 @@
                                "sessions":  0,
                                "updated":  "2026-11-27 15:42:56",
                                "note":  ""
-                           }
+                           },
+                  "C6":  {
+                             "status":  "passed",
+                             "sessions":  0,
+                             "updated":  "2026-11-27 15:45:11",
+                             "note":  ""
+                         }
               }
 }

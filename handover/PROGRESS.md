@@ -586,3 +586,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Field takes an optional `options` datalist; DesignPanel offers typed `var(--token)` suggestions and shows the resolved token value; the Playwright tokens suite proves import+undo and applying a token variable (resolved in the panel).
 - 2026-11-27 15:42 [ide] T058 PASSED
+
+### C6: Phase 6 checkpoint: design tokens round-trip
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all passed; npx tsc --noEmit -> exit 0; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test canvas.spec.ts design.spec.ts elements.spec.ts tokens.spec.ts -> 10 passed
+- Deviations: none
+- Learnings: Phase 6 is green: DTCG round-trip, Tokens Studio import, tokens.css, Assets panel and token suggestions all pass (10 Playwright tests total).
+- 2026-11-27 15:45 [ide] C6 PASSED
