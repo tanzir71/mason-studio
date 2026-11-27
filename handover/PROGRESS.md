@@ -338,3 +338,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `comboOf` orders shift→mod→key (Digit codes map to digits), shortcuts skip typing targets and the start screen, and Toast auto-dismisses after 5 s with Undo for undoable writes.
 - 2026-11-27 13:02 [ide] T031 PASSED
+
+### T032: Assemble the app shell
+- Result: GATE PASS
+- Files changed: src/ui/app/Workspace.tsx, src/ui/app/App.tsx, tests/ui/app.test.tsx
+- Commands run: npx vitest run tests/ui/app.test.tsx -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: App picks the start placeholder or Workspace by `screen`, applies `data-theme` from settings, and installs the window shortcut listener; Workspace is TopBar + LeftPanel + stage(Canvas/ToolDock/Toast) + right-panel placeholder.
+- 2026-11-27 13:03 [ide] T032 PASSED
