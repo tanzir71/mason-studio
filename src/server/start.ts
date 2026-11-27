@@ -15,6 +15,7 @@ import { createEventHub } from "./infra/events.ts";
 import { createHttpServer } from "./http/server.ts";
 import type { LlmClient } from "../contracts/ports.ts";
 import { createMcpHandler } from "./mcp/handler.ts";
+import { createProjectWatcher, suppressOwnWrites } from "./infra/watcher.ts";
 // @seam:imports
 
 export const MASON_VERSION = "0.1.0";
@@ -49,6 +50,9 @@ export const startMason: StartMason = async (options: StartOptions): Promise<Run
   // @seam:compose-mcp
   server = createHttpServer({ studio, events: hub, uiDir: existsSync(uiDir) ? uiDir : null, mcp });
   // @seam:compose-server
+  const watcher = createProjectWatcher(suppressOwnWrites(hub));
+  hub.subscribe((e) => { if (e.type === "project-opened") watcher.watch(e.project.root); });
+  onClose.push(() => watcher.close());
   // @seam:compose-watch
   void homeDir; void uiDir; void templatesDir; void mcp;
   if (!studio || !server) throw new MasonError("NOT_IMPLEMENTED", "startMason");

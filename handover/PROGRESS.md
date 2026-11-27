@@ -850,3 +850,11 @@ checkpoint.
 - Deviations: the watcher skips names that resolve to a directory (statSync on the watch root) because Windows recursive fs.watch also reports the parent folder name ("css") for nested writes, which made the first run fail; the test is unchanged.
 - Learnings: createProjectWatcher debounces 150 ms into one sorted external-change and ignores .git/node_modules; suppressOwnWrites drops files from recent "written" events within 1 s.
 - 2026-11-27 17:05 [ide] T086 PASSED
+
+### S007: Compose the project watcher in startMason
+- Result: GATE PASS
+- Files changed: src/server/start.ts, tests/e2e/start.spec.ts, tests/integration/watch.test.ts
+- Commands run: npx vitest run tests/integration/watch.test.ts -> 2 passed (2); node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test start.spec.ts --project=chromium -> 3 passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: startMason wires the watcher through suppressOwnWrites and follows project-opened; the phase 10 smoke covers close/reopen from recent, live reload on outside edits, and committing Git changes.
+- 2026-11-27 17:06 [ide] S007 PASSED
