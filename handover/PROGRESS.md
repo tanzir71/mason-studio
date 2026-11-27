@@ -882,3 +882,11 @@ checkpoint.
 - Deviations: none (a separate user-requested fix commit c183466 repointed the landing page repo links from tanzir71/mason to the live tanzir71/mason-studio repository)
 - Learnings: Phase 11 is green: the finished landing page passes Mason's own checks and the responsive Playwright smoke at 1440/768/375px.
 - 2026-11-27 17:59 [ide] C11 PASSED
+
+### T091: Add the Electron toolchain
+- Result: GATE PASS
+- Files changed: package.json, package-lock.json (via npm install in the gate), electron-builder.yml, tests/desktop/package.test.ts
+- Commands run: npm install --no-audit --no-fund -> installed electron; npx vitest run tests/desktop/package.test.ts -> 3 passed; npx electron --version -> v45.5.0; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: Electron 45.5.0 / electron-builder 26.18.0 are pinned dev dependencies, main points at dist/desktop/main.mjs, and electron-builder packages dist + templates with asar off.
+- 2026-11-27 18:04 [ide] T091 PASSED

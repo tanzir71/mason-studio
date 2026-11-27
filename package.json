@@ -4,8 +4,13 @@
   "private": true,
   "description": "Open-source, local-first design canvas where boards are real HTML/CSS files.",
   "type": "module",
-  "engines": { "node": ">=22.18" },
-  "bin": { "mason": "src/cli/bin.ts" },
+  "main": "dist/desktop/main.mjs",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "bin": {
+    "mason": "src/cli/bin.ts"
+  },
   "scripts": {
     "start": "node src/cli/bin.ts",
     "dev:ui": "vite",
@@ -14,7 +19,10 @@
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "e2e": "node tests/e2e/prepare.ts && playwright test --project=chromium",
     "storybook": "storybook dev -p 6006",
-    "build:storybook": "storybook build --quiet -o storybook-static"
+    "build:storybook": "storybook build --quiet -o storybook-static",
+    "desktop:build": "node src/desktop/build.ts",
+    "desktop": "vite build && node src/desktop/build.ts && electron .",
+    "desktop:dist": "vite build && node src/desktop/build.ts && electron-builder"
   },
   "dependencies": {
     "@bramus/specificity": "2.4.5",
@@ -46,6 +54,8 @@
     "@types/react": "19.3.3",
     "@types/react-dom": "19.3.0",
     "@vitejs/plugin-react": "6.3.0",
+    "electron": "45.5.0",
+    "electron-builder": "26.18.0",
     "esbuild": "0.28.2",
     "jsdom": "31.0.1",
     "storybook": "10.6.9",

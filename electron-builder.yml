@@ -1,0 +1,19 @@
+# Desktop packages for Mason. Build with: npm run desktop:dist
+appId: dev.mason.app
+productName: Mason
+directories:
+  output: release
+files:
+  - dist/**
+  - templates/**
+  - package.json
+  - "!dist/desktop/*.map"
+asar: false
+mac:
+  category: public.app-category.developer-tools
+  target: [dmg]
+win:
+  target: [nsis]
+linux:
+  category: Development
+  target: [AppImage, deb]
