@@ -146,3 +146,11 @@ checkpoint.
 - Deviations: ran this phase-11 card early because its only dependency (C1) had passed and the user asked for the public site; no later card depends on it being run last.
 - Learnings: `site/` is a plain Mason project (no build step, no JS). Later site cards insert sections above `<!-- sections -->` and append CSS.
 - 2026-11-27 12:25 [ide] T087 PASSED
+
+### T013: Implement the HTTP server core with RPC and MCP routes
+- Result: GATE PASS
+- Files changed: src/server/http/rpc.ts, src/server/http/server.ts, tests/helpers/http.ts, tests/http/rpc.test.ts, tests/http/server.test.ts
+- Commands run: npx vitest run tests/http/rpc.test.ts tests/http/server.test.ts -> 10 passed (10); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: The server binds HOST only, checks the Host header against `127.0.0.1:<port>`/`localhost:<port>`, and routes are a prefix/exact table with `@seam:routes` and `@seam:fallback` anchors for T014/T015.
+- 2026-11-27 12:35 [ide] T013 PASSED
