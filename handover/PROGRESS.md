@@ -554,3 +554,11 @@ checkpoint.
 - Deviations: none
 - Learnings: tokensToCss reproduces the fixture tokens.css byte for byte, writes aliases as `var()`, and emits tablet/mobile `@media` blocks only when values exist.
 - 2026-11-27 15:19 [ide] T054 PASSED
+
+### T055: Implement the tokens group
+- Result: GATE PASS
+- Files changed: src/engine/studio/tokens-group.ts, src/engine/studio/create-studio.ts, tests/engine/tokens-group.test.ts
+- Commands run: npx vitest run tests/engine/tokens-group.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: tokens/importTokens/exportTokens read tokens.json, import DTCG or Tokens Studio files writing tokens.json+tokens.css as one undo step, and report "tokens.css is up to date." when nothing changed.
+- 2026-11-27 15:20 [ide] T055 PASSED
