@@ -778,3 +778,11 @@ checkpoint.
 - Deviations: none
 - Learnings: ReviewCard shows the newest pending proposal with numbered "from → value · scope" lines and blocked reasons, calling acceptProposal(id,false/true) or rejectProposal(id); hides when nothing is pending.
 - 2026-11-27 16:29 [ide] T078 PASSED
+
+### T079: Build the ask-agent prompt
+- Result: GATE PASS
+- Files changed: src/ui/agent/AgentPrompt.tsx, tests/ui/agent-prompt.test.tsx
+- Commands run: npx vitest run tests/ui/agent-prompt.test.tsx -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: AgentPrompt names the configured model and selected layer, sends on Mod+Enter, closes on Escape, and disables Ask while empty or busy; renders nothing while closed.
+- 2026-11-27 16:55 [ide] T079 PASSED
