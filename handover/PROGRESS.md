@@ -74,3 +74,11 @@ checkpoint.
 - Deviations: none
 - Learnings: postcss `source.start/end.offset` are exact; decl end offset is exclusive and includes `;`, rule end includes `}`. The fixture parses to 14 rules and media blocks [768, 375].
 - 2026-11-27 11:57 [ide] T006 PASSED
+
+### T007: Implement friendly layer names and kinds
+- Result: GATE PASS
+- Files changed: src/engine/html/names.ts, tests/engine/names.test.ts
+- Commands run: npx vitest run tests/engine/names.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: humanize collapses runs of `-`/`_`/whitespace to a single space before lowercasing, so `site--header` → `Site header`.
+- 2026-11-27 11:58 [ide] T007 PASSED
