@@ -314,3 +314,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `app.css` holds shell/topbar/menu/dock/toast styles; TopBar has project+page menus, the breakpoint strip, MCP status and Preview, with a `{/* git chip: added by the Git card */}` marker for phase 10.
 - 2026-11-27 12:57 [ide] T028 PASSED
+
+### T029: Build the layers tree
+- Result: GATE PASS
+- Files changed: src/ui/panels/panels.css, src/ui/panels/LayersTree.tsx, tests/ui/layers-tree.test.tsx
+- Commands run: npx vitest run tests/ui/layers-tree.test.tsx -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: LayersTree auto-opens body + selection ancestors, hides NON_VISUAL_TAGS, and selects/hovers/toggles by path; `panels.css` holds both panel styles.
+- 2026-11-27 12:59 [ide] T029 PASSED
