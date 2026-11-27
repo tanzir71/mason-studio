@@ -466,3 +466,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Phase 4 is green: cascade, editors, write pipeline, inspect, Design panel and design smoke test all pass (5 e2e tests across canvas + design).
 - 2026-11-27 14:12 [ide] C4 PASSED
+
+### T045: Plan text edits and element removal
+- Result: GATE PASS
+- Files changed: src/engine/html/edit.ts, tests/engine/html-edit.test.ts
+- Commands run: npx vitest run tests/engine/html-edit.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: planEditText replaces the inner range with escaped text (NOT_TEXT_ELEMENT otherwise); planRemoveElement removes the element plus its line indent/newline and refuses the body.
+- 2026-11-27 15:05 [ide] T045 PASSED
