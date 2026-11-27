@@ -58,3 +58,11 @@ checkpoint.
 - Deviations: guarded a non-object JSON root as null so it behaves like a read error and returns defaults.
 - Learnings: All three SettingsStore contract cases (defaults, round-trip, no shared state) pass with fresh objects per load.
 - 2026-11-27 11:56 [ide] T004 PASSED
+
+### T005: Implement the event hub
+- Result: GATE PASS
+- Files changed: src/server/infra/events.ts, tests/infra/events.test.ts
+- Commands run: npx vitest run tests/infra/events.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: emit iterates a copy of the listener array so subscribe/unsubscribe during delivery is safe.
+- 2026-11-27 11:56 [ide] T005 PASSED
