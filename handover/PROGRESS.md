@@ -394,3 +394,11 @@ checkpoint.
 - Deviations: none
 - Learnings: planStyleEdit implements the contract exactly: "all" replaces the winning value / inserts into the first applying base rule / appends; "tablet"/"mobile" replace or create the override in the matching `@media` block (last block after the base rule, else a new block appended).
 - 2026-11-27 14:02 [ide] T036 PASSED
+
+### T037: Plan resetting a breakpoint override
+- Result: GATE PASS
+- Files changed: src/engine/css/plan-reset.ts, tests/engine/plan-reset.test.ts
+- Commands run: npx vitest run tests/engine/plan-reset.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: planResetOverride removes whole rules when all declarations go and whole media blocks when all their rules go; removal ranges start at the preceding "\n" when only indentation separates items.
+- 2026-11-27 14:03 [ide] T037 PASSED
