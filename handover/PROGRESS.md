@@ -762,3 +762,11 @@ checkpoint.
 - Deviations: none
 - Learnings: startMason now builds the real MCP handler above compose-mcp, gated by settings.mcpEnabled; /mcp returns 403 until enabled, then files proposals end-to-end.
 - 2026-11-27 16:27 [ide] S006 PASSED
+
+### T077: Add agent, proposal and settings actions to the store
+- Result: GATE PASS
+- Files changed: src/ui/state/agent-actions.ts, src/ui/state/create-store.ts, tests/ui/agent-actions.test.ts
+- Commands run: npx vitest run tests/ui/agent-actions.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: Agent/settings store slice requires a selection to open the prompt, keeps it open on agent errors, prepends new proposals, marks accepted/rejected statuses (accept through ctx.write so revision + tree refresh apply), and saves settings then closes the drawer.
+- 2026-11-27 16:28 [ide] T077 PASSED
