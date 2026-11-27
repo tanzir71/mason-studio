@@ -42,3 +42,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Phase 1 skeleton is green; ready for engine implementation cards in phase 2.
 - 2026-11-27 11:54 [ide] C1 PASSED
+
+### T003: Implement the Node file system
+- Result: GATE PASS
+- Files changed: src/server/infra/node-fs.ts, tests/infra/node-fs.test.ts
+- Commands run: npx vitest run tests/infra/node-fs.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `list` walks with `readdir(..., { withFileTypes: true })`, skips `.git`/`node_modules`, returns sorted root-relative "/"-separated paths and [] for a missing dir.
+- 2026-11-27 11:55 [ide] T003 PASSED
