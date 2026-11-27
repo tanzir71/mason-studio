@@ -210,3 +210,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `node src/cli/bin.ts <folder> --port 0 --no-open --home <dir>` starts the server, prints the URL and serves the project (this is the Playwright webServer command).
 - 2026-11-27 12:44 [ide] S004 PASSED
+
+### C2: Phase 2 checkpoint: the backend serves a project
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all suites passed; npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: Phase 2 backend is green: parsing, studio groups, HTTP server, RPC/events/static routes and the `mason` CLI all pass together.
+- 2026-11-27 12:45 [ide] C2 PASSED
