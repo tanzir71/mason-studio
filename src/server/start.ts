@@ -4,6 +4,16 @@ import { fileURLToPath } from "node:url";
 import { MasonError } from "../contracts/errors.ts";
 import { HOST } from "../contracts/http.ts";
 import type { HttpServer, McpHandler, RunningMason, StartMason, StartOptions, StudioService } from "../contracts/ports.ts";
+import { existsSync } from "node:fs";
+import { randomUUID } from "node:crypto";
+import { createStudio } from "../engine/studio/create-studio.ts";
+import { createNodeFileSystem } from "./infra/node-fs.ts";
+import { createNodeGitRunner } from "./infra/git.ts";
+import { createHttpLlmClient } from "./infra/llm.ts";
+import { createFileSettingsStore } from "./infra/settings.ts";
+import { createEventHub } from "./infra/events.ts";
+import { createHttpServer } from "./http/server.ts";
+import type { LlmClient } from "../contracts/ports.ts";
 // @seam:imports
 
 export const MASON_VERSION = "0.1.0";
@@ -19,8 +29,23 @@ export const startMason: StartMason = async (options: StartOptions): Promise<Run
   let mcp: McpHandler | null = null;
   let server: HttpServer | null = null;
   const onClose: (() => void)[] = [];
+  const hub = createEventHub();
+  const settings = createFileSettingsStore(join(homeDir, "settings.json"));
+  let llmClient: LlmClient | null = null;
+  const llm: LlmClient = { complete: (messages) => (llmClient ??= createHttpLlmClient(async () => (await settings.load()).settings.agent)).complete(messages) };
+  studio = createStudio({
+    openFs: (root) => createNodeFileSystem(root),
+    openGit: (root) => createNodeGitRunner(root),
+    llm,
+    settings,
+    events: hub,
+    templatesDir,
+    now: () => Date.now(),
+    newId: () => randomUUID(),
+  });
   // @seam:compose-core
   // @seam:compose-mcp
+  server = createHttpServer({ studio, events: hub, uiDir: existsSync(uiDir) ? uiDir : null, mcp });
   // @seam:compose-server
   // @seam:compose-watch
   void homeDir; void uiDir; void templatesDir; void mcp;

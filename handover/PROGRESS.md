@@ -186,3 +186,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `/api/events` writes `: connected`, streams `data: <json>\n\n`, pings every 15 s, and unsubscribes/clears the timer on request close.
 - 2026-11-27 12:41 [ide] T015 PASSED
+
+### S003: Compose the studio, infrastructure and HTTP server in startMason
+- Result: GATE PASS
+- Files changed: src/server/start.ts, tests/integration/start.test.ts
+- Commands run: npx vitest run tests/integration/start.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: startMason now wires the real studio (fs/settings/events), a lazy LLM client, and the HTTP server; end-to-end open+serve+recents works on a temp fixture.
+- 2026-11-27 12:42 [ide] S003 PASSED
