@@ -266,3 +266,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `primitives.css` holds every primitive's styles; `Button`/`IconButton`/`Chip`/`cx` are the shared building blocks. Storybook loads them via `src/ui/**/*.stories.tsx`.
 - 2026-11-27 12:51 [ide] T022 PASSED
+
+### T023: Build the field, section and tab primitives
+- Result: GATE PASS
+- Files changed: src/ui/components/Field.tsx, src/ui/components/Tabs.tsx, src/ui/components/Inputs.stories.tsx, tests/ui/inputs.test.tsx
+- Commands run: npx vitest run tests/ui/inputs.test.tsx -> 7 passed (7); npx storybook build --quiet -> success; npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `Field` commits trimmed values on Enter/blur (guarding re-commit) and reverts on Escape; `Tabs` only reports real changes; Storybook build is now green.
+- 2026-11-27 12:52 [ide] T023 PASSED
