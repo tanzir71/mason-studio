@@ -458,3 +458,11 @@ checkpoint.
 - Deviations: none
 - Learnings: RightPanel adds Design/Inspect/Checks tabs (placeholders until phases 7/8); the Playwright design suite proves writing a tablet override into the 768 media rule (desktop unchanged), the toast, and Undo restoring the file.
 - 2026-11-27 14:11 [ide] T044 PASSED
+
+### C4: Phase 4 checkpoint: design edits write real CSS
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all passed; npx tsc --noEmit -> exit 0; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test canvas.spec.ts design.spec.ts -> 5 passed
+- Deviations: none
+- Learnings: Phase 4 is green: cascade, editors, write pipeline, inspect, Design panel and design smoke test all pass (5 e2e tests across canvas + design).
+- 2026-11-27 14:12 [ide] C4 PASSED
