@@ -90,3 +90,11 @@ checkpoint.
 - Deviations: typed the parse5 htmlparser2 `sourceCodeLocation` via a local interface cast, since domhandler's `Element` type does not declare it.
 - Learnings: parse5 with the htmlparser2 adapter plus `sourceCodeLocationInfo` gives exact startTag/endTag offsets; void elements (img) have no endTag so innerRange is null.
 - 2026-11-27 11:59 [ide] T008 PASSED
+
+### T009: Implement node lookup and element selectors
+- Result: GATE PASS
+- Files changed: src/engine/html/select.ts, tests/engine/select.test.ts
+- Commands run: npx vitest run tests/engine/select.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: elementSelector walks ancestors from the immediate parent up to (but not including) body, then falls back to a full `body > tag > tag` chain.
+- 2026-11-27 12:00 [ide] T009 PASSED
