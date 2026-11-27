@@ -3,6 +3,7 @@ import type { CreateStudioStore, StudioActions, StudioState, StudioStore } from 
 import { createStoreContext, STORE_ACTION_NAMES } from "./store-context.ts";
 import { createProjectActions } from "./project-actions.ts";
 import { createViewActions } from "./view-actions.ts";
+import { createEventActions } from "./event-actions.ts";
 // @seam:imports
 
 export const createStudioStore: CreateStudioStore = (client) => {
@@ -27,6 +28,7 @@ export const createStudioStore: CreateStudioStore = (client) => {
   }
   Object.assign(actions, createProjectActions(ctx));
   Object.assign(actions, createViewActions(ctx));
+  Object.assign(actions, createEventActions(ctx));
   // @seam:slices
   return store;
 };

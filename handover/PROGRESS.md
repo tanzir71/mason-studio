@@ -250,3 +250,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `select` sets the selection immediately and loads inspect asynchronously (guarded against stale page/selection, errors swallowed); scope and activeBoard move together; zoom clamps to 0.1–2 at 2 decimals.
 - 2026-11-27 12:49 [ide] T020 PASSED
+
+### T021: Add event and toast actions to the store
+- Result: GATE PASS
+- Files changed: src/ui/state/event-actions.ts, src/ui/state/create-store.ts, tests/ui/event-actions.test.ts
+- Commands run: npx vitest run tests/ui/event-actions.test.ts -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `handleEvent` reloads on new `written` revisions and on `external-change`, and replaces proposals by id at the front; toasts are show/dismiss only.
+- 2026-11-27 12:50 [ide] T021 PASSED
