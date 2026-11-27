@@ -322,3 +322,11 @@ checkpoint.
 - Deviations: none
 - Learnings: LayersTree auto-opens body + selection ancestors, hides NON_VISUAL_TAGS, and selects/hovers/toggles by path; `panels.css` holds both panel styles.
 - 2026-11-27 12:59 [ide] T029 PASSED
+
+### T030: Build the left panel with pages and layers
+- Result: GATE PASS
+- Files changed: src/ui/panels/LeftPanel.tsx, tests/ui/left-panel.test.tsx
+- Commands run: npx vitest run tests/ui/left-panel.test.tsx -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: LeftPanel has Layers/Assets tabs, the Pages list with an inline New page field (Enter → createPage), and the layers tree under a Layers group.
+- 2026-11-27 13:00 [ide] T030 PASSED
