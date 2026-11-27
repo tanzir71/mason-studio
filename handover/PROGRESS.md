@@ -570,3 +570,11 @@ checkpoint.
 - Deviations: none
 - Learnings: loadTokens/importTokens/exportTokens store tokens, toast "Imported N tokens", and for an up-to-date export show an info toast without Undo (otherwise afterWrite).
 - 2026-11-27 15:21 [ide] T056 PASSED
+
+### T057: Build the Assets panel
+- Result: GATE PASS
+- Files changed: src/ui/panels/assets.css, src/ui/panels/AssetsPanel.tsx, src/ui/panels/LeftPanel.tsx, tests/ui/assets-panel.test.tsx
+- Commands run: npx vitest run tests/ui/assets-panel.test.tsx tests/ui/left-panel.test.tsx -> passed; npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: AssetsPanel groups tokens by type with swatches/chips, detects Tokens Studio vs DTCG, imports a chosen file and writes tokens.css; LeftPanel now renders it for the Assets tab.
+- 2026-11-27 15:40 [ide] T057 PASSED

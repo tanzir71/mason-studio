@@ -4,6 +4,7 @@ import { TEST_IDS, useActions, useStudio } from "../../contracts/ui.tsx";
 import { IconButton, cx } from "../components/Button.tsx";
 import { Tabs } from "../components/Tabs.tsx";
 import { LayersTree } from "./LayersTree.tsx";
+import { AssetsPanel } from "./AssetsPanel.tsx";
 import "./panels.css";
 
 export function LeftPanel() {
@@ -52,7 +53,7 @@ export function LeftPanel() {
           </div>
         </div>
       ) : (
-        <div className="m-panel-scroll" data-testid={TEST_IDS.assetsPanel} />
+        <AssetsPanel />
       )}
     </aside>
   );

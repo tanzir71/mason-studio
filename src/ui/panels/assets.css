@@ -1,0 +1,10 @@
+.m-assets-type { margin: var(--space-2) 0 2px; padding: 0 var(--space-3); font: var(--text-11); color: var(--text-faint); text-transform: uppercase; letter-spacing: 0.04em; }
+.m-token { display: flex; align-items: center; gap: var(--space-2); height: 28px; padding: 0 var(--space-3); font: var(--text-12); color: var(--text-default); }
+.m-token:hover { background: var(--bg-hover); }
+.m-token__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.m-token__value { font: var(--code-11); color: var(--text-faint); max-width: 96px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.m-token__chip { display: grid; place-items: center; width: 16px; height: 16px; border-radius: var(--radius-4); background: var(--bg-raised); color: var(--text-faint); font: 600 9px/1 var(--font-sans); flex: none; }
+.m-assets-empty { margin: 0; padding: var(--space-2) var(--space-3); font: var(--text-12); color: var(--text-muted); }
+.m-assets-actions { display: flex; gap: var(--space-2); padding: var(--space-3); }
+.m-file-button { position: relative; overflow: hidden; }
+.m-file-button input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
