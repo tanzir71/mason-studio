@@ -1,0 +1,47 @@
+{
+  "mode": "ide",
+  "mode_help": "ide: an agent in an IDE chat with the model built in (no API key) runs one card per chat through handover/ide.ps1. loop: run-loop.ps1 starts the CLI harness below for every card and needs that harness's API key (for claude-code: DEEPSEEK_API_KEY).",
+  "harness": "claude-code",
+  "session_timeout_min": 30,
+  "max_session_restarts": 1,
+  "stop_after_blocked": 2,
+  "harnesses": {
+    "claude-code": {
+      "description": "Claude Code CLI pointed at DeepSeek's Anthropic-compatible endpoint (settings from api-docs.deepseek.com). The card arrives on stdin; rules + contracts are appended to the system prompt so they form a stable cached prefix.",
+      "exe": "claude",
+      "prompt_mode": "stdin",
+      "args": [
+        "-p", "Execute the handover card provided on stdin. Follow the executor rules in your system prompt exactly.",
+        "--append-system-prompt-file", "{PREFIX_FILE}",
+        "--permission-mode", "acceptEdits",
+        "--allowedTools",
+        "Read,Edit,Write,Glob,Grep,Bash(powershell -NoProfile -ExecutionPolicy Bypass -File handover/verify.ps1 *),Bash(powershell -NoProfile -ExecutionPolicy Bypass -File ./handover/verify.ps1 *),Bash(pwsh -NoProfile -ExecutionPolicy Bypass -File handover/verify.ps1 *),Bash(git status *),Bash(git diff *)",
+        "--disallowedTools",
+        "Bash(git commit *),Bash(git push *),Bash(git reset *),Bash(git checkout *),Bash(git stash *),Bash(git clean *),Bash(git restore *),WebFetch,WebSearch",
+        "--max-turns", "{MAX_TURNS}",
+        "--effort", "{EFFORT}",
+        "--no-session-persistence"
+      ],
+      "env": {
+        "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
+        "ANTHROPIC_AUTH_TOKEN": "${env:DEEPSEEK_API_KEY}",
+        "ANTHROPIC_MODEL": "deepseek-flash[1m]",
+        "ANTHROPIC_DEFAULT_OPUS_MODEL": "deepseek-flash[1m]",
+        "ANTHROPIC_DEFAULT_SONNET_MODEL": "deepseek-flash[1m]",
+        "ANTHROPIC_DEFAULT_HAIKU_MODEL": "deepseek-flash",
+        "CLAUDE_CODE_SUBAGENT_MODEL": "deepseek-flash"
+      }
+    },
+    "codex": {
+      "description": "Codex CLI configured for DeepSeek with DeepSeek's setup script (api-docs.deepseek.com, Codex integration). Flags vary by Codex version: confirm with 'codex exec --help' and edit these args.",
+      "exe": "codex",
+      "prompt_mode": "file-ref",
+      "args": [
+        "exec", "--full-auto",
+        "-c", "model_reasoning_effort={EFFORT}",
+        "Read handover/.run/PREFIX.md (your rules and the project contracts). Then read the card in {PROMPT_FILE} and execute it exactly."
+      ],
+      "env": {}
+    }
+  }
+}

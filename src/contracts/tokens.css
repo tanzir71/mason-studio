@@ -1,0 +1,32 @@
+/* Mason UI design tokens (from Figma "Mason" → 01 Foundations). Planner-owned: never edit.
+   Dark is the default; <html data-theme="light"> switches to Light. Components use only these variables. */
+:root {
+  --bg-app: #111110; --bg-panel: #171716; --bg-raised: #1f1f1d; --bg-hover: #282826; --bg-inset: #0c0c0b; --bg-canvas: #0a0a09;
+  --border-subtle: #242422; --border-default: #33322f; --border-strong: #4a4944;
+  --text-strong: #f4f3ef; --text-default: #d3d1ca; --text-muted: #99978e; --text-faint: #6a6862;
+  --accent: #4c7dff; --accent-strong: #7fa2ff; --accent-subtle: rgba(76, 125, 255, 0.16); --accent-on: #ffffff;
+  --success: #4cb782; --success-subtle: rgba(76, 183, 130, 0.14); --warning: #e3a63f; --warning-subtle: rgba(227, 166, 63, 0.14);
+  --danger: #f2665c; --danger-subtle: rgba(242, 102, 92, 0.14); --ink-inverse: #151513; --surface-inverse: #f4f3ef;
+  --bp-desktop: #6a6862; --bp-tablet: #3dbfae; --bp-mobile: #e46fb0;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Consolas, monospace;
+  --text-11: 500 11px/14px var(--font-sans); --text-12: 400 12px/16px var(--font-sans); --label-12: 500 12px/16px var(--font-sans);
+  --text-13: 400 13px/18px var(--font-sans); --title-13: 600 13px/18px var(--font-sans); --heading-16: 600 16px/22px var(--font-sans);
+  --heading-24: 600 24px/30px var(--font-sans); --code-11: 400 11px/16px var(--font-mono); --code-12: 400 12px/18px var(--font-mono);
+  --radius-4: 4px; --radius-6: 6px; --radius-8: 8px; --radius-10: 10px; --radius-12: 12px;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 24px; --space-6: 32px;
+  --shadow-float: 0 8px 24px rgba(0, 0, 0, 0.4);
+  --panel-left: 240px; --panel-right: 280px; --top-bar: 44px;
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --bg-app: #f6f5f1; --bg-panel: #ffffff; --bg-raised: #f0efea; --bg-hover: #e9e7e1; --bg-inset: #faf9f6; --bg-canvas: #eceae4;
+  --border-subtle: #eceae4; --border-default: #dcd9d1; --border-strong: #b9b5aa;
+  --text-strong: #151513; --text-default: #34332f; --text-muted: #6b6961; --text-faint: #9a978d;
+  --accent: #2f5fe8; --accent-strong: #2450d0; --accent-subtle: rgba(47, 95, 232, 0.10); --accent-on: #ffffff;
+  --success: #2e8b5e; --success-subtle: rgba(46, 139, 94, 0.10); --warning: #b0770f; --warning-subtle: rgba(176, 119, 15, 0.10);
+  --danger: #d23f35; --danger-subtle: rgba(210, 63, 53, 0.10); --ink-inverse: #f4f3ef; --surface-inverse: #151513;
+  --bp-desktop: #9a978d; --bp-tablet: #0f8a7c; --bp-mobile: #c2387f;
+  --shadow-float: 0 8px 24px rgba(20, 20, 15, 0.12);
+  color-scheme: light;
+}

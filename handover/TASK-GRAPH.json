@@ -1,0 +1,5940 @@
+{
+  "schema": "deepseek-handover/v1",
+  "project": {
+    "name": "mason-studio",
+    "summary": "Mason: an open-source, local-first design canvas whose boards are the real HTML/CSS files of a site (browser app, landing page, desktop app)",
+    "stack": "node-ts + react",
+    "requires": [
+      {
+        "name": "node",
+        "check": "node --version"
+      },
+      {
+        "name": "node 22.18+ (runs .ts files)",
+        "check": "node -e \"process.exit(process.features.typescript ? 0 : 1)\""
+      },
+      {
+        "name": "git",
+        "check": "git --version"
+      }
+    ],
+    "init": [
+      {
+        "cmd": "npm install --no-audit --no-fund",
+        "when_exists": "package.json"
+      },
+      {
+        "cmd": "npx playwright install chromium",
+        "when_exists": "node_modules/@playwright/test"
+      }
+    ]
+  },
+  "executor": {
+    "model": "deepseek-flash",
+    "default_effort": "high",
+    "max_turns": 40,
+    "max_attempts": 3
+  },
+  "contracts": {
+    "files": [
+      "src/contracts/model.ts",
+      "src/contracts/errors.ts",
+      "src/contracts/engine.ts",
+      "src/contracts/ports.ts",
+      "src/contracts/http.ts",
+      "src/contracts/mcp.ts",
+      "src/contracts/ui.tsx"
+    ],
+    "hashes": {
+      "src/contracts/model.ts": "sha256:02effdb7fc7c2ddb6fb33ac400a2a72751fb1642b05213f3e9cd573404e83390",
+      "src/contracts/errors.ts": "sha256:134271697a69593af6b83339f5fe35d2280a432ec82108d8aa3ff4b4620bfd48",
+      "src/contracts/engine.ts": "sha256:675f5bdc5e501188cc0fafff3f2a06a6c7cb701ccdcf8c9f56ee64bdb2f4824b",
+      "src/contracts/ports.ts": "sha256:92a4ee434aed9fbd7b9a168c2e7e2f3678e91bfcaeec20cf136b58be2618d7d4",
+      "src/contracts/http.ts": "sha256:e62d60cfeec9bfcd10cec942b6a31490f3fd0b4ebfb3ca6fe5aabd6886b525ad",
+      "src/contracts/mcp.ts": "sha256:982b7930e5748ded88de5ece8986c1b63f41a52d9cd9a7914c6bfb8933af26f0",
+      "src/contracts/ui.tsx": "sha256:4d4f8f049db5521a44c174cc48a618da967e3d1c56808f977b20d56b2ffa21fa"
+    }
+  },
+  "modules": [
+    {
+      "name": "engine",
+      "paths": [
+        "src/engine/**",
+        "src/types/**"
+      ],
+      "provides": [
+        "createStudio"
+      ],
+      "consumes": []
+    },
+    {
+      "name": "infra",
+      "paths": [
+        "src/server/infra/**"
+      ],
+      "provides": [
+        "createNodeFileSystem",
+        "createNodeGitRunner",
+        "createHttpLlmClient",
+        "createFileSettingsStore",
+        "createEventHub",
+        "createProjectWatcher",
+        "suppressOwnWrites"
+      ],
+      "consumes": []
+    },
+    {
+      "name": "http",
+      "paths": [
+        "src/server/http/**"
+      ],
+      "provides": [
+        "createHttpServer"
+      ],
+      "consumes": []
+    },
+    {
+      "name": "mcp",
+      "paths": [
+        "src/server/mcp/**"
+      ],
+      "provides": [
+        "createMcpHandler"
+      ],
+      "consumes": []
+    },
+    {
+      "name": "shell",
+      "paths": [
+        "src/server/start.ts"
+      ],
+      "provides": [
+        "startMason"
+      ],
+      "consumes": [
+        "createStudio",
+        "createNodeFileSystem",
+        "createNodeGitRunner",
+        "createHttpLlmClient",
+        "createFileSettingsStore",
+        "createEventHub",
+        "createHttpServer",
+        "createMcpHandler",
+        "createProjectWatcher",
+        "suppressOwnWrites"
+      ]
+    },
+    {
+      "name": "cli",
+      "paths": [
+        "src/cli/**"
+      ],
+      "provides": [],
+      "consumes": [
+        "startMason"
+      ]
+    },
+    {
+      "name": "ui-api",
+      "paths": [
+        "src/ui/api/**"
+      ],
+      "provides": [
+        "createHttpClient"
+      ],
+      "consumes": []
+    },
+    {
+      "name": "ui-state",
+      "paths": [
+        "src/ui/state/**"
+      ],
+      "provides": [
+        "createStudioStore"
+      ],
+      "consumes": []
+    },
+    {
+      "name": "ui",
+      "paths": [
+        "src/ui/app/**",
+        "src/ui/components/**",
+        "src/ui/canvas/**",
+        "src/ui/panels/**",
+        "src/ui/code/**",
+        "src/ui/agent/**",
+        "src/ui/start/**",
+        "src/ui/styles/**"
+      ],
+      "provides": [
+        "App"
+      ],
+      "consumes": []
+    },
+    {
+      "name": "ui-shell",
+      "paths": [
+        "src/ui/main.tsx",
+        "src/ui/index.html"
+      ],
+      "provides": [
+        "mountStudio"
+      ],
+      "consumes": [
+        "createHttpClient",
+        "createStudioStore",
+        "App"
+      ]
+    },
+    {
+      "name": "site",
+      "paths": [
+        "site/**"
+      ],
+      "provides": [],
+      "consumes": []
+    },
+    {
+      "name": "desktop",
+      "paths": [
+        "src/desktop/**",
+        "electron-builder.yml"
+      ],
+      "provides": [],
+      "consumes": [
+        "startMason"
+      ]
+    }
+  ],
+  "seams": [
+    {
+      "id": "S001",
+      "producer": "infra",
+      "consumer": "engine",
+      "symbols": [
+        "createNodeFileSystem"
+      ],
+      "type": "contract-test"
+    },
+    {
+      "id": "S002",
+      "producer": "infra",
+      "consumer": "engine",
+      "symbols": [
+        "createFileSettingsStore"
+      ],
+      "type": "contract-test"
+    },
+    {
+      "id": "S003",
+      "producer": "engine",
+      "consumer": "shell",
+      "symbols": [
+        "createStudio"
+      ],
+      "type": "compose"
+    },
+    {
+      "id": "S003-infra",
+      "card": "S003",
+      "producer": "infra",
+      "consumer": "shell",
+      "symbols": [
+        "createNodeFileSystem",
+        "createNodeGitRunner",
+        "createHttpLlmClient",
+        "createFileSettingsStore",
+        "createEventHub"
+      ],
+      "type": "compose"
+    },
+    {
+      "id": "S003-http",
+      "card": "S003",
+      "producer": "http",
+      "consumer": "shell",
+      "symbols": [
+        "createHttpServer"
+      ],
+      "type": "compose"
+    },
+    {
+      "id": "S004",
+      "producer": "shell",
+      "consumer": "cli",
+      "symbols": [
+        "startMason"
+      ],
+      "type": "compose"
+    },
+    {
+      "id": "S005",
+      "producer": "ui-api",
+      "consumer": "ui-shell",
+      "symbols": [
+        "createHttpClient"
+      ],
+      "type": "compose"
+    },
+    {
+      "id": "S005-state",
+      "card": "S005",
+      "producer": "ui-state",
+      "consumer": "ui-shell",
+      "symbols": [
+        "createStudioStore"
+      ],
+      "type": "compose"
+    },
+    {
+      "id": "S005-ui",
+      "card": "S005",
+      "producer": "ui",
+      "consumer": "ui-shell",
+      "symbols": [
+        "App"
+      ],
+      "type": "compose"
+    },
+    {
+      "id": "S006",
+      "producer": "mcp",
+      "consumer": "shell",
+      "symbols": [
+        "createMcpHandler"
+      ],
+      "type": "compose"
+    },
+    {
+      "id": "S007",
+      "producer": "infra",
+      "consumer": "shell",
+      "symbols": [
+        "createProjectWatcher",
+        "suppressOwnWrites"
+      ],
+      "type": "compose"
+    },
+    {
+      "id": "S008",
+      "producer": "shell",
+      "consumer": "desktop",
+      "symbols": [
+        "startMason"
+      ],
+      "type": "compose"
+    }
+  ],
+  "phases": [
+    {
+      "id": 1,
+      "name": "Foundation"
+    },
+    {
+      "id": 2,
+      "name": "Read a project"
+    },
+    {
+      "id": 3,
+      "name": "Canvas"
+    },
+    {
+      "id": 4,
+      "name": "Design panel"
+    },
+    {
+      "id": 5,
+      "name": "Elements"
+    },
+    {
+      "id": 6,
+      "name": "Tokens"
+    },
+    {
+      "id": 7,
+      "name": "Inspect and code"
+    },
+    {
+      "id": 8,
+      "name": "Checks"
+    },
+    {
+      "id": 9,
+      "name": "Agents and MCP"
+    },
+    {
+      "id": 10,
+      "name": "Git, start screen, watcher"
+    },
+    {
+      "id": 11,
+      "name": "Landing page"
+    },
+    {
+      "id": 12,
+      "name": "Desktop app"
+    }
+  ],
+  "baseline": [
+    {
+      "cmd": "npx tsc --noEmit -p tsconfig.json",
+      "timeout_sec": 180
+    },
+    {
+      "cmd": "npx vitest run",
+      "expect_contains": [
+        " passed ("
+      ],
+      "expect_not_contains": [
+        "failed"
+      ],
+      "timeout_sec": 300
+    }
+  ],
+  "always_allowed": [
+    "handover/PROGRESS.md",
+    "handover/BLOCKED.md"
+  ],
+  "protected": [
+    "handover/TASK-GRAPH.json",
+    "handover/cards/*",
+    "handover/*.ps1",
+    "handover/EXECUTOR-RULES.md",
+    "handover/00-OVERVIEW.md",
+    "handover/01-CONTRACTS.md",
+    "handover/STATE.json",
+    "handover/loop.config.json",
+    "handover/README.md",
+    "src/contracts/*",
+    "tests/fixtures/*",
+    "templates/*",
+    "site/assets/*"
+  ],
+  "cards": [
+    {
+      "id": "T001",
+      "type": "skeleton",
+      "title": "Bootstrap the toolchain",
+      "phase": 1,
+      "file": "cards/T001-bootstrap-the-toolchain.md",
+      "depends_on": [],
+      "effort": "high",
+      "parallel_safe": false,
+      "budget": {
+        "max_turns": 60,
+        "max_changed_loc": 300
+      },
+      "files": {
+        "create": [
+          "package.json",
+          "package-lock.json",
+          "tsconfig.json",
+          "vitest.config.ts",
+          "vite.config.ts",
+          "playwright.config.ts",
+          ".storybook/main.ts",
+          ".storybook/preview.ts",
+          "tests/setup-dom.ts",
+          "tests/e2e/prepare.ts",
+          "tests/contracts.test.ts"
+        ],
+        "modify": [
+          ".gitignore"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npm install --no-audit --no-fund",
+          "timeout_sec": 600
+        },
+        {
+          "cmd": "npx vitest run tests/contracts.test.ts",
+          "expect_contains": [
+            "Tests  14 passed (14)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T002",
+      "type": "skeleton",
+      "title": "Create module stubs and seam anchors",
+      "phase": 1,
+      "file": "cards/T002-create-module-stubs-and-seam-anchors.md",
+      "depends_on": [
+        "T001"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "budget": {
+        "max_turns": 60,
+        "max_changed_loc": 350
+      },
+      "files": {
+        "create": [
+          "src/engine/studio/context.ts",
+          "src/engine/studio/create-studio.ts",
+          "src/server/infra/node-fs.ts",
+          "src/server/infra/git.ts",
+          "src/server/infra/llm.ts",
+          "src/server/infra/settings.ts",
+          "src/server/infra/events.ts",
+          "src/server/infra/watcher.ts",
+          "src/server/http/server.ts",
+          "src/server/mcp/handler.ts",
+          "src/server/start.ts",
+          "src/ui/api/http-client.ts",
+          "src/ui/state/create-store.ts",
+          "src/ui/app/App.tsx",
+          "src/ui/main.tsx",
+          "src/ui/index.html",
+          "src/ui/styles/global.css",
+          "tests/skeleton.test.ts",
+          "tests/skeleton-ui.test.tsx"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/skeleton.test.ts tests/skeleton-ui.test.tsx",
+          "expect_contains": [
+            "Tests  7 passed (7)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C1",
+      "type": "checkpoint",
+      "title": "Phase 1 checkpoint: skeleton is green",
+      "phase": 1,
+      "file": "cards/C1-phase-1-checkpoint-skeleton-is-green.md",
+      "depends_on": [
+        "T001",
+        "T002"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          ".gitignore",
+          ".storybook/main.ts",
+          ".storybook/preview.ts",
+          "package-lock.json",
+          "package.json",
+          "playwright.config.ts",
+          "src/engine/studio/context.ts",
+          "src/engine/studio/create-studio.ts",
+          "src/server/http/server.ts",
+          "src/server/infra/events.ts",
+          "src/server/infra/git.ts",
+          "src/server/infra/llm.ts",
+          "src/server/infra/node-fs.ts",
+          "src/server/infra/settings.ts",
+          "src/server/infra/watcher.ts",
+          "src/server/mcp/handler.ts",
+          "src/server/start.ts",
+          "src/ui/api/http-client.ts",
+          "src/ui/app/App.tsx",
+          "src/ui/index.html",
+          "src/ui/main.tsx",
+          "src/ui/state/create-store.ts",
+          "src/ui/styles/global.css",
+          "tests/contracts.test.ts",
+          "tests/e2e/prepare.ts",
+          "tests/setup-dom.ts",
+          "tests/skeleton-ui.test.tsx",
+          "tests/skeleton.test.ts",
+          "tsconfig.json",
+          "vite.config.ts",
+          "vitest.config.ts"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T003",
+      "type": "build",
+      "title": "Implement the Node file system",
+      "phase": 2,
+      "file": "cards/T003-implement-the-node-file-system.md",
+      "module": "infra",
+      "requirements": [
+        "R1"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/infra/node-fs.test.ts"
+        ],
+        "modify": [
+          "src/server/infra/node-fs.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/infra/node-fs.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T004",
+      "type": "build",
+      "title": "Implement the file settings store",
+      "phase": 2,
+      "file": "cards/T004-implement-the-file-settings-store.md",
+      "module": "infra",
+      "requirements": [
+        "R2"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/infra/settings.test.ts"
+        ],
+        "modify": [
+          "src/server/infra/settings.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/infra/settings.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T005",
+      "type": "build",
+      "title": "Implement the event hub",
+      "phase": 2,
+      "file": "cards/T005-implement-the-event-hub.md",
+      "module": "infra",
+      "requirements": [
+        "R3"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/infra/events.test.ts"
+        ],
+        "modify": [
+          "src/server/infra/events.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/infra/events.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T006",
+      "type": "build",
+      "title": "Implement the stylesheet parser",
+      "phase": 2,
+      "file": "cards/T006-implement-the-stylesheet-parser.md",
+      "module": "engine",
+      "requirements": [
+        "R4"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "max",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/css/parse.ts",
+          "tests/engine/parse-css.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/parse-css.test.ts",
+          "expect_contains": [
+            "Tests  6 passed (6)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T007",
+      "type": "build",
+      "title": "Implement friendly layer names and kinds",
+      "phase": 2,
+      "file": "cards/T007-implement-friendly-layer-names-and-kinds.md",
+      "module": "engine",
+      "requirements": [
+        "R5"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/html/names.ts",
+          "tests/engine/names.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/names.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T008",
+      "type": "build",
+      "title": "Implement the HTML page parser",
+      "phase": 2,
+      "file": "cards/T008-implement-the-html-page-parser.md",
+      "module": "engine",
+      "requirements": [
+        "R5"
+      ],
+      "depends_on": [
+        "T007"
+      ],
+      "effort": "max",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/html/parse.ts",
+          "tests/engine/parse-page.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/engine/html/names.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/parse-page.test.ts",
+          "expect_contains": [
+            "Tests  6 passed (6)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T009",
+      "type": "build",
+      "title": "Implement node lookup and element selectors",
+      "phase": 2,
+      "file": "cards/T009-implement-node-lookup-and-element-selectors.md",
+      "module": "engine",
+      "requirements": [
+        "R5"
+      ],
+      "depends_on": [
+        "T008"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/html/select.ts",
+          "tests/engine/select.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/engine/html/parse.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/select.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T010",
+      "type": "build",
+      "title": "Implement opening projects, recents and templates",
+      "phase": 2,
+      "file": "cards/T010-implement-opening-projects-recents-and-templates.md",
+      "module": "engine",
+      "requirements": [
+        "R6",
+        "R7"
+      ],
+      "depends_on": [
+        "T008"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/project-group.ts",
+          "tests/helpers/fixture.ts",
+          "tests/engine/project-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": [
+          "src/engine/studio/context.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/project-group.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T011",
+      "type": "build",
+      "title": "Implement creating a project from a template",
+      "phase": 2,
+      "file": "cards/T011-implement-creating-a-project-from-a-template.md",
+      "module": "engine",
+      "requirements": [
+        "R8"
+      ],
+      "depends_on": [
+        "T010"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/engine/create-project.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/project-group.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/create-project.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T012",
+      "type": "build",
+      "title": "Implement page loading and the page tree",
+      "phase": 2,
+      "file": "cards/T012-implement-page-loading-and-the-page-tree.md",
+      "module": "engine",
+      "requirements": [
+        "R5",
+        "R6"
+      ],
+      "depends_on": [
+        "T006",
+        "T010"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/page-group.ts",
+          "tests/engine/page-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/page-group.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "S001",
+      "type": "seam",
+      "title": "Prove the Node file system against the FileSystem contract",
+      "phase": 2,
+      "file": "cards/S001-prove-the-node-file-system-against-the-filesystem-contract.md",
+      "seam": "S001",
+      "requirements": [
+        "R1"
+      ],
+      "depends_on": [
+        "T003",
+        "T010"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/integration/node-fs.contract.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/server/infra/node-fs.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/integration/node-fs.contract.test.ts",
+          "expect_contains": [
+            "Tests  7 passed (7)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "S002",
+      "type": "seam",
+      "title": "Prove the settings store against the SettingsStore contract",
+      "phase": 2,
+      "file": "cards/S002-prove-the-settings-store-against-the-settingsstore-contract.md",
+      "seam": "S002",
+      "requirements": [
+        "R2"
+      ],
+      "depends_on": [
+        "T004",
+        "T010"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/integration/settings.contract.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/server/infra/settings.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/integration/settings.contract.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T013",
+      "type": "build",
+      "title": "Implement the HTTP server core with RPC and MCP routes",
+      "phase": 2,
+      "file": "cards/T013-implement-the-http-server-core-with-rpc-and-mcp-routes.md",
+      "module": "http",
+      "requirements": [
+        "R9",
+        "R10"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/server/http/rpc.ts",
+          "tests/helpers/http.ts",
+          "tests/http/rpc.test.ts",
+          "tests/http/server.test.ts"
+        ],
+        "modify": [
+          "src/server/http/server.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/http/rpc.test.ts tests/http/server.test.ts",
+          "expect_contains": [
+            "Tests  10 passed (10)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T014",
+      "type": "build",
+      "title": "Serve project files and the built UI",
+      "phase": 2,
+      "file": "cards/T014-serve-project-files-and-the-built-ui.md",
+      "module": "http",
+      "requirements": [
+        "R10",
+        "R11"
+      ],
+      "depends_on": [
+        "T013"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/server/http/static.ts",
+          "tests/http/static.test.ts"
+        ],
+        "modify": [
+          "src/server/http/server.ts"
+        ],
+        "read_only": [
+          "tests/helpers/http.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/http/static.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T015",
+      "type": "build",
+      "title": "Stream studio events to the browser",
+      "phase": 2,
+      "file": "cards/T015-stream-studio-events-to-the-browser.md",
+      "module": "http",
+      "requirements": [
+        "R12"
+      ],
+      "depends_on": [
+        "T014"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/server/http/events.ts",
+          "tests/http/events.test.ts"
+        ],
+        "modify": [
+          "src/server/http/server.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/http/events.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "S003",
+      "type": "seam",
+      "title": "Compose the studio, infrastructure and HTTP server in startMason",
+      "phase": 2,
+      "file": "cards/S003-compose-the-studio-infrastructure-and-http-server-in-startma.md",
+      "seam": "S003",
+      "requirements": [
+        "R6",
+        "R9",
+        "R11"
+      ],
+      "depends_on": [
+        "T003",
+        "T004",
+        "T005",
+        "T012",
+        "T015",
+        "S001",
+        "S002"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/integration/start.test.ts"
+        ],
+        "modify": [
+          "src/server/start.ts"
+        ],
+        "read_only": [
+          "src/engine/studio/create-studio.ts",
+          "src/server/http/server.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/integration/start.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T016",
+      "type": "build",
+      "title": "Parse the mason command line and open the browser",
+      "phase": 2,
+      "file": "cards/T016-parse-the-mason-command-line-and-open-the-browser.md",
+      "module": "cli",
+      "requirements": [
+        "R13"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/cli/args.ts",
+          "src/cli/open-browser.ts",
+          "tests/cli/args.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/cli/args.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "S004",
+      "type": "seam",
+      "title": "Compose the mason command",
+      "phase": 2,
+      "file": "cards/S004-compose-the-mason-command.md",
+      "seam": "S004",
+      "requirements": [
+        "R13"
+      ],
+      "depends_on": [
+        "T016",
+        "S003"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/cli/bin.ts",
+          "tests/cli/bin.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/cli/args.ts",
+          "src/cli/open-browser.ts",
+          "src/server/start.ts",
+          "tests/helpers/http.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/cli/bin.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C2",
+      "type": "checkpoint",
+      "title": "Phase 2 checkpoint: the backend serves a project",
+      "phase": 2,
+      "file": "cards/C2-phase-2-checkpoint-the-backend-serves-a-project.md",
+      "depends_on": [
+        "T003",
+        "S001",
+        "T004",
+        "S002",
+        "T005",
+        "T006",
+        "T007",
+        "T008",
+        "T009",
+        "T010",
+        "T011",
+        "T012",
+        "T013",
+        "T014",
+        "T015",
+        "S003",
+        "T016",
+        "S004"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "src/cli/args.ts",
+          "src/cli/bin.ts",
+          "src/cli/open-browser.ts",
+          "src/engine/css/parse.ts",
+          "src/engine/html/names.ts",
+          "src/engine/html/parse.ts",
+          "src/engine/html/select.ts",
+          "src/engine/studio/create-studio.ts",
+          "src/engine/studio/page-group.ts",
+          "src/engine/studio/project-group.ts",
+          "src/server/http/events.ts",
+          "src/server/http/rpc.ts",
+          "src/server/http/server.ts",
+          "src/server/http/static.ts",
+          "src/server/infra/events.ts",
+          "src/server/infra/node-fs.ts",
+          "src/server/infra/settings.ts",
+          "src/server/start.ts",
+          "tests/cli/args.test.ts",
+          "tests/cli/bin.test.ts",
+          "tests/engine/create-project.test.ts",
+          "tests/engine/names.test.ts",
+          "tests/engine/page-group.test.ts",
+          "tests/engine/parse-css.test.ts",
+          "tests/engine/parse-page.test.ts",
+          "tests/engine/project-group.test.ts",
+          "tests/engine/select.test.ts",
+          "tests/helpers/fixture.ts",
+          "tests/helpers/http.ts",
+          "tests/http/events.test.ts",
+          "tests/http/rpc.test.ts",
+          "tests/http/server.test.ts",
+          "tests/http/static.test.ts",
+          "tests/infra/events.test.ts",
+          "tests/infra/node-fs.test.ts",
+          "tests/infra/settings.test.ts",
+          "tests/integration/node-fs.contract.test.ts",
+          "tests/integration/settings.contract.test.ts",
+          "tests/integration/start.test.ts"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T017",
+      "type": "build",
+      "title": "Implement creating a page",
+      "phase": 3,
+      "file": "cards/T017-implement-creating-a-page.md",
+      "module": "engine",
+      "requirements": [
+        "R7"
+      ],
+      "depends_on": [
+        "T012"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/engine/create-page.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/page-group.ts"
+        ],
+        "read_only": [
+          "src/engine/studio/project-group.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/create-page.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T018",
+      "type": "build",
+      "title": "Implement the browser HTTP client",
+      "phase": 3,
+      "file": "cards/T018-implement-the-browser-http-client.md",
+      "module": "ui-api",
+      "requirements": [
+        "R14"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/ui/http-client.test.ts"
+        ],
+        "modify": [
+          "src/ui/api/http-client.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/http-client.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T019",
+      "type": "build",
+      "title": "Implement the studio store core and project actions",
+      "phase": 3,
+      "file": "cards/T019-implement-the-studio-store-core-and-project-actions.md",
+      "module": "ui-state",
+      "requirements": [
+        "R14"
+      ],
+      "depends_on": [
+        "T018"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/state/store-context.ts",
+          "src/ui/state/project-actions.ts",
+          "tests/ui/store-context.test.ts",
+          "tests/ui/store-core.test.ts"
+        ],
+        "modify": [
+          "src/ui/state/create-store.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/store-context.test.ts tests/ui/store-core.test.ts",
+          "expect_contains": [
+            "Tests  12 passed (12)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T020",
+      "type": "build",
+      "title": "Add the view actions to the store",
+      "phase": 3,
+      "file": "cards/T020-add-the-view-actions-to-the-store.md",
+      "module": "ui-state",
+      "requirements": [
+        "R15"
+      ],
+      "depends_on": [
+        "T019"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/state/view-actions.ts",
+          "tests/ui/view-actions.test.ts"
+        ],
+        "modify": [
+          "src/ui/state/create-store.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/view-actions.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T021",
+      "type": "build",
+      "title": "Add event and toast actions to the store",
+      "phase": 3,
+      "file": "cards/T021-add-event-and-toast-actions-to-the-store.md",
+      "module": "ui-state",
+      "requirements": [
+        "R12"
+      ],
+      "depends_on": [
+        "T020"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/state/event-actions.ts",
+          "tests/ui/event-actions.test.ts"
+        ],
+        "modify": [
+          "src/ui/state/create-store.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/event-actions.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T022",
+      "type": "build",
+      "title": "Build the button primitives and their styles",
+      "phase": 3,
+      "file": "cards/T022-build-the-button-primitives-and-their-styles.md",
+      "module": "ui",
+      "requirements": [
+        "R16"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/components/primitives.css",
+          "src/ui/components/Button.tsx",
+          "src/ui/components/Button.stories.tsx",
+          "tests/ui/button.test.tsx"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/button.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T023",
+      "type": "build",
+      "title": "Build the field, section and tab primitives",
+      "phase": 3,
+      "file": "cards/T023-build-the-field-section-and-tab-primitives.md",
+      "module": "ui",
+      "requirements": [
+        "R16"
+      ],
+      "depends_on": [
+        "T022"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/components/Field.tsx",
+          "src/ui/components/Tabs.tsx",
+          "src/ui/components/Inputs.stories.tsx",
+          "tests/ui/inputs.test.tsx"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/ui/components/Button.tsx",
+          "src/ui/components/primitives.css"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/inputs.test.tsx",
+          "expect_contains": [
+            "Tests  7 passed (7)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx storybook build --quiet -o storybook-static",
+          "expect_contains": [
+            "build completed successfully"
+          ],
+          "timeout_sec": 240
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T024",
+      "type": "build",
+      "title": "Map element paths to DOM elements in a board",
+      "phase": 3,
+      "file": "cards/T024-map-element-paths-to-dom-elements-in-a-board.md",
+      "module": "ui",
+      "requirements": [
+        "R15"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/canvas/dom-paths.ts",
+          "tests/ui/dom-paths.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/dom-paths.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T025",
+      "type": "build",
+      "title": "Build the board component",
+      "phase": 3,
+      "file": "cards/T025-build-the-board-component.md",
+      "module": "ui",
+      "requirements": [
+        "R15"
+      ],
+      "depends_on": [
+        "T022"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/canvas/canvas.css",
+          "src/ui/canvas/Board.tsx",
+          "tests/ui/board.test.tsx"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/ui/components/Button.tsx"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/board.test.tsx",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T026",
+      "type": "build",
+      "title": "Draw selection, hover and mirror outlines",
+      "phase": 3,
+      "file": "cards/T026-draw-selection-hover-and-mirror-outlines.md",
+      "module": "ui",
+      "requirements": [
+        "R15"
+      ],
+      "depends_on": [
+        "T024",
+        "T025"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/canvas/Overlay.tsx",
+          "tests/ui/overlay.test.tsx"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/ui/canvas/dom-paths.ts",
+          "src/ui/canvas/canvas.css"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/overlay.test.tsx",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T027",
+      "type": "build",
+      "title": "Build the canvas with page rows, zoom and pan",
+      "phase": 3,
+      "file": "cards/T027-build-the-canvas-with-page-rows-zoom-and-pan.md",
+      "module": "ui",
+      "requirements": [
+        "R15"
+      ],
+      "depends_on": [
+        "T020",
+        "T026"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/canvas/tools.ts",
+          "src/ui/canvas/Canvas.tsx",
+          "tests/ui/canvas.test.tsx"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/ui/canvas/Board.tsx",
+          "src/ui/canvas/Overlay.tsx",
+          "src/ui/canvas/dom-paths.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/canvas.test.tsx",
+          "expect_contains": [
+            "Tests  6 passed (6)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T028",
+      "type": "build",
+      "title": "Build the top bar",
+      "phase": 3,
+      "file": "cards/T028-build-the-top-bar.md",
+      "module": "ui",
+      "requirements": [
+        "R15"
+      ],
+      "depends_on": [
+        "T022"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/app/app.css",
+          "src/ui/app/TopBar.tsx",
+          "tests/ui/top-bar.test.tsx"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/ui/components/Button.tsx"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/top-bar.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T029",
+      "type": "build",
+      "title": "Build the layers tree",
+      "phase": 3,
+      "file": "cards/T029-build-the-layers-tree.md",
+      "module": "ui",
+      "requirements": [
+        "R15"
+      ],
+      "depends_on": [
+        "T022",
+        "T007"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/panels/panels.css",
+          "src/ui/panels/LayersTree.tsx",
+          "tests/ui/layers-tree.test.tsx"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/ui/components/Button.tsx"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/layers-tree.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T030",
+      "type": "build",
+      "title": "Build the left panel with pages and layers",
+      "phase": 3,
+      "file": "cards/T030-build-the-left-panel-with-pages-and-layers.md",
+      "module": "ui",
+      "requirements": [
+        "R7",
+        "R15"
+      ],
+      "depends_on": [
+        "T023",
+        "T029"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/panels/LeftPanel.tsx",
+          "tests/ui/left-panel.test.tsx"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/ui/panels/LayersTree.tsx",
+          "src/ui/components/Tabs.tsx"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/left-panel.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T031",
+      "type": "build",
+      "title": "Build the tool dock, toast and keyboard shortcuts",
+      "phase": 3,
+      "file": "cards/T031-build-the-tool-dock-toast-and-keyboard-shortcuts.md",
+      "module": "ui",
+      "requirements": [
+        "R15",
+        "R17"
+      ],
+      "depends_on": [
+        "T027",
+        "T028"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/app/shortcuts.ts",
+          "src/ui/app/Toast.tsx",
+          "src/ui/app/ToolDock.tsx",
+          "tests/ui/dock-shortcuts.test.tsx"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/ui/canvas/tools.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/dock-shortcuts.test.tsx",
+          "expect_contains": [
+            "Tests  7 passed (7)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T032",
+      "type": "build",
+      "title": "Assemble the app shell",
+      "phase": 3,
+      "file": "cards/T032-assemble-the-app-shell.md",
+      "module": "ui",
+      "requirements": [
+        "R15",
+        "R17"
+      ],
+      "depends_on": [
+        "T021",
+        "T030",
+        "T031"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/app/Workspace.tsx",
+          "tests/ui/app.test.tsx"
+        ],
+        "modify": [
+          "src/ui/app/App.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/app.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "S005",
+      "type": "seam",
+      "title": "Mount the store and app in the browser entry",
+      "phase": 3,
+      "file": "cards/S005-mount-the-store-and-app-in-the-browser-entry.md",
+      "seam": "S005",
+      "requirements": [
+        "R14",
+        "R15"
+      ],
+      "depends_on": [
+        "T018",
+        "T021",
+        "T032",
+        "S003",
+        "S004"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/e2e/canvas.spec.ts",
+          "tests/ui/mount.test.tsx"
+        ],
+        "modify": [
+          "src/ui/main.tsx"
+        ],
+        "read_only": [
+          "src/ui/app/App.tsx",
+          "src/ui/state/create-store.ts",
+          "src/ui/api/http-client.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/mount.test.tsx",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test canvas.spec.ts --project=chromium",
+          "expect_contains": [
+            "3 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C3",
+      "type": "checkpoint",
+      "title": "Phase 3 checkpoint: the canvas shows real pages",
+      "phase": 3,
+      "file": "cards/C3-phase-3-checkpoint-the-canvas-shows-real-pages.md",
+      "depends_on": [
+        "T017",
+        "T018",
+        "T019",
+        "T020",
+        "T021",
+        "T022",
+        "T023",
+        "T024",
+        "T025",
+        "T026",
+        "T027",
+        "T028",
+        "T029",
+        "T030",
+        "T031",
+        "T032",
+        "S005"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "src/engine/studio/page-group.ts",
+          "src/ui/api/http-client.ts",
+          "src/ui/app/App.tsx",
+          "src/ui/app/Toast.tsx",
+          "src/ui/app/ToolDock.tsx",
+          "src/ui/app/TopBar.tsx",
+          "src/ui/app/Workspace.tsx",
+          "src/ui/app/app.css",
+          "src/ui/app/shortcuts.ts",
+          "src/ui/canvas/Board.tsx",
+          "src/ui/canvas/Canvas.tsx",
+          "src/ui/canvas/Overlay.tsx",
+          "src/ui/canvas/canvas.css",
+          "src/ui/canvas/dom-paths.ts",
+          "src/ui/canvas/tools.ts",
+          "src/ui/components/Button.stories.tsx",
+          "src/ui/components/Button.tsx",
+          "src/ui/components/Field.tsx",
+          "src/ui/components/Inputs.stories.tsx",
+          "src/ui/components/Tabs.tsx",
+          "src/ui/components/primitives.css",
+          "src/ui/main.tsx",
+          "src/ui/panels/LayersTree.tsx",
+          "src/ui/panels/LeftPanel.tsx",
+          "src/ui/panels/panels.css",
+          "src/ui/state/create-store.ts",
+          "src/ui/state/event-actions.ts",
+          "src/ui/state/project-actions.ts",
+          "src/ui/state/store-context.ts",
+          "src/ui/state/view-actions.ts",
+          "tests/e2e/canvas.spec.ts",
+          "tests/engine/create-page.test.ts",
+          "tests/ui/app.test.tsx",
+          "tests/ui/board.test.tsx",
+          "tests/ui/button.test.tsx",
+          "tests/ui/canvas.test.tsx",
+          "tests/ui/dock-shortcuts.test.tsx",
+          "tests/ui/dom-paths.test.ts",
+          "tests/ui/event-actions.test.ts",
+          "tests/ui/http-client.test.ts",
+          "tests/ui/inputs.test.tsx",
+          "tests/ui/layers-tree.test.tsx",
+          "tests/ui/left-panel.test.tsx",
+          "tests/ui/mount.test.tsx",
+          "tests/ui/overlay.test.tsx",
+          "tests/ui/store-context.test.ts",
+          "tests/ui/store-core.test.ts",
+          "tests/ui/top-bar.test.tsx",
+          "tests/ui/view-actions.test.ts"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx storybook build --quiet -o storybook-static",
+          "expect_contains": [
+            "build completed successfully"
+          ],
+          "timeout_sec": 240
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test canvas.spec.ts --project=chromium",
+          "expect_contains": [
+            "3 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        }
+      ]
+    },
+    {
+      "id": "T033",
+      "type": "build",
+      "title": "Implement media matching, specificity and selector splitting",
+      "phase": 4,
+      "file": "cards/T033-implement-media-matching-specificity-and-selector-splitting.md",
+      "module": "engine",
+      "requirements": [
+        "R18"
+      ],
+      "depends_on": [
+        "T006"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/types/bramus-specificity.d.ts",
+          "src/engine/css/media.ts",
+          "tests/engine/media.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/media.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T034",
+      "type": "build",
+      "title": "Implement the CSS cascade resolver",
+      "phase": 4,
+      "file": "cards/T034-implement-the-css-cascade-resolver.md",
+      "module": "engine",
+      "requirements": [
+        "R18"
+      ],
+      "depends_on": [
+        "T033",
+        "T008"
+      ],
+      "effort": "max",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/css/cascade.ts",
+          "tests/engine/cascade.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/engine/css/media.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/cascade.test.ts",
+          "expect_contains": [
+            "Tests  6 passed (6)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T035",
+      "type": "build",
+      "title": "Implement text edits and rule appends",
+      "phase": 4,
+      "file": "cards/T035-implement-text-edits-and-rule-appends.md",
+      "module": "engine",
+      "requirements": [
+        "R19"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/css/edits.ts",
+          "tests/engine/edits.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/edits.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T036",
+      "type": "build",
+      "title": "Plan style edits at the right rule and breakpoint",
+      "phase": 4,
+      "file": "cards/T036-plan-style-edits-at-the-right-rule-and-breakpoint.md",
+      "module": "engine",
+      "requirements": [
+        "R19"
+      ],
+      "depends_on": [
+        "T034",
+        "T035"
+      ],
+      "effort": "max",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/css/plan-style.ts",
+          "tests/engine/plan-style.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/engine/css/cascade.ts",
+          "src/engine/css/edits.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/plan-style.test.ts",
+          "expect_contains": [
+            "Tests  10 passed (10)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T037",
+      "type": "build",
+      "title": "Plan resetting a breakpoint override",
+      "phase": 4,
+      "file": "cards/T037-plan-resetting-a-breakpoint-override.md",
+      "module": "engine",
+      "requirements": [
+        "R20"
+      ],
+      "depends_on": [
+        "T036"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/css/plan-reset.ts",
+          "tests/engine/plan-reset.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/engine/css/plan-style.ts",
+          "src/engine/css/cascade.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/plan-reset.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T038",
+      "type": "build",
+      "title": "Implement the write pipeline with undo and redo",
+      "phase": 4,
+      "file": "cards/T038-implement-the-write-pipeline-with-undo-and-redo.md",
+      "module": "engine",
+      "requirements": [
+        "R21"
+      ],
+      "depends_on": [
+        "T035",
+        "T012"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/write.ts",
+          "tests/engine/write.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/write.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T039",
+      "type": "build",
+      "title": "Implement inspect for an element",
+      "phase": 4,
+      "file": "cards/T039-implement-inspect-for-an-element.md",
+      "module": "engine",
+      "requirements": [
+        "R18",
+        "R22"
+      ],
+      "depends_on": [
+        "T034",
+        "T009",
+        "T012"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/inspect-group.ts",
+          "tests/engine/inspect-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/inspect-group.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T040",
+      "type": "build",
+      "title": "Implement applying and resetting styles",
+      "phase": 4,
+      "file": "cards/T040-implement-applying-and-resetting-styles.md",
+      "module": "engine",
+      "requirements": [
+        "R19",
+        "R20"
+      ],
+      "depends_on": [
+        "T036",
+        "T037",
+        "T038",
+        "T039"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/style-group.ts",
+          "tests/engine/style-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/style-group.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T041",
+      "type": "build",
+      "title": "Add style, reset, undo and redo actions to the store",
+      "phase": 4,
+      "file": "cards/T041-add-style-reset-undo-and-redo-actions-to-the-store.md",
+      "module": "ui-state",
+      "requirements": [
+        "R19",
+        "R21"
+      ],
+      "depends_on": [
+        "T021"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/state/write-actions.ts",
+          "tests/ui/write-actions.test.ts"
+        ],
+        "modify": [
+          "src/ui/state/create-store.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/write-actions.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T042",
+      "type": "build",
+      "title": "Build the design field map and the scope switch",
+      "phase": 4,
+      "file": "cards/T042-build-the-design-field-map-and-the-scope-switch.md",
+      "module": "ui",
+      "requirements": [
+        "R19",
+        "R23"
+      ],
+      "depends_on": [
+        "T023"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/panels/design.css",
+          "src/ui/panels/design-fields.ts",
+          "src/ui/panels/ScopeControl.tsx",
+          "tests/ui/design-fields.test.tsx"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/design-fields.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T043",
+      "type": "build",
+      "title": "Build the Design panel",
+      "phase": 4,
+      "file": "cards/T043-build-the-design-panel.md",
+      "module": "ui",
+      "requirements": [
+        "R19",
+        "R20",
+        "R23"
+      ],
+      "depends_on": [
+        "T041",
+        "T042"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/panels/DesignPanel.tsx",
+          "tests/ui/design-panel.test.tsx"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/ui/panels/design-fields.ts",
+          "src/ui/panels/ScopeControl.tsx"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/design-panel.test.tsx",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T044",
+      "type": "build",
+      "title": "Add the right panel to the workspace",
+      "phase": 4,
+      "file": "cards/T044-add-the-right-panel-to-the-workspace.md",
+      "module": "ui",
+      "requirements": [
+        "R19",
+        "R20",
+        "R23"
+      ],
+      "depends_on": [
+        "T043",
+        "T032",
+        "T040",
+        "S005"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/panels/RightPanel.tsx",
+          "tests/e2e/design.spec.ts",
+          "tests/ui/right-panel.test.tsx"
+        ],
+        "modify": [
+          "src/ui/app/Workspace.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/right-panel.test.tsx",
+          "expect_contains": [
+            "Tests  1 passed (1)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/app.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test design.spec.ts --project=chromium",
+          "expect_contains": [
+            "2 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C4",
+      "type": "checkpoint",
+      "title": "Phase 4 checkpoint: design edits write real CSS",
+      "phase": 4,
+      "file": "cards/C4-phase-4-checkpoint-design-edits-write-real-css.md",
+      "depends_on": [
+        "T033",
+        "T034",
+        "T035",
+        "T036",
+        "T037",
+        "T038",
+        "T039",
+        "T040",
+        "T041",
+        "T042",
+        "T043",
+        "T044"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "src/engine/css/cascade.ts",
+          "src/engine/css/edits.ts",
+          "src/engine/css/media.ts",
+          "src/engine/css/plan-reset.ts",
+          "src/engine/css/plan-style.ts",
+          "src/engine/studio/create-studio.ts",
+          "src/engine/studio/inspect-group.ts",
+          "src/engine/studio/style-group.ts",
+          "src/engine/studio/write.ts",
+          "src/types/bramus-specificity.d.ts",
+          "src/ui/app/Workspace.tsx",
+          "src/ui/panels/DesignPanel.tsx",
+          "src/ui/panels/RightPanel.tsx",
+          "src/ui/panels/ScopeControl.tsx",
+          "src/ui/panels/design-fields.ts",
+          "src/ui/panels/design.css",
+          "src/ui/state/create-store.ts",
+          "src/ui/state/write-actions.ts",
+          "tests/e2e/design.spec.ts",
+          "tests/engine/cascade.test.ts",
+          "tests/engine/edits.test.ts",
+          "tests/engine/inspect-group.test.ts",
+          "tests/engine/media.test.ts",
+          "tests/engine/plan-reset.test.ts",
+          "tests/engine/plan-style.test.ts",
+          "tests/engine/style-group.test.ts",
+          "tests/engine/write.test.ts",
+          "tests/ui/design-fields.test.tsx",
+          "tests/ui/design-panel.test.tsx",
+          "tests/ui/right-panel.test.tsx",
+          "tests/ui/write-actions.test.ts"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test canvas.spec.ts design.spec.ts --project=chromium",
+          "expect_contains": [
+            "5 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        }
+      ]
+    },
+    {
+      "id": "T045",
+      "type": "build",
+      "title": "Plan text edits and element removal",
+      "phase": 5,
+      "file": "cards/T045-plan-text-edits-and-element-removal.md",
+      "module": "engine",
+      "requirements": [
+        "R24"
+      ],
+      "depends_on": [
+        "T009"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/html/edit.ts",
+          "tests/engine/html-edit.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/engine/html/select.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/html-edit.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T046",
+      "type": "build",
+      "title": "Plan inserting, moving and wrapping elements",
+      "phase": 5,
+      "file": "cards/T046-plan-inserting-moving-and-wrapping-elements.md",
+      "module": "engine",
+      "requirements": [
+        "R24"
+      ],
+      "depends_on": [
+        "T045",
+        "T035"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/html/structure.ts",
+          "tests/engine/html-structure.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/engine/html/edit.ts",
+          "src/engine/html/select.ts",
+          "src/engine/css/edits.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/html-structure.test.ts",
+          "expect_contains": [
+            "Tests  7 passed (7)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T047",
+      "type": "build",
+      "title": "Implement the element group",
+      "phase": 5,
+      "file": "cards/T047-implement-the-element-group.md",
+      "module": "engine",
+      "requirements": [
+        "R24"
+      ],
+      "depends_on": [
+        "T046",
+        "T038"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/element-group.ts",
+          "tests/engine/element-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/element-group.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T048",
+      "type": "build",
+      "title": "Add element actions to the store",
+      "phase": 5,
+      "file": "cards/T048-add-element-actions-to-the-store.md",
+      "module": "ui-state",
+      "requirements": [
+        "R24"
+      ],
+      "depends_on": [
+        "T041"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/state/element-actions.ts",
+          "tests/ui/element-actions.test.ts"
+        ],
+        "modify": [
+          "src/ui/state/create-store.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/element-actions.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T049",
+      "type": "build",
+      "title": "Add the insert tools to the canvas pointer logic",
+      "phase": 5,
+      "file": "cards/T049-add-the-insert-tools-to-the-canvas-pointer-logic.md",
+      "module": "ui",
+      "requirements": [
+        "R24"
+      ],
+      "depends_on": [
+        "T027",
+        "T042"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/ui/insert-tools.test.ts"
+        ],
+        "modify": [
+          "src/ui/canvas/tools.ts"
+        ],
+        "read_only": [
+          "src/ui/panels/design-fields.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/insert-tools.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/canvas.test.tsx",
+          "expect_contains": [
+            "Tests  6 passed (6)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T050",
+      "type": "build",
+      "title": "Edit text in place on the canvas",
+      "phase": 5,
+      "file": "cards/T050-edit-text-in-place-on-the-canvas.md",
+      "module": "ui",
+      "requirements": [
+        "R24"
+      ],
+      "depends_on": [
+        "T049",
+        "T048"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/canvas/TextEditor.tsx",
+          "tests/ui/text-editor.test.tsx"
+        ],
+        "modify": [
+          "src/ui/canvas/canvas.css",
+          "src/ui/canvas/Canvas.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/text-editor.test.tsx",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/canvas.test.tsx",
+          "expect_contains": [
+            "Tests  6 passed (6)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T051",
+      "type": "build",
+      "title": "Reorder layers by dragging",
+      "phase": 5,
+      "file": "cards/T051-reorder-layers-by-dragging.md",
+      "module": "ui",
+      "requirements": [
+        "R24"
+      ],
+      "depends_on": [
+        "T050",
+        "T047",
+        "T044"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/e2e/elements.spec.ts",
+          "tests/ui/layers-drag.test.tsx"
+        ],
+        "modify": [
+          "src/ui/panels/LayersTree.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/layers-drag.test.tsx",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/layers-tree.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test elements.spec.ts --project=chromium",
+          "expect_contains": [
+            "3 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C5",
+      "type": "checkpoint",
+      "title": "Phase 5 checkpoint: elements can be added, edited and moved",
+      "phase": 5,
+      "file": "cards/C5-phase-5-checkpoint-elements-can-be-added-edited-and-moved.md",
+      "depends_on": [
+        "T045",
+        "T046",
+        "T047",
+        "T048",
+        "T049",
+        "T050",
+        "T051"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "src/engine/html/edit.ts",
+          "src/engine/html/structure.ts",
+          "src/engine/studio/create-studio.ts",
+          "src/engine/studio/element-group.ts",
+          "src/ui/canvas/Canvas.tsx",
+          "src/ui/canvas/TextEditor.tsx",
+          "src/ui/canvas/canvas.css",
+          "src/ui/canvas/tools.ts",
+          "src/ui/panels/LayersTree.tsx",
+          "src/ui/state/create-store.ts",
+          "src/ui/state/element-actions.ts",
+          "tests/e2e/elements.spec.ts",
+          "tests/engine/element-group.test.ts",
+          "tests/engine/html-edit.test.ts",
+          "tests/engine/html-structure.test.ts",
+          "tests/ui/element-actions.test.ts",
+          "tests/ui/insert-tools.test.ts",
+          "tests/ui/layers-drag.test.tsx",
+          "tests/ui/text-editor.test.tsx"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test canvas.spec.ts design.spec.ts elements.spec.ts --project=chromium",
+          "expect_contains": [
+            "8 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        }
+      ]
+    },
+    {
+      "id": "T052",
+      "type": "build",
+      "title": "Read and write DTCG design tokens",
+      "phase": 6,
+      "file": "cards/T052-read-and-write-dtcg-design-tokens.md",
+      "module": "engine",
+      "requirements": [
+        "R25"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/tokens/dtcg.ts",
+          "tests/engine/tokens-dtcg.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/tokens-dtcg.test.ts",
+          "expect_contains": [
+            "Tests  6 passed (6)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T053",
+      "type": "build",
+      "title": "Import Tokens Studio and Penpot token files",
+      "phase": 6,
+      "file": "cards/T053-import-tokens-studio-and-penpot-token-files.md",
+      "module": "engine",
+      "requirements": [
+        "R25"
+      ],
+      "depends_on": [
+        "T052"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/tokens/tokens-studio.ts",
+          "tests/engine/tokens-studio.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/engine/tokens/dtcg.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/tokens-studio.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T054",
+      "type": "build",
+      "title": "Generate tokens.css from tokens",
+      "phase": 6,
+      "file": "cards/T054-generate-tokens-css-from-tokens.md",
+      "module": "engine",
+      "requirements": [
+        "R25"
+      ],
+      "depends_on": [
+        "T052"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/tokens/to-css.ts",
+          "tests/engine/tokens-css.test.ts"
+        ],
+        "modify": [],
+        "read_only": [
+          "src/engine/tokens/dtcg.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/tokens-css.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T055",
+      "type": "build",
+      "title": "Implement the tokens group",
+      "phase": 6,
+      "file": "cards/T055-implement-the-tokens-group.md",
+      "module": "engine",
+      "requirements": [
+        "R25",
+        "R26"
+      ],
+      "depends_on": [
+        "T053",
+        "T054",
+        "T038"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/tokens-group.ts",
+          "tests/engine/tokens-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/tokens-group.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T056",
+      "type": "build",
+      "title": "Add token actions to the store",
+      "phase": 6,
+      "file": "cards/T056-add-token-actions-to-the-store.md",
+      "module": "ui-state",
+      "requirements": [
+        "R25",
+        "R26"
+      ],
+      "depends_on": [
+        "T041"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/state/asset-actions.ts",
+          "tests/ui/asset-actions.test.ts"
+        ],
+        "modify": [
+          "src/ui/state/create-store.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/asset-actions.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T057",
+      "type": "build",
+      "title": "Build the Assets panel",
+      "phase": 6,
+      "file": "cards/T057-build-the-assets-panel.md",
+      "module": "ui",
+      "requirements": [
+        "R25",
+        "R26"
+      ],
+      "depends_on": [
+        "T056",
+        "T030"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/panels/assets.css",
+          "src/ui/panels/AssetsPanel.tsx",
+          "tests/ui/assets-panel.test.tsx"
+        ],
+        "modify": [
+          "src/ui/panels/LeftPanel.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/assets-panel.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/left-panel.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T058",
+      "type": "build",
+      "title": "Suggest tokens in Design panel fields",
+      "phase": 6,
+      "file": "cards/T058-suggest-tokens-in-design-panel-fields.md",
+      "module": "ui",
+      "requirements": [
+        "R25",
+        "R26"
+      ],
+      "depends_on": [
+        "T057",
+        "T055",
+        "T044"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/panels/token-options.ts",
+          "tests/e2e/tokens.spec.ts",
+          "tests/ui/token-options.test.tsx"
+        ],
+        "modify": [
+          "src/ui/components/Field.tsx",
+          "src/ui/panels/DesignPanel.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/token-options.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/inputs.test.tsx tests/ui/design-panel.test.tsx",
+          "expect_contains": [
+            "Tests  10 passed (10)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test tokens.spec.ts --project=chromium",
+          "expect_contains": [
+            "2 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C6",
+      "type": "checkpoint",
+      "title": "Phase 6 checkpoint: design tokens round-trip",
+      "phase": 6,
+      "file": "cards/C6-phase-6-checkpoint-design-tokens-round-trip.md",
+      "depends_on": [
+        "T052",
+        "T053",
+        "T054",
+        "T055",
+        "T056",
+        "T057",
+        "T058"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "src/engine/studio/create-studio.ts",
+          "src/engine/studio/tokens-group.ts",
+          "src/engine/tokens/dtcg.ts",
+          "src/engine/tokens/to-css.ts",
+          "src/engine/tokens/tokens-studio.ts",
+          "src/ui/components/Field.tsx",
+          "src/ui/panels/AssetsPanel.tsx",
+          "src/ui/panels/DesignPanel.tsx",
+          "src/ui/panels/LeftPanel.tsx",
+          "src/ui/panels/assets.css",
+          "src/ui/panels/token-options.ts",
+          "src/ui/state/asset-actions.ts",
+          "src/ui/state/create-store.ts",
+          "tests/e2e/tokens.spec.ts",
+          "tests/engine/tokens-css.test.ts",
+          "tests/engine/tokens-dtcg.test.ts",
+          "tests/engine/tokens-group.test.ts",
+          "tests/engine/tokens-studio.test.ts",
+          "tests/ui/asset-actions.test.ts",
+          "tests/ui/assets-panel.test.tsx",
+          "tests/ui/token-options.test.tsx"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test canvas.spec.ts design.spec.ts elements.spec.ts tokens.spec.ts --project=chromium",
+          "expect_contains": [
+            "10 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        }
+      ]
+    },
+    {
+      "id": "T059",
+      "type": "build",
+      "title": "Implement reading and writing project files",
+      "phase": 7,
+      "file": "cards/T059-implement-reading-and-writing-project-files.md",
+      "module": "engine",
+      "requirements": [
+        "R27"
+      ],
+      "depends_on": [
+        "T038",
+        "T010"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/files-group.ts",
+          "tests/engine/files-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/files-group.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T060",
+      "type": "build",
+      "title": "Add code drawer actions to the store",
+      "phase": 7,
+      "file": "cards/T060-add-code-drawer-actions-to-the-store.md",
+      "module": "ui-state",
+      "requirements": [
+        "R27"
+      ],
+      "depends_on": [
+        "T041"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/state/code-actions.ts",
+          "tests/ui/code-actions.test.ts"
+        ],
+        "modify": [
+          "src/ui/state/create-store.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/code-actions.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T061",
+      "type": "build",
+      "title": "Build the Inspect panel",
+      "phase": 7,
+      "file": "cards/T061-build-the-inspect-panel.md",
+      "module": "ui",
+      "requirements": [
+        "R22",
+        "R27"
+      ],
+      "depends_on": [
+        "T044"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/panels/inspect.css",
+          "src/ui/panels/InspectPanel.tsx",
+          "tests/ui/inspect-panel.test.tsx"
+        ],
+        "modify": [
+          "src/ui/panels/RightPanel.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/inspect-panel.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/right-panel.test.tsx",
+          "expect_contains": [
+            "Tests  1 passed (1)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T062",
+      "type": "build",
+      "title": "Wrap CodeMirror as the code editor",
+      "phase": 7,
+      "file": "cards/T062-wrap-codemirror-as-the-code-editor.md",
+      "module": "ui",
+      "requirements": [
+        "R27"
+      ],
+      "depends_on": [
+        "T022"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/code/CodeEditor.tsx",
+          "tests/ui/code-editor.test.tsx"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/code-editor.test.tsx",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T063",
+      "type": "build",
+      "title": "Add the code drawer to the workspace",
+      "phase": 7,
+      "file": "cards/T063-add-the-code-drawer-to-the-workspace.md",
+      "module": "ui",
+      "requirements": [
+        "R27"
+      ],
+      "depends_on": [
+        "T062",
+        "T060",
+        "T061",
+        "T059",
+        "T058"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/code/code.css",
+          "src/ui/code/CodeDrawer.tsx",
+          "tests/e2e/code.spec.ts",
+          "tests/ui/code-drawer.test.tsx"
+        ],
+        "modify": [
+          "src/ui/app/Workspace.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/code-drawer.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/app.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test code.spec.ts --project=chromium",
+          "expect_contains": [
+            "1 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C7",
+      "type": "checkpoint",
+      "title": "Phase 7 checkpoint: inspect and code",
+      "phase": 7,
+      "file": "cards/C7-phase-7-checkpoint-inspect-and-code.md",
+      "depends_on": [
+        "T059",
+        "T060",
+        "T061",
+        "T062",
+        "T063"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "src/engine/studio/create-studio.ts",
+          "src/engine/studio/files-group.ts",
+          "src/ui/app/Workspace.tsx",
+          "src/ui/code/CodeDrawer.tsx",
+          "src/ui/code/CodeEditor.tsx",
+          "src/ui/code/code.css",
+          "src/ui/panels/InspectPanel.tsx",
+          "src/ui/panels/RightPanel.tsx",
+          "src/ui/panels/inspect.css",
+          "src/ui/state/code-actions.ts",
+          "src/ui/state/create-store.ts",
+          "tests/e2e/code.spec.ts",
+          "tests/engine/files-group.test.ts",
+          "tests/ui/code-actions.test.ts",
+          "tests/ui/code-drawer.test.tsx",
+          "tests/ui/code-editor.test.tsx",
+          "tests/ui/inspect-panel.test.tsx"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test canvas.spec.ts code.spec.ts design.spec.ts elements.spec.ts tokens.spec.ts --project=chromium",
+          "expect_contains": [
+            "11 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        }
+      ]
+    },
+    {
+      "id": "T064",
+      "type": "build",
+      "title": "Read the taste profile and match hard bans",
+      "phase": 8,
+      "file": "cards/T064-read-the-taste-profile-and-match-hard-bans.md",
+      "module": "engine",
+      "requirements": [
+        "R28"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/checks/taste.ts",
+          "tests/engine/taste.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/taste.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T065",
+      "type": "build",
+      "title": "Parse colors and compute contrast",
+      "phase": 8,
+      "file": "cards/T065-parse-colors-and-compute-contrast.md",
+      "module": "engine",
+      "requirements": [
+        "R29"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/checks/color.ts",
+          "tests/engine/color.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/color.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T066",
+      "type": "build",
+      "title": "Check page structure and raw colors",
+      "phase": 8,
+      "file": "cards/T066-check-page-structure-and-raw-colors.md",
+      "module": "engine",
+      "requirements": [
+        "R29"
+      ],
+      "depends_on": [
+        "T008",
+        "T006",
+        "T052"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/checks/structure.ts",
+          "tests/engine/structure-checks.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/structure-checks.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T067",
+      "type": "build",
+      "title": "Implement page checks",
+      "phase": 8,
+      "file": "cards/T067-implement-page-checks.md",
+      "module": "engine",
+      "requirements": [
+        "R28",
+        "R29"
+      ],
+      "depends_on": [
+        "T064",
+        "T066",
+        "T055"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/checks-group.ts",
+          "tests/engine/checks-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/checks-group.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T068",
+      "type": "build",
+      "title": "Add check actions to the store",
+      "phase": 8,
+      "file": "cards/T068-add-check-actions-to-the-store.md",
+      "module": "ui-state",
+      "requirements": [
+        "R29"
+      ],
+      "depends_on": [
+        "T041"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/state/check-actions.ts",
+          "tests/ui/check-actions.test.ts"
+        ],
+        "modify": [
+          "src/ui/state/create-store.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/check-actions.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T069",
+      "type": "build",
+      "title": "Measure text contrast inside a board",
+      "phase": 8,
+      "file": "cards/T069-measure-text-contrast-inside-a-board.md",
+      "module": "ui",
+      "requirements": [
+        "R29"
+      ],
+      "depends_on": [
+        "T024",
+        "T065"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/canvas/contrast.ts",
+          "tests/ui/contrast.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/contrast.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T070",
+      "type": "build",
+      "title": "Build the Checks panel",
+      "phase": 8,
+      "file": "cards/T070-build-the-checks-panel.md",
+      "module": "ui",
+      "requirements": [
+        "R28",
+        "R29"
+      ],
+      "depends_on": [
+        "T067",
+        "T068",
+        "T069",
+        "T063"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/panels/checks.css",
+          "src/ui/panels/ChecksPanel.tsx",
+          "tests/e2e/checks.spec.ts",
+          "tests/ui/checks-panel.test.tsx"
+        ],
+        "modify": [
+          "src/ui/panels/RightPanel.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/checks-panel.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/right-panel.test.tsx tests/ui/inspect-panel.test.tsx",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test checks.spec.ts --project=chromium",
+          "expect_contains": [
+            "2 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C8",
+      "type": "checkpoint",
+      "title": "Phase 8 checkpoint: checks",
+      "phase": 8,
+      "file": "cards/C8-phase-8-checkpoint-checks.md",
+      "depends_on": [
+        "T064",
+        "T065",
+        "T066",
+        "T067",
+        "T068",
+        "T069",
+        "T070"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "src/engine/checks/color.ts",
+          "src/engine/checks/structure.ts",
+          "src/engine/checks/taste.ts",
+          "src/engine/studio/checks-group.ts",
+          "src/engine/studio/create-studio.ts",
+          "src/ui/canvas/contrast.ts",
+          "src/ui/panels/ChecksPanel.tsx",
+          "src/ui/panels/RightPanel.tsx",
+          "src/ui/panels/checks.css",
+          "src/ui/state/check-actions.ts",
+          "src/ui/state/create-store.ts",
+          "tests/e2e/checks.spec.ts",
+          "tests/engine/checks-group.test.ts",
+          "tests/engine/color.test.ts",
+          "tests/engine/structure-checks.test.ts",
+          "tests/engine/taste.test.ts",
+          "tests/ui/check-actions.test.ts",
+          "tests/ui/checks-panel.test.tsx",
+          "tests/ui/contrast.test.ts"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test canvas.spec.ts checks.spec.ts code.spec.ts design.spec.ts elements.spec.ts tokens.spec.ts --project=chromium",
+          "expect_contains": [
+            "13 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        }
+      ]
+    },
+    {
+      "id": "T071",
+      "type": "build",
+      "title": "Implement agent and app settings",
+      "phase": 9,
+      "file": "cards/T071-implement-agent-and-app-settings.md",
+      "module": "engine",
+      "requirements": [
+        "R30"
+      ],
+      "depends_on": [
+        "T010"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/settings-group.ts",
+          "tests/engine/settings-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/settings-group.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T072",
+      "type": "build",
+      "title": "Implement agent proposals",
+      "phase": 9,
+      "file": "cards/T072-implement-agent-proposals.md",
+      "module": "engine",
+      "requirements": [
+        "R31"
+      ],
+      "depends_on": [
+        "T040",
+        "T067"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/proposal-group.ts",
+          "tests/engine/proposal-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/proposal-group.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T073",
+      "type": "build",
+      "title": "Implement the OpenAI-compatible LLM client",
+      "phase": 9,
+      "file": "cards/T073-implement-the-openai-compatible-llm-client.md",
+      "module": "infra",
+      "requirements": [
+        "R32"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/infra/llm.test.ts"
+        ],
+        "modify": [
+          "src/server/infra/llm.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/infra/llm.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T074",
+      "type": "build",
+      "title": "Ask the agent about a layer",
+      "phase": 9,
+      "file": "cards/T074-ask-the-agent-about-a-layer.md",
+      "module": "engine",
+      "requirements": [
+        "R32"
+      ],
+      "depends_on": [
+        "T071",
+        "T072",
+        "T039"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/agent-group.ts",
+          "tests/engine/agent-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/agent-group.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T075",
+      "type": "build",
+      "title": "Implement the MCP tools",
+      "phase": 9,
+      "file": "cards/T075-implement-the-mcp-tools.md",
+      "module": "mcp",
+      "requirements": [
+        "R33"
+      ],
+      "depends_on": [
+        "T072",
+        "T067",
+        "T055"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/server/mcp/tools.ts",
+          "tests/mcp/tools.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/mcp/tools.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T076",
+      "type": "build",
+      "title": "Implement the MCP JSON-RPC handler",
+      "phase": 9,
+      "file": "cards/T076-implement-the-mcp-json-rpc-handler.md",
+      "module": "mcp",
+      "requirements": [
+        "R33"
+      ],
+      "depends_on": [
+        "T075"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/mcp/handler.test.ts"
+        ],
+        "modify": [
+          "src/server/mcp/handler.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/mcp/handler.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "S006",
+      "type": "seam",
+      "title": "Compose the MCP handler in startMason",
+      "phase": 9,
+      "file": "cards/S006-compose-the-mcp-handler-in-startmason.md",
+      "seam": "S006",
+      "requirements": [
+        "R33"
+      ],
+      "depends_on": [
+        "T076",
+        "T071",
+        "S003"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/integration/mcp.test.ts"
+        ],
+        "modify": [
+          "src/server/start.ts"
+        ],
+        "read_only": [
+          "src/server/mcp/handler.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/integration/mcp.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T077",
+      "type": "build",
+      "title": "Add agent, proposal and settings actions to the store",
+      "phase": 9,
+      "file": "cards/T077-add-agent-proposal-and-settings-actions-to-the-store.md",
+      "module": "ui-state",
+      "requirements": [
+        "R31",
+        "R32",
+        "R30"
+      ],
+      "depends_on": [
+        "T041"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/state/agent-actions.ts",
+          "tests/ui/agent-actions.test.ts"
+        ],
+        "modify": [
+          "src/ui/state/create-store.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/agent-actions.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T078",
+      "type": "build",
+      "title": "Build the proposal review card",
+      "phase": 9,
+      "file": "cards/T078-build-the-proposal-review-card.md",
+      "module": "ui",
+      "requirements": [
+        "R31"
+      ],
+      "depends_on": [
+        "T077",
+        "T022"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/agent/agent.css",
+          "src/ui/agent/ReviewCard.tsx",
+          "tests/ui/review-card.test.tsx"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/review-card.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T079",
+      "type": "build",
+      "title": "Build the ask-agent prompt",
+      "phase": 9,
+      "file": "cards/T079-build-the-ask-agent-prompt.md",
+      "module": "ui",
+      "requirements": [
+        "R32"
+      ],
+      "depends_on": [
+        "T078"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/agent/AgentPrompt.tsx",
+          "tests/ui/agent-prompt.test.tsx"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/agent-prompt.test.tsx",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T080",
+      "type": "build",
+      "title": "Add settings and the agent UI to the workspace",
+      "phase": 9,
+      "file": "cards/T080-add-settings-and-the-agent-ui-to-the-workspace.md",
+      "module": "ui",
+      "requirements": [
+        "R30",
+        "R31",
+        "R33"
+      ],
+      "depends_on": [
+        "T079",
+        "S006",
+        "T063",
+        "T070"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/agent/SettingsDialog.tsx",
+          "tests/e2e/agent.spec.ts",
+          "tests/ui/settings-dialog.test.tsx"
+        ],
+        "modify": [
+          "src/ui/app/Workspace.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/settings-dialog.test.tsx",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/app.test.tsx tests/ui/code-drawer.test.tsx",
+          "expect_contains": [
+            "Tests  8 passed (8)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test agent.spec.ts --project=chromium",
+          "expect_contains": [
+            "2 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C9",
+      "type": "checkpoint",
+      "title": "Phase 9 checkpoint: agents propose, people accept",
+      "phase": 9,
+      "file": "cards/C9-phase-9-checkpoint-agents-propose-people-accept.md",
+      "depends_on": [
+        "T071",
+        "T072",
+        "T073",
+        "T074",
+        "T075",
+        "T076",
+        "S006",
+        "T077",
+        "T078",
+        "T079",
+        "T080"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "src/engine/studio/agent-group.ts",
+          "src/engine/studio/create-studio.ts",
+          "src/engine/studio/proposal-group.ts",
+          "src/engine/studio/settings-group.ts",
+          "src/server/infra/llm.ts",
+          "src/server/mcp/handler.ts",
+          "src/server/mcp/tools.ts",
+          "src/server/start.ts",
+          "src/ui/agent/AgentPrompt.tsx",
+          "src/ui/agent/ReviewCard.tsx",
+          "src/ui/agent/SettingsDialog.tsx",
+          "src/ui/agent/agent.css",
+          "src/ui/app/Workspace.tsx",
+          "src/ui/state/agent-actions.ts",
+          "src/ui/state/create-store.ts",
+          "tests/e2e/agent.spec.ts",
+          "tests/engine/agent-group.test.ts",
+          "tests/engine/proposal-group.test.ts",
+          "tests/engine/settings-group.test.ts",
+          "tests/infra/llm.test.ts",
+          "tests/integration/mcp.test.ts",
+          "tests/mcp/handler.test.ts",
+          "tests/mcp/tools.test.ts",
+          "tests/ui/agent-actions.test.ts",
+          "tests/ui/agent-prompt.test.tsx",
+          "tests/ui/review-card.test.tsx",
+          "tests/ui/settings-dialog.test.tsx"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test agent.spec.ts canvas.spec.ts checks.spec.ts code.spec.ts design.spec.ts elements.spec.ts tokens.spec.ts --project=chromium",
+          "expect_contains": [
+            "15 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        }
+      ]
+    },
+    {
+      "id": "T081",
+      "type": "build",
+      "title": "Implement the Git runner",
+      "phase": 10,
+      "file": "cards/T081-implement-the-git-runner.md",
+      "module": "infra",
+      "requirements": [
+        "R34"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/infra/git.test.ts"
+        ],
+        "modify": [
+          "src/server/infra/git.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/infra/git.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T082",
+      "type": "build",
+      "title": "Implement Git status and commit",
+      "phase": 10,
+      "file": "cards/T082-implement-git-status-and-commit.md",
+      "module": "engine",
+      "requirements": [
+        "R34"
+      ],
+      "depends_on": [
+        "T010"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/engine/studio/git-group.ts",
+          "tests/engine/git-group.test.ts"
+        ],
+        "modify": [
+          "src/engine/studio/create-studio.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/engine/git-group.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T083",
+      "type": "build",
+      "title": "Add Git actions to the store",
+      "phase": 10,
+      "file": "cards/T083-add-git-actions-to-the-store.md",
+      "module": "ui-state",
+      "requirements": [
+        "R34"
+      ],
+      "depends_on": [
+        "T041"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/state/git-actions.ts",
+          "tests/ui/git-actions.test.ts"
+        ],
+        "modify": [
+          "src/ui/state/create-store.ts",
+          "src/ui/state/store-context.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/git-actions.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/store-context.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T084",
+      "type": "build",
+      "title": "Add the Git chip to the top bar",
+      "phase": 10,
+      "file": "cards/T084-add-the-git-chip-to-the-top-bar.md",
+      "module": "ui",
+      "requirements": [
+        "R34"
+      ],
+      "depends_on": [
+        "T083",
+        "T028"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/app/GitChip.tsx",
+          "tests/ui/git-chip.test.tsx"
+        ],
+        "modify": [
+          "src/ui/app/app.css",
+          "src/ui/app/TopBar.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/git-chip.test.tsx",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/top-bar.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T085",
+      "type": "build",
+      "title": "Build the start screen",
+      "phase": 10,
+      "file": "cards/T085-build-the-start-screen.md",
+      "module": "ui",
+      "requirements": [
+        "R8",
+        "R35"
+      ],
+      "depends_on": [
+        "T084",
+        "T080"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/ui/start/start.css",
+          "src/ui/start/StartScreen.tsx",
+          "tests/ui/start-screen.test.tsx"
+        ],
+        "modify": [
+          "src/ui/app/App.tsx"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/ui/start-screen.test.tsx",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/ui/app.test.tsx",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T086",
+      "type": "build",
+      "title": "Watch the project folder for outside changes",
+      "phase": 10,
+      "file": "cards/T086-watch-the-project-folder-for-outside-changes.md",
+      "module": "infra",
+      "requirements": [
+        "R36"
+      ],
+      "depends_on": [
+        "T005"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/infra/watcher.test.ts"
+        ],
+        "modify": [
+          "src/server/infra/watcher.ts"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/infra/watcher.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "S007",
+      "type": "seam",
+      "title": "Compose the project watcher in startMason",
+      "phase": 10,
+      "file": "cards/S007-compose-the-project-watcher-in-startmason.md",
+      "seam": "S007",
+      "requirements": [
+        "R36",
+        "R35",
+        "R34"
+      ],
+      "depends_on": [
+        "T086",
+        "S006",
+        "T082",
+        "T085"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/e2e/start.spec.ts",
+          "tests/integration/watch.test.ts"
+        ],
+        "modify": [
+          "src/server/start.ts"
+        ],
+        "read_only": [
+          "src/server/infra/watcher.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/integration/watch.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test start.spec.ts --project=chromium",
+          "expect_contains": [
+            "3 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C10",
+      "type": "checkpoint",
+      "title": "Phase 10 checkpoint: the whole app",
+      "phase": 10,
+      "file": "cards/C10-phase-10-checkpoint-the-whole-app.md",
+      "depends_on": [
+        "T081",
+        "T082",
+        "T083",
+        "T084",
+        "T085",
+        "T086",
+        "S007"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "src/engine/studio/create-studio.ts",
+          "src/engine/studio/git-group.ts",
+          "src/server/infra/git.ts",
+          "src/server/infra/watcher.ts",
+          "src/server/start.ts",
+          "src/ui/app/App.tsx",
+          "src/ui/app/GitChip.tsx",
+          "src/ui/app/TopBar.tsx",
+          "src/ui/app/app.css",
+          "src/ui/start/StartScreen.tsx",
+          "src/ui/start/start.css",
+          "src/ui/state/create-store.ts",
+          "src/ui/state/git-actions.ts",
+          "src/ui/state/store-context.ts",
+          "tests/e2e/start.spec.ts",
+          "tests/engine/git-group.test.ts",
+          "tests/infra/git.test.ts",
+          "tests/infra/watcher.test.ts",
+          "tests/integration/watch.test.ts",
+          "tests/ui/git-actions.test.ts",
+          "tests/ui/git-chip.test.tsx",
+          "tests/ui/start-screen.test.tsx"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx storybook build --quiet -o storybook-static",
+          "expect_contains": [
+            "build completed successfully"
+          ],
+          "timeout_sec": 240
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test agent.spec.ts canvas.spec.ts checks.spec.ts code.spec.ts design.spec.ts elements.spec.ts start.spec.ts tokens.spec.ts --project=chromium",
+          "expect_contains": [
+            "18 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        }
+      ]
+    },
+    {
+      "id": "T087",
+      "type": "build",
+      "title": "Build the landing page shell and hero",
+      "phase": 11,
+      "file": "cards/T087-build-the-landing-page-shell-and-hero.md",
+      "module": "site",
+      "requirements": [
+        "R37"
+      ],
+      "depends_on": [
+        "C1"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "site/styles.css",
+          "site/index.html",
+          "tests/site/site-hero.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/site/site-hero.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T088",
+      "type": "build",
+      "title": "Add the files and responsive sections",
+      "phase": 11,
+      "file": "cards/T088-add-the-files-and-responsive-sections.md",
+      "module": "site",
+      "requirements": [
+        "R37"
+      ],
+      "depends_on": [
+        "T087"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/site/site-sections.test.ts"
+        ],
+        "modify": [
+          "site/index.html",
+          "site/styles.css"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/site/site-sections.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/site/site-hero.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T089",
+      "type": "build",
+      "title": "Add the agents and Penpot sections",
+      "phase": 11,
+      "file": "cards/T089-add-the-agents-and-penpot-sections.md",
+      "module": "site",
+      "requirements": [
+        "R37"
+      ],
+      "depends_on": [
+        "T088"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/site/site-agents.test.ts"
+        ],
+        "modify": [
+          "site/index.html",
+          "site/styles.css"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/site/site-agents.test.ts",
+          "expect_contains": [
+            "Tests  2 passed (2)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/site/site-hero.test.ts tests/site/site-sections.test.ts",
+          "expect_contains": [
+            "Tests  5 passed (5)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T090",
+      "type": "build",
+      "title": "Finish the landing page",
+      "phase": 11,
+      "file": "cards/T090-finish-the-landing-page.md",
+      "module": "site",
+      "requirements": [
+        "R37"
+      ],
+      "depends_on": [
+        "T089",
+        "T066"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "tests/e2e/site.spec.ts",
+          "tests/site/site-complete.test.ts"
+        ],
+        "modify": [
+          "site/index.html",
+          "site/styles.css"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/site/site-complete.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vitest run tests/site/site-hero.test.ts tests/site/site-sections.test.ts tests/site/site-agents.test.ts",
+          "expect_contains": [
+            "Tests  7 passed (7)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test site.spec.ts --project=chromium",
+          "expect_contains": [
+            "4 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C11",
+      "type": "checkpoint",
+      "title": "Phase 11 checkpoint: landing page",
+      "phase": 11,
+      "file": "cards/C11-phase-11-checkpoint-landing-page.md",
+      "depends_on": [
+        "T087",
+        "T088",
+        "T089",
+        "T090"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "site/index.html",
+          "site/styles.css",
+          "tests/e2e/site.spec.ts",
+          "tests/site/site-agents.test.ts",
+          "tests/site/site-complete.test.ts",
+          "tests/site/site-hero.test.ts",
+          "tests/site/site-sections.test.ts"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test site.spec.ts --project=chromium",
+          "expect_contains": [
+            "4 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        }
+      ]
+    },
+    {
+      "id": "T091",
+      "type": "build",
+      "title": "Add the Electron toolchain",
+      "phase": 12,
+      "file": "cards/T091-add-the-electron-toolchain.md",
+      "module": "desktop",
+      "requirements": [
+        "R38"
+      ],
+      "depends_on": [
+        "C10"
+      ],
+      "effort": "low",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "electron-builder.yml",
+          "tests/desktop/package.test.ts"
+        ],
+        "modify": [
+          "package.json",
+          "package-lock.json"
+        ],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npm install --no-audit --no-fund",
+          "timeout_sec": 900
+        },
+        {
+          "cmd": "npx vitest run tests/desktop/package.test.ts",
+          "expect_contains": [
+            "Tests  3 passed (3)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx electron --version",
+          "expect_contains": [
+            "v45.5.0"
+          ],
+          "timeout_sec": 120
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T092",
+      "type": "build",
+      "title": "Build the desktop window rules and preload bridge",
+      "phase": 12,
+      "file": "cards/T092-build-the-desktop-window-rules-and-preload-bridge.md",
+      "module": "desktop",
+      "requirements": [
+        "R38"
+      ],
+      "depends_on": [
+        "T091"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/desktop/window.ts",
+          "src/desktop/preload.ts",
+          "tests/desktop/window.test.ts",
+          "tests/desktop/preload.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/desktop/window.test.ts tests/desktop/preload.test.ts",
+          "expect_contains": [
+            "Tests  4 passed (4)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "T093",
+      "type": "build",
+      "title": "Build the desktop main process and bundler",
+      "phase": 12,
+      "file": "cards/T093-build-the-desktop-main-process-and-bundler.md",
+      "module": "desktop",
+      "requirements": [
+        "R38"
+      ],
+      "depends_on": [
+        "T092"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [
+          "src/desktop/main.ts",
+          "src/desktop/build.ts",
+          "tests/desktop/build.test.ts"
+        ],
+        "modify": [],
+        "read_only": []
+      },
+      "verify": [
+        {
+          "cmd": "npx vitest run tests/desktop/build.test.ts",
+          "expect_contains": [
+            "Tests  1 passed (1)"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "S008",
+      "type": "seam",
+      "title": "Compose the Mason server in the desktop app",
+      "phase": 12,
+      "file": "cards/S008-compose-the-mason-server-in-the-desktop-app.md",
+      "seam": "S008",
+      "requirements": [
+        "R38"
+      ],
+      "depends_on": [
+        "T093",
+        "S007"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "src/desktop/main.ts"
+        ],
+        "read_only": [
+          "src/server/start.ts"
+        ]
+      },
+      "verify": [
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "node src/desktop/build.ts",
+          "expect_contains": [
+            "built dist/desktop"
+          ],
+          "timeout_sec": 120
+        },
+        {
+          "cmd": "npx electron dist/desktop/main.mjs --smoke",
+          "expect_contains": [
+            "MASON SMOKE OK"
+          ],
+          "timeout_sec": 180
+        }
+      ]
+    },
+    {
+      "id": "C12",
+      "type": "checkpoint",
+      "title": "Phase 12 checkpoint: everything, browser and desktop",
+      "phase": 12,
+      "file": "cards/C12-phase-12-checkpoint-everything-browser-and-desktop.md",
+      "depends_on": [
+        "T091",
+        "T092",
+        "T093",
+        "S008"
+      ],
+      "effort": "high",
+      "parallel_safe": false,
+      "files": {
+        "create": [],
+        "modify": [
+          "electron-builder.yml",
+          "package-lock.json",
+          "package.json",
+          "src/desktop/build.ts",
+          "src/desktop/main.ts",
+          "src/desktop/preload.ts",
+          "src/desktop/window.ts",
+          "tests/desktop/build.test.ts",
+          "tests/desktop/package.test.ts",
+          "tests/desktop/preload.test.ts",
+          "tests/desktop/window.test.ts"
+        ],
+        "read_only": []
+      },
+      "scope": "phase",
+      "verify": [
+        {
+          "cmd": "npx vitest run",
+          "expect_contains": [
+            " passed ("
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "npx tsc --noEmit -p tsconfig.json",
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx storybook build --quiet -o storybook-static",
+          "expect_contains": [
+            "build completed successfully"
+          ],
+          "timeout_sec": 240
+        },
+        {
+          "cmd": "node tests/e2e/prepare.ts",
+          "expect_contains": [
+            "prepared tests/.tmp/northfield"
+          ],
+          "timeout_sec": 60
+        },
+        {
+          "cmd": "npx vite build",
+          "expect_contains": [
+            "built in"
+          ],
+          "timeout_sec": 180
+        },
+        {
+          "cmd": "npx playwright test agent.spec.ts canvas.spec.ts checks.spec.ts code.spec.ts design.spec.ts elements.spec.ts site.spec.ts start.spec.ts tokens.spec.ts --project=chromium",
+          "expect_contains": [
+            "22 passed"
+          ],
+          "expect_not_contains": [
+            "failed"
+          ],
+          "timeout_sec": 300
+        },
+        {
+          "cmd": "node src/desktop/build.ts",
+          "expect_contains": [
+            "built dist/desktop"
+          ],
+          "timeout_sec": 120
+        },
+        {
+          "cmd": "npx electron dist/desktop/main.mjs --smoke",
+          "expect_contains": [
+            "MASON SMOKE OK"
+          ],
+          "timeout_sec": 180
+        }
+      ]
+    }
+  ]
+}
