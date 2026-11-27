@@ -650,3 +650,11 @@ checkpoint.
 - Deviations: none
 - Learnings: parseTaste reads lowercase `##` sections and `- literal:`/`- regex:` bans (note split at the last " | ", invalid regexes listed separately); checkBans matches case-insensitively as blocked taste findings.
 - 2026-11-27 15:58 [ide] T064 PASSED
+
+### T065: Parse colors and compute contrast
+- Result: GATE PASS
+- Files changed: src/engine/checks/color.ts, tests/engine/color.test.ts
+- Commands run: npx vitest run tests/engine/color.test.ts -> 2 passed (2); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: parseCssColor handles hex (3/4/6/8), rgb()/rgba() with commas or spaces + `/ alpha`, and white/black/transparent; contrastRatio composites fg alpha onto bg and rounds to 2 decimals.
+- 2026-11-27 16:00 [ide] T065 PASSED
