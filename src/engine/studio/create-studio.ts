@@ -14,6 +14,7 @@ import { createChecksGroup } from "./checks-group.ts";
 import { createSettingsGroup } from "./settings-group.ts";
 import { createProposalGroup } from "./proposal-group.ts";
 import { createAgentGroup } from "./agent-group.ts";
+import { createGitGroup } from "./git-group.ts";
 // @seam:imports
 
 /** Every method rejects NOT_IMPLEMENTED until its group is assigned above `@seam:groups`. */
@@ -33,6 +34,7 @@ export const createStudio: CreateStudio = (deps: StudioDeps): StudioService => {
   Object.assign(studio, createSettingsGroup(ctx));
   Object.assign(studio, createProposalGroup(ctx));
   Object.assign(studio, createAgentGroup(ctx, (input) => (studio as unknown as StudioService).propose(input)));
+  Object.assign(studio, createGitGroup(ctx));
   // @seam:groups
   return studio as unknown as StudioService;
 };

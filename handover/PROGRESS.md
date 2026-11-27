@@ -810,3 +810,11 @@ checkpoint.
 - Deviations: none
 - Learnings: createNodeGitRunner spawns git in the project root with GIT_TERMINAL_PROMPT=0 and always resolves { code, stdout, stderr } (127 when the binary is missing).
 - 2026-11-27 17:00 [ide] T081 PASSED
+
+### T082: Implement Git status and commit
+- Result: GATE PASS
+- Files changed: src/engine/studio/git-group.ts, src/engine/studio/create-studio.ts, tests/engine/git-group.test.ts
+- Commands run: npx vitest run tests/engine/git-group.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: gitStatus reports isRepo/branch/changed files (porcelain parsed, renames and quoted names handled); commit trims the message, requires a repo, runs add -A then commit -m and maps failures to GIT_FAILED with git's first line.
+- 2026-11-27 17:00 [ide] T082 PASSED
