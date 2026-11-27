@@ -50,3 +50,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `list` walks with `readdir(..., { withFileTypes: true })`, skips `.git`/`node_modules`, returns sorted root-relative "/"-separated paths and [] for a missing dir.
 - 2026-11-27 11:55 [ide] T003 PASSED
+
+### T004: Implement the file settings store
+- Result: GATE PASS
+- Files changed: src/server/infra/settings.ts, tests/infra/settings.test.ts
+- Commands run: npx vitest run tests/infra/settings.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: guarded a non-object JSON root as null so it behaves like a read error and returns defaults.
+- Learnings: All three SettingsStore contract cases (defaults, round-trip, no shared state) pass with fresh objects per load.
+- 2026-11-27 11:56 [ide] T004 PASSED
