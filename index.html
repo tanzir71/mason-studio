@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mason: design on real web pages</title>
+  <meta name="description" content="Mason is an open-source design canvas for people who ship websites. Your boards are your HTML and CSS files.">
+  <link rel="icon" href="assets/mason-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="nav">
+    <div class="wrap nav__inner">
+      <a class="brand" href="#top"><img src="assets/mason-mark.svg" alt="" width="24" height="24">Mason</a>
+      <nav aria-label="Main">
+        <ul class="nav__links">
+          <li><a href="#files">How it works</a></li>
+          <li><a href="#agents">Agents</a></li>
+          <li><a href="#penpot">Penpot users</a></li>
+          <li><a href="https://github.com/tanzir71/mason-studio#readme">Docs</a></li>
+          <li><a href="https://github.com/tanzir71/mason-studio">GitHub</a></li>
+          <li><a class="button button--dark button--small" href="#download">Download</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <span class="pill"><span class="dot"></span>Open source · local-first · no account</span>
+        <h1>Design on real web pages.</h1>
+        <p class="lede">Mason is a design canvas for people who ship websites. Your boards are your HTML and CSS files, breakpoints sit side by side as real media queries, and any coding agent can work on the canvas with you.</p>
+        <div class="hero__actions">
+          <a class="button button--dark" href="#download">Download for macOS</a>
+          <a class="button" href="https://github.com/tanzir71/mason-studio">View on GitHub</a>
+          <span class="hero__note">Windows and Linux in beta</span>
+        </div>
+        <img class="shot" src="assets/app-canvas.png" width="1440" height="900" alt="Mason with the Northfield site open: Home and Menu pages at Desktop, Tablet and Mobile, the headline selected and the Design panel set to tablet sizes.">
+        <ul class="captions">
+          <li><h2 class="captions__title">Boards</h2><p>Every page at Desktop, Tablet and Mobile, side by side.</p></li>
+          <li><h2 class="captions__title">Applies to</h2><p>Choose where a change lands. Mason writes the right @media rule.</p></li>
+          <li><h2 class="captions__title">Files</h2><p>Saved to styles.css. Undo, or commit with Git.</p></li>
+        </ul>
+      </div>
+    </section>
+    <section class="band" id="files">
+      <div class="wrap split">
+        <div>
+          <p class="eyebrow">The files are the design</p>
+          <h2>No export step.<br>No drift.</h2>
+          <p class="lede split__lede">Most design tools draw a picture of your site and leave someone to rebuild it. In Mason the picture is the site: open a folder, design, and the same files ship.</p>
+          <dl class="facts">
+            <div><dt><code>index.html</code></dt><dd>Each page is a file. Each board is that file at one width.</dd></div>
+            <div><dt><code>styles.css</code></dt><dd>Changes go to the rule that already wins, not a pile of new overrides.</dd></div>
+            <div><dt><code>git</code></dt><dd>History, branches and review come from Git, not a private timeline.</dd></div>
+          </dl>
+        </div>
+        <figure class="card files" aria-label="A Mason project folder and the change the Design panel wrote">
+          <div class="files__head"><span>northfield-site</span><span class="tag">main · 3 changes</span></div>
+          <ul class="files__list">
+            <li>index.html</li>
+            <li>menu.html</li>
+            <li>visit.html</li>
+            <li class="is-changed">styles.css <span>modified</span></li>
+            <li>tokens.json</li>
+            <li>.mason/taste.md</li>
+            <li>images/</li>
+          </ul>
+          <div class="diff">
+            <div class="diff__head"><span>styles.css <span class="diff__count">+3</span></span><span>written by the Design panel</span></div>
+<pre><span>@media (max-width: 768px) {</span>
+<span class="diff__add">  .hero h1 {</span>
+<span class="diff__add">    font-size: 32px;</span>
+<span class="diff__add">  }</span>
+<span>}</span></pre>
+          </div>
+        </figure>
+      </div>
+    </section>
+    <section class="band band--deep" id="responsive">
+      <div class="wrap split split--flip">
+        <figure class="card mini" aria-label="Three boards of one page with the Applies to switch set to tablet">
+          <div class="mini__boards">
+            <div class="mini__board"><span class="mini__label"><span class="dot dot--desktop"></span>Desktop</span><div class="mini__page mini__page--wide"><span class="bar"></span><span class="bar"></span><span class="bar short"></span><span class="block"></span></div></div>
+            <div class="mini__board is-active"><span class="mini__label"><span class="dot dot--tablet"></span>Tablet</span><div class="mini__page"><span class="bar"></span><span class="bar short"></span><span class="block"></span></div></div>
+            <div class="mini__board"><span class="mini__label"><span class="dot dot--mobile"></span>Mobile</span><div class="mini__page mini__page--narrow"><span class="bar"></span><span class="bar short"></span><span class="block"></span></div></div>
+          </div>
+          <p class="mini__caption">Applies to</p>
+          <div class="segmented"><span>All sizes</span><span class="is-on"><span class="dot dot--tablet"></span>≤ 768</span><span><span class="dot dot--mobile"></span>≤ 375</span></div>
+          <div class="prop"><span class="prop__name">Headline size</span><span class="prop__values"><span><span class="dot dot--desktop"></span>40</span><span class="is-on"><span class="dot dot--tablet"></span>32</span><span><span class="dot dot--mobile"></span>28</span><span class="prop__reset">Reset</span></span></div>
+        </figure>
+        <div>
+          <p class="eyebrow">Responsive, done properly</p>
+          <h2>Breakpoints side by side, not separate mockups.</h2>
+          <p class="lede split__lede">Every page shows its breakpoints in one row. Pick where a change applies (all sizes, tablet or mobile) and Mason writes it into the right @media rule. Coloured dots show where each value comes from, so a 28px mobile heading is never a mystery.</p>
+        </div>
+      </div>
+    </section>
+    <section class="band band--night" id="agents">
+      <div class="wrap">
+        <div class="split split--top">
+          <div>
+            <p class="eyebrow">Agents</p>
+            <h2>Bring your agent. Keep the final say.</h2>
+          </div>
+          <p class="lede">Mason runs a local MCP server. Claude Code, Codex, Cursor or a local Ollama model can read the canvas, select elements and change styles through the same undoable path you use. Your taste rules check every change before it lands.</p>
+        </div>
+        <div class="trio">
+          <figure class="night-card">
+            <figcaption class="night-card__head">Connect in one line</figcaption>
+<pre class="code">{
+  "mcpServers": {
+    "mason": {
+      "url": "http://127.0.0.1:39765/mcp"
+    }
+  }
+}</pre>
+            <ul class="checks">
+              <li>Localhost only, off until you switch it on</li>
+              <li>Every change waits for your review</li>
+              <li>No shell or file-system tools, ever</li>
+            </ul>
+          </figure>
+          <figure class="night-card" aria-label="A proposal from Claude Code waiting for review">
+            <figcaption class="night-card__head"><span class="dot"></span>Claude Code proposes 3 changes</figcaption>
+            <p class="night-card__meta">styles.css · via MCP · nothing saved yet</p>
+            <ol class="proposal">
+              <li><span class="num">1</span><span>Headline size<small>32 → 44 · ≤ 768</small></span></li>
+              <li><span class="num">2</span><span>Eyebrow letter spacing<small>12% → 18% · ≤ 768</small></span></li>
+              <li class="is-blocked"><span class="num">3</span><span>Hero background gradient<small>Blocked: no gradients</small></span></li>
+            </ol>
+            <div class="proposal__actions"><span class="button button--accent button--small">Accept 2</span><span class="button button--ghost button--small">Reject</span></div>
+          </figure>
+          <figure class="night-card" aria-label="The project's taste file with a hard ban that blocked a change">
+            <figcaption class="night-card__head"><span>.mason/taste.md</span><span class="night-card__note">plain Markdown</span></figcaption>
+<pre class="code code--taste">## Design
+- Serif headlines, sans body
+- One accent: rust
+
+## Hard bans
+<span class="hit">- literal: linear-gradient   <span class="hit__note">blocked 1 change</span></span>
+- regex: #(6e56cf|7c3aed)
+- literal: !important</pre>
+            <p class="night-card__foot">Checks run on every agent edit, with no AI in the loop.</p>
+          </figure>
+        </div>
+      </div>
+    </section>
+    <section class="band" id="penpot">
+      <div class="wrap">
+        <div class="split split--top">
+          <div>
+            <p class="eyebrow">For Penpot users</p>
+            <h2>Using Penpot? Keep it.</h2>
+          </div>
+          <p class="lede">Penpot is a strong platform for design teams. Mason is for the moment a design has to become a working website. Bring your Penpot tokens in, design the real pages here, and keep Penpot for flows, comments and team reviews.</p>
+        </div>
+        <div class="table-wrap">
+          <table class="compare">
+            <thead><tr><th scope="col"><span class="sr">Topic</span></th><th scope="col">Penpot</th><th scope="col">Mason</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Where designs live</th><td>Penpot server database</td><td class="lead">Plain files in your folder</td></tr>
+              <tr><th scope="row">What developers get</th><td>Generated CSS from Inspect</td><td class="lead">Your actual stylesheet, rule by rule</td></tr>
+              <tr><th scope="row">Responsive design</th><td>One board per screen size</td><td class="lead">Real @media rules, boards side by side</td></tr>
+              <tr><th scope="row">Working offline</th><td>Run your own Penpot server</td><td class="lead">Desktop app, no server</td></tr>
+              <tr><th scope="row">Teams</th><td class="lead">Real-time multiplayer and comments</td><td>Single-player, share through Git</td></tr>
+              <tr><th scope="row">Prototyping</th><td class="lead">Interactions and flows</td><td>Live links on real pages</td></tr>
+              <tr><th scope="row">Design tokens</th><td>Native tokens and shared libraries</td><td>Imports Penpot tokens, DTCG 2025.10</td></tr>
+              <tr><th scope="row">AI agents</th><td>Official MCP server through a plugin</td><td>Local MCP server with taste checks</td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="3"><span class="dot"></span>Leads on this row. Penpot leads on teamwork and prototyping; Mason leads when the output has to be the website itself.</td></tr></tfoot>
+          </table>
+        </div>
+        <p class="footnote">Compared with Penpot 2.19, November 2026.</p>
+      </div>
+    </section>
+    <!-- sections -->
+    <section class="band band--deep privacy">
+      <div class="wrap">
+        <h2 class="privacy__title">No account. No server.<br>No telemetry.</h2>
+        <p class="lede privacy__lede">Mason opens straight to your files and sends nothing anywhere until you connect an agent. Pair it with Ollama and the whole loop, design to AI edit, runs on your laptop.</p>
+      </div>
+    </section>
+    <section class="band" id="download">
+      <div class="wrap">
+        <div class="card get">
+          <div class="get__intro">
+            <h2>Get Mason</h2>
+            <p>Free and open source. Nothing to sign up for. Your projects stay plain folders you can open anywhere.</p>
+            <a class="get__sponsor" href="https://github.com/sponsors/tanzir71">Sponsor development</a>
+          </div>
+          <ul class="get__list">
+            <li><div><h3>macOS</h3><p>Apple silicon and Intel · signed</p></div><a class="button button--dark button--small" href="https://github.com/tanzir71/mason-studio/releases/latest">Download</a></li>
+            <li><div><h3>Windows</h3><p>Beta · x64 and ARM</p></div><a class="button button--small" href="https://github.com/tanzir71/mason-studio/releases/latest">Download</a></li>
+            <li><div><h3>Linux</h3><p>Beta · AppImage and .deb</p></div><a class="button button--small" href="https://github.com/tanzir71/mason-studio/releases/latest">Download</a></li>
+            <li class="get__source"><div><h3>From source</h3><code>git clone https://github.com/tanzir71/mason-studio</code></div></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="footer">
+    <div class="wrap footer__inner">
+      <div class="footer__row">
+        <a class="brand" href="#top"><img src="assets/mason-mark.svg" alt="" width="24" height="24">Mason</a>
+        <span class="footer__tag">Design on real web pages.</span>
+        <ul class="footer__links">
+          <li><a href="https://github.com/tanzir71/mason-studio">GitHub</a></li>
+          <li><a href="https://github.com/tanzir71/mason-studio#readme">Docs</a></li>
+          <li><a href="https://github.com/tanzir71/mason-studio/releases">Changelog</a></li>
+          <li><a href="https://github.com/tanzir71/mason-studio/blob/main/LICENSE">Licence</a></li>
+          <li><a href="https://github.com/sponsors/tanzir71">Sponsor</a></li>
+        </ul>
+      </div>
+      <div class="footer__row footer__row--small">
+        <span>Built by <a href="https://tanziro.com">tanziro.com</a></span>
+        <span>Open source · 2026</span>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
