@@ -746,3 +746,11 @@ checkpoint.
 - Deviations: none
 - Learnings: runTool implements the seven MCP tools (read-only + propose, never writes); structureOf hides NON_VISUAL_TAGS; propose returns proposal_id, blocked list and the review message.
 - 2026-11-27 16:24 [ide] T075 PASSED
+
+### T076: Implement the MCP JSON-RPC handler
+- Result: GATE PASS
+- Files changed: src/server/mcp/handler.ts, tests/mcp/handler.test.ts
+- Commands run: npx vitest run tests/mcp/handler.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: The handler answers initialize (echoing a supported protocol version), ping, tools/list and tools/call (tool errors as isError text), 202 for notifications, and 403 -32001 while MCP is off.
+- 2026-11-27 16:25 [ide] T076 PASSED
