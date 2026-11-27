@@ -138,3 +138,11 @@ checkpoint.
 - Deviations: none
 - Learnings: createFileSettingsStore passes all 3 SettingsStore contract cases against a temp file.
 - 2026-11-27 12:24 [ide] S002 PASSED
+
+### T087: Build the landing page shell and hero
+- Result: GATE PASS
+- Files changed: site/styles.css, site/index.html, tests/site/site-hero.test.ts
+- Commands run: npx vitest run tests/site/site-hero.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: ran this phase-11 card early because its only dependency (C1) had passed and the user asked for the public site; no later card depends on it being run last.
+- Learnings: `site/` is a plain Mason project (no build step, no JS). Later site cards insert sections above `<!-- sections -->` and append CSS.
+- 2026-11-27 12:25 [ide] T087 PASSED
