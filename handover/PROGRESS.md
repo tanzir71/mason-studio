@@ -474,3 +474,11 @@ checkpoint.
 - Deviations: none
 - Learnings: planEditText replaces the inner range with escaped text (NOT_TEXT_ELEMENT otherwise); planRemoveElement removes the element plus its line indent/newline and refuses the body.
 - 2026-11-27 15:05 [ide] T045 PASSED
+
+### T046: Plan inserting, moving and wrapping elements
+- Result: GATE PASS
+- Files changed: src/engine/html/structure.ts, tests/engine/html-structure.test.ts
+- Commands run: npx vitest run tests/engine/html-structure.test.ts -> 6 passed (6); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: planInsertElement gives a free class + starter rule and handles before-child / after-last / empty-parent cases; planMoveElement reorders via remove+insert; planWrapInStack wraps with a new flex stack class.
+- 2026-11-27 15:06 [ide] T046 PASSED
