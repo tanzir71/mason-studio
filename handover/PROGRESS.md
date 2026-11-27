@@ -298,3 +298,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `Overlay` measures the element inside the board's iframe document and renders nothing when the frame, path or element is missing; only the selection gets a `W × H` label.
 - 2026-11-27 12:54 [ide] T026 PASSED
+
+### T027: Build the canvas with page rows, zoom and pan
+- Result: GATE PASS
+- Files changed: src/ui/canvas/tools.ts, src/ui/canvas/Canvas.tsx, tests/ui/canvas.test.tsx
+- Commands run: npx vitest run tests/ui/canvas.test.tsx -> 6 passed (6); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: Canvas renders three boards per page with `translate(pan) scale(zoom)`, pointer logic in `tools.ts` (open page → select/hover, other page → selectPage), and selection/mirror overlays on the open page.
+- 2026-11-27 12:56 [ide] T027 PASSED
