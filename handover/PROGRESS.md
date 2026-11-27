@@ -602,3 +602,11 @@ checkpoint.
 - Deviations: none
 - Learnings: readFile/writeFile clean paths, reject missing/escaping paths, save as one undo step, and writing a top-level .html refreshes page titles via scanPages.
 - 2026-11-27 15:46 [ide] T059 PASSED
+
+### T060: Add code drawer actions to the store
+- Result: GATE PASS
+- Files changed: src/ui/state/code-actions.ts, src/ui/state/create-store.ts, tests/ui/code-actions.test.ts
+- Commands run: npx vitest run tests/ui/code-actions.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: openCode/editCode/saveCode/closeCode track the code `{open,file,line,text,dirty}`, save only when dirty through ctx.write, and a read failure leaves the drawer closed with an error toast.
+- 2026-11-27 15:47 [ide] T060 PASSED
