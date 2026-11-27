@@ -26,3 +26,11 @@ checkpoint.
 - Deviations: none to repo files. The sandbox process environment sets NODE_ENV=production (npm then omits devDependencies) and leaves color on in redirected output; gates were run with NODE_ENV=development and NO_COLOR=1 so the pinned install and the expected "Tests  14 passed (14)" output matched. No card file changed for this.
 - Learnings: Run every gate with NODE_ENV=development and NO_COLOR=1 in this environment, or npm skips devDependencies and vitest's ANSI output breaks expect_contains matches.
 - 2026-11-27 11:52 [ide] T001 PASSED
+
+### T002: Create module stubs and seam anchors
+- Result: GATE PASS
+- Files changed: src/engine/studio/context.ts, src/engine/studio/create-studio.ts, src/server/infra/node-fs.ts, src/server/infra/git.ts, src/server/infra/llm.ts, src/server/infra/settings.ts, src/server/infra/events.ts, src/server/infra/watcher.ts, src/server/http/server.ts, src/server/mcp/handler.ts, src/server/start.ts, src/ui/api/http-client.ts, src/ui/state/create-store.ts, src/ui/app/App.tsx, src/ui/main.tsx, src/ui/index.html, src/ui/styles/global.css, tests/skeleton.test.ts, tests/skeleton-ui.test.tsx
+- Commands run: npx vitest run tests/skeleton.test.ts tests/skeleton-ui.test.tsx -> 7 passed (7); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: The `void ...;` lines and @seam anchors are load-bearing for seam cards; later cards insert above them without removing them.
+- 2026-11-27 11:54 [ide] T002 PASSED
