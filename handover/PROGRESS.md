@@ -130,3 +130,11 @@ checkpoint.
 - Deviations: none
 - Learnings: createNodeFileSystem passes all 7 FileSystem contract cases on a real temp folder.
 - 2026-11-27 12:23 [ide] S001 PASSED
+
+### S002: Prove the settings store against the SettingsStore contract
+- Result: GATE PASS
+- Files changed: tests/integration/settings.contract.test.ts
+- Commands run: npx vitest run tests/integration/settings.contract.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: createFileSettingsStore passes all 3 SettingsStore contract cases against a temp file.
+- 2026-11-27 12:24 [ide] S002 PASSED
