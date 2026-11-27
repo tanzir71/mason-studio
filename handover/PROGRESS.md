@@ -674,3 +674,11 @@ checkpoint.
 - Deviations: none
 - Learnings: checks(page) combines structure, raw-color and taste findings, reports each ban once at its first line, lists invalid regexes as info, and sorts blocked/warning/info then by id.
 - 2026-11-27 16:03 [ide] T067 PASSED
+
+### T068: Add check actions to the store
+- Result: GATE PASS
+- Files changed: src/ui/state/check-actions.ts, src/ui/state/create-store.ts, tests/ui/check-actions.test.ts
+- Commands run: npx vitest run tests/ui/check-actions.test.ts -> 2 passed (2); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: runChecks stores the open page's report (no-op without a page, guarded against stale page); setContrast stores browser contrast findings.
+- 2026-11-27 16:13 [ide] T068 PASSED
