@@ -626,3 +626,11 @@ checkpoint.
 - Deviations: none
 - Learnings: CodeEditor wraps CodeMirror 6 with CSS/HTML/JSON highlighting, a Mason theme, jump-to-line and Mod-S save; external `value` changes replace the document.
 - 2026-11-27 15:50 [ide] T062 PASSED
+
+### T063: Add the code drawer to the workspace
+- Result: GATE PASS
+- Files changed: src/ui/code/code.css, src/ui/code/CodeDrawer.tsx, src/ui/app/Workspace.tsx, tests/e2e/code.spec.ts, tests/ui/code-drawer.test.tsx
+- Commands run: npx vitest run tests/ui/code-drawer.test.tsx -> 4 passed (4); npx vitest run tests/ui/app.test.tsx -> 4 passed (4); node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test code.spec.ts -> 1 passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: CodeDrawer renders the open file in CodeEditor with an unsaved dot, Save (disabled when clean/busy) and Close; the Playwright code suite proves edit+Ctrl-S+Undo restoring styles.css.
+- 2026-11-27 15:53 [ide] T063 PASSED

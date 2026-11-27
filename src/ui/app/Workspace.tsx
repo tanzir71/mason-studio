@@ -1,4 +1,5 @@
 import { Canvas } from "../canvas/Canvas.tsx";
+import { CodeDrawer } from "../code/CodeDrawer.tsx";
 import { LeftPanel } from "../panels/LeftPanel.tsx";
 import { RightPanel } from "../panels/RightPanel.tsx";
 import { TopBar } from "./TopBar.tsx";
@@ -16,6 +17,7 @@ export function Workspace() {
           <Canvas />
           <ToolDock />
           <Toast />
+          <CodeDrawer />
         </main>
         <RightPanel />
       </div>

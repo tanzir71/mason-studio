@@ -1,0 +1,8 @@
+.m-code { position: absolute; left: 0; right: 0; bottom: 0; z-index: 15; display: grid; grid-template-rows: 36px 1fr; height: 42%; min-height: 200px;
+  border-top: 1px solid var(--border-default); background: var(--bg-inset); box-shadow: var(--shadow-float); }
+.m-code__head { display: flex; align-items: center; gap: var(--space-2); padding: 0 var(--space-2) 0 var(--space-3); border-bottom: 1px solid var(--border-subtle); background: var(--bg-panel); }
+.m-code__file { font: var(--code-12); color: var(--text-strong); }
+.m-code__dirty { width: 6px; height: 6px; border-radius: 50%; background: var(--warning); }
+.m-code__spacer { flex: 1; }
+.m-code-editor { min-height: 0; overflow: hidden; }
+.m-code-editor .cm-editor { height: 100%; }
