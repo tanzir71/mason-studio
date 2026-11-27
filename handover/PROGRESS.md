@@ -866,3 +866,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Phase 10 is green: Git runner/status/commit, store actions, Git chip, start screen and the composed watcher all pass together (18 Playwright tests, Storybook builds).
 - 2026-11-27 17:08 [ide] C10 PASSED
+
+### T090: Finish the landing page
+- Result: GATE PASS
+- Files changed: site/index.html, site/styles.css, tests/e2e/site.spec.ts, tests/site/site-complete.test.ts
+- Commands run: npx vitest run tests/site/site-complete.test.ts -> 4 passed; npx vitest run tests/site/site-hero/site-sections/site-agents -> passed; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test site.spec.ts --project=chromium -> 4 passed; npx tsc --noEmit -> exit 0
+- Deviations: removed the interim hand-written download card (and its partial CSS block) that had been added ahead of schedule, so the card's canonical privacy/download/footer sections are the only ones; CSS block replaced in place instead of appended twice.
+- Learnings: The landing page passes Mason's own structure/bans checks, has targets for every in-page link, and fits 1440/768/375px with the macOS download CTA scrolling to the Get Mason card.
+- 2026-11-27 17:10 [ide] T090 PASSED
