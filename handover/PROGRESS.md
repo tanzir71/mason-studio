@@ -410,3 +410,11 @@ checkpoint.
 - Deviations: none
 - Learnings: commitChanges/writeEdits save each step's files once, bump the revision and emit `written` with sorted files; undo/redo restore before/after texts ("Undid:"/"Redid:") and a created file is emptied on undo because the port cannot delete.
 - 2026-11-27 14:04 [ide] T038 PASSED
+
+### T039: Implement inspect for an element
+- Result: GATE PASS
+- Files changed: src/engine/studio/inspect-group.ts, src/engine/studio/create-studio.ts, tests/engine/inspect-group.test.ts
+- Commands run: npx vitest run tests/engine/inspect-group.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: inspect returns name/tag/selector, per-breakpoint winners + overriddenAt, and cascade rows per breakpoint with each declaration marked winning or overridden.
+- 2026-11-27 14:05 [ide] T039 PASSED
