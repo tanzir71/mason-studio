@@ -426,3 +426,11 @@ checkpoint.
 - Deviations: none
 - Learnings: planStyles re-parses sheets between changes so multi-change proposals never conflict and returns `effective[]`; applyStyle/resetStyle commit through the write pipeline (NO_STYLESHEET when the page links none, INVALID_INPUT with no override to reset).
 - 2026-11-27 14:06 [ide] T040 PASSED
+
+### T041: Add style, reset, undo and redo actions to the store
+- Result: GATE PASS
+- Files changed: src/ui/state/write-actions.ts, src/ui/state/create-store.ts, tests/ui/write-actions.test.ts
+- Commands run: npx vitest run tests/ui/write-actions.test.ts -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: applyStyle/resetStyle use page+selection+scope and `ctx.write`; a non-effective write shows the info toast "Saved, but another rule still wins at this size." with Undo.
+- 2026-11-27 14:07 [ide] T041 PASSED
