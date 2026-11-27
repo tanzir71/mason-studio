@@ -450,3 +450,11 @@ checkpoint.
 - Deviations: none
 - Learnings: DesignPanel reads the selection's inspect/tree, renders the scope switch + kind-appropriate Layout/Text/Fill/Stroke/Effects sections, shows override notes with Reset, and writes through applyStyle/resetStyle.
 - 2026-11-27 14:10 [ide] T043 PASSED
+
+### T044: Add the right panel to the workspace
+- Result: GATE PASS
+- Files changed: src/ui/panels/RightPanel.tsx, src/ui/app/Workspace.tsx, tests/e2e/design.spec.ts, tests/ui/right-panel.test.tsx
+- Commands run: npx vitest run tests/ui/right-panel.test.tsx tests/ui/app.test.tsx -> passed; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test design.spec.ts -> 2 passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: RightPanel adds Design/Inspect/Checks tabs (placeholders until phases 7/8); the Playwright design suite proves writing a tablet override into the 768 media rule (desktop unchanged), the toast, and Undo restoring the file.
+- 2026-11-27 14:11 [ide] T044 PASSED

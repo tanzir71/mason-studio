@@ -1,6 +1,6 @@
-import { TEST_IDS } from "../../contracts/ui.tsx";
 import { Canvas } from "../canvas/Canvas.tsx";
 import { LeftPanel } from "../panels/LeftPanel.tsx";
+import { RightPanel } from "../panels/RightPanel.tsx";
 import { TopBar } from "./TopBar.tsx";
 import { ToolDock } from "./ToolDock.tsx";
 import { Toast } from "./Toast.tsx";
@@ -17,7 +17,7 @@ export function Workspace() {
           <ToolDock />
           <Toast />
         </main>
-        <aside className="m-right-placeholder" data-testid={TEST_IDS.rightPanel} />
+        <RightPanel />
       </div>
     </div>
   );
