@@ -274,3 +274,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `Field` commits trimmed values on Enter/blur (guarding re-commit) and reverts on Escape; `Tabs` only reports real changes; Storybook build is now green.
 - 2026-11-27 12:52 [ide] T023 PASSED
+
+### T024: Map element paths to DOM elements in a board
+- Result: GATE PASS
+- Files changed: src/ui/canvas/dom-paths.ts, tests/ui/dom-paths.test.ts
+- Commands run: npx vitest run tests/ui/dom-paths.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `elementAtPath`/`pathOf` count only `Element.children`, matching the server's parse5 paths; `boxOf` rounds `getBoundingClientRect`.
+- 2026-11-27 12:52 [ide] T024 PASSED
