@@ -666,3 +666,11 @@ checkpoint.
 - Deviations: none
 - Learnings: checkPageStructure flags extra H1s, heading jumps and missing alt (warning/a11y, passed labels per category); checkRawColors reports hex outside :root with the matching color token or "Not a token.".
 - 2026-11-27 16:01 [ide] T066 PASSED
+
+### T067: Implement page checks
+- Result: GATE PASS
+- Files changed: src/engine/studio/checks-group.ts, src/engine/studio/create-studio.ts, tests/engine/checks-group.test.ts
+- Commands run: npx vitest run tests/engine/checks-group.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: checks(page) combines structure, raw-color and taste findings, reports each ban once at its first line, lists invalid regexes as info, and sorts blocked/warning/info then by id.
+- 2026-11-27 16:03 [ide] T067 PASSED
