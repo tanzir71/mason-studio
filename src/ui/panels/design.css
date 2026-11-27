@@ -1,0 +1,16 @@
+.m-design-head { display: flex; align-items: center; gap: var(--space-2); height: 44px; padding: 0 var(--space-3); border-bottom: 1px solid var(--border-subtle); }
+.m-design-head__icon { width: 16px; height: 16px; color: var(--accent-strong); flex: none; }
+.m-design-head__name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font: var(--title-13); color: var(--text-strong); }
+.m-design-head__tag { font: var(--code-11); color: var(--text-faint); }
+.m-scope { display: grid; gap: var(--space-2); padding: var(--space-3); border-bottom: 1px solid var(--border-subtle); }
+.m-scope__label { font: var(--text-11); color: var(--text-muted); }
+.m-scope__note { margin: 0; font: var(--text-12); color: var(--text-muted); }
+.m-grid2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-2); }
+.m-grid2 > * { min-width: 0; }
+.m-grid2 > .is-wide { grid-column: 1 / -1; }
+.m-override-note { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); font: var(--text-12); color: var(--text-muted); }
+.m-override-note .m-dot { margin-right: 6px; background: var(--bp-tablet); }
+.m-override-note.is-mobile .m-dot { background: var(--bp-mobile); }
+.m-swatch { width: 16px; height: 16px; border-radius: var(--radius-4); box-shadow: inset 0 0 0 1px var(--border-default); flex: none; }
+.m-empty { padding: var(--space-5) var(--space-3); font: var(--text-12); color: var(--text-muted); text-align: center; }
+.m-design.is-mobile .m-field.is-override { border-color: var(--bp-mobile); }

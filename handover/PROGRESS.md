@@ -434,3 +434,11 @@ checkpoint.
 - Deviations: none
 - Learnings: applyStyle/resetStyle use page+selection+scope and `ctx.write`; a non-effective write shows the info toast "Saved, but another rule still wins at this size." with Undo.
 - 2026-11-27 14:07 [ide] T041 PASSED
+
+### T042: Build the design field map and the scope switch
+- Result: GATE PASS
+- Files changed: src/ui/panels/design.css, src/ui/panels/design-fields.ts, src/ui/panels/ScopeControl.tsx, tests/ui/design-fields.test.tsx
+- Commands run: npx vitest run tests/ui/design-fields.test.tsx -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: DESIGN_FIELDS maps every INSPECT_PROPS property once; fieldView reads the scope's breakpoint and flags overrides; sectionsFor hides Text for non-text kinds; ScopeControl reports setScope.
+- 2026-11-27 14:09 [ide] T042 PASSED
