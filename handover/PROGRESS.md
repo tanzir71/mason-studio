@@ -490,3 +490,11 @@ checkpoint.
 - Deviations: none
 - Learnings: The element group writes insert/text/remove/move/wrap through writeEdits as one undo step each; `pageCss` returns the last linked stylesheet ("" if absent); a no-op move rejects INVALID_INPUT.
 - 2026-11-27 15:07 [ide] T047 PASSED
+
+### T048: Add element actions to the store
+- Result: GATE PASS
+- Files changed: src/ui/state/element-actions.ts, src/ui/state/create-store.ts, tests/ui/element-actions.test.ts
+- Commands run: npx vitest run tests/ui/element-actions.test.ts -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: insert/move/wrap select the returned path; insert resets the tool to move; remove clears selection/hover/inspect; the body (path "") is never removed or wrapped.
+- 2026-11-27 15:08 [ide] T048 PASSED
