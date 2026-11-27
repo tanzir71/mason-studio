@@ -370,3 +370,11 @@ checkpoint.
 - Deviations: added an ambient declaration for `@bramus/specificity` because its exports hide its types under nodenext.
 - Learnings: mediaApplies treats comma lists as OR and unknown terms as false (em/rem = 16px); splitSelectorList only splits top-level commas.
 - 2026-11-27 13:59 [ide] T033 PASSED
+
+### T034: Implement the CSS cascade resolver
+- Result: GATE PASS
+- Files changed: src/engine/css/cascade.ts, tests/engine/cascade.test.ts
+- Commands run: npx vitest run tests/engine/cascade.test.ts -> 6 passed (6); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: matchingRules sorts applies→specificity→sheetIndex→rule.index; resolveCascade inserts important above specificity and marks only an applying first entry winning. Fixture headline resolves 40/32/28px at 1280/768/375.
+- 2026-11-27 13:59 [ide] T034 PASSED
