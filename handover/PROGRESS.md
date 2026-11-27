@@ -418,3 +418,11 @@ checkpoint.
 - Deviations: none
 - Learnings: inspect returns name/tag/selector, per-breakpoint winners + overriddenAt, and cascade rows per breakpoint with each declaration marked winning or overridden.
 - 2026-11-27 14:05 [ide] T039 PASSED
+
+### T040: Implement applying and resetting styles
+- Result: GATE PASS
+- Files changed: src/engine/studio/style-group.ts, src/engine/studio/create-studio.ts, tests/engine/style-group.test.ts
+- Commands run: npx vitest run tests/engine/style-group.test.ts -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: planStyles re-parses sheets between changes so multi-change proposals never conflict and returns `effective[]`; applyStyle/resetStyle commit through the write pipeline (NO_STYLESHEET when the page links none, INVALID_INPUT with no override to reset).
+- 2026-11-27 14:06 [ide] T040 PASSED
