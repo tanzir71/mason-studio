@@ -898,3 +898,11 @@ checkpoint.
 - Deviations: none
 - Learnings: windowOptions sandboxes the renderer with context isolation and the preload bridge; projectFromArgs/isSmoke parse the CLI; decideWindowOpen allows same-origin, sends other http(s) out and denies the rest; preload exposes only isDesktop + pickFolder over mason:pick-folder.
 - 2026-11-27 18:05 [ide] T092 PASSED
+
+### T093: Build the desktop main process and bundler
+- Result: GATE PASS
+- Files changed: src/desktop/main.ts, src/desktop/build.ts, tests/desktop/build.test.ts
+- Commands run: npx vitest run tests/desktop/build.test.ts -> 1 passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: main.ts handles boot/window/folder picker/link policy and the --smoke RPC check; build.ts emits dist/desktop/main.mjs (ESM, electron external) and preload.cjs (CommonJS).
+- 2026-11-27 18:08 [ide] T093 PASSED
