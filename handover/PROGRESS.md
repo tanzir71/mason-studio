@@ -722,3 +722,11 @@ checkpoint.
 - Deviations: none
 - Learnings: propose validates/labels each change with its current value and first taste ban and emits a proposal; acceptProposal writes only allowed changes as one undo step ("Applied N changes from <source>"); reject/closed handling uses PROPOSAL_CLOSED/NOT_FOUND.
 - 2026-11-27 16:21 [ide] T072 PASSED
+
+### T073: Implement the OpenAI-compatible LLM client
+- Result: GATE PASS
+- Files changed: src/server/infra/llm.ts, tests/infra/llm.test.ts
+- Commands run: npx vitest run tests/infra/llm.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: createHttpLlmClient posts `{ model, messages, response_format }` to `<baseUrl>/chat/completions` (Bearer only when keyed), maps network/HTTP failures to LLM_UNAVAILABLE and bad replies to LLM_BAD_RESPONSE.
+- 2026-11-27 16:22 [ide] T073 PASSED
