@@ -29,8 +29,8 @@ export async function scanPages(fs: FileSystem): Promise<PageInfo[]> {
 
 const TEMPLATE_ORDER: TemplateId[] = ["landing", "portfolio", "docs", "blank"];
 
-export function createProjectGroup(ctx: EngineContext): Pick<StudioService, "openProject" | "currentProject" | "recentProjects" | "templates"> {
-  return {
+export function createProjectGroup(ctx: EngineContext): Pick<StudioService, "openProject" | "currentProject" | "recentProjects" | "templates" | "createProject"> {
+  const group: Pick<StudioService, "openProject" | "currentProject" | "recentProjects" | "templates" | "createProject"> = {
     async openProject(root: string): Promise<ProjectInfo> {
       const fs = ctx.deps.openFs(root);
       const pages = await scanPages(fs);
@@ -72,5 +72,17 @@ export function createProjectGroup(ctx: EngineContext): Pick<StudioService, "ope
       }
       return out;
     },
+    async createProject(root: string, template: TemplateId): Promise<ProjectInfo> {
+      if (!TEMPLATE_ORDER.includes(template)) throw new MasonError("INVALID_INPUT", template);
+      const target = ctx.deps.openFs(root);
+      if ((await target.list("")).length > 0) throw new MasonError("FOLDER_NOT_EMPTY", root);
+      const tfs = ctx.deps.openFs(ctx.deps.templatesDir);
+      for (const file of await tfs.list(template)) {
+        if (file === `${template}/template.json`) continue;
+        await target.writeBytes(file.slice(template.length + 1), await tfs.readBytes(file));
+      }
+      return await group.openProject(root);
+    },
   };
+  return group;
 }

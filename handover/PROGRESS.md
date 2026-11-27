@@ -106,3 +106,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Studio groups are wired with `Object.assign(studio, createXGroup(ctx))` above `// @seam:groups`; openProject resets undo/redo/proposals and records recents capped at 8.
 - 2026-11-27 12:01 [ide] T010 PASSED
+
+### T011: Implement creating a project from a template
+- Result: GATE PASS
+- Files changed: src/engine/studio/project-group.ts, tests/engine/create-project.test.ts
+- Commands run: npx vitest run tests/engine/create-project.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: annotated the `group` object with its Pick type so its own `createProject` can call `group.openProject` without a circular-inference error.
+- Learnings: createProject copies every template file except `template.json`, strips the `<template>/` prefix, then reuses openProject.
+- 2026-11-27 12:20 [ide] T011 PASSED
