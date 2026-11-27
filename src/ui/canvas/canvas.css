@@ -39,3 +39,8 @@
   border: 1px solid var(--border-default); border-radius: var(--radius-8); background: var(--bg-panel); box-shadow: var(--shadow-float);
 }
 .m-zoom__value { min-width: 44px; text-align: center; font: var(--label-12); color: var(--text-default); }
+
+.m-text-editor {
+  position: absolute; z-index: 5; margin: 0; padding: 0; resize: none; overflow: hidden;
+  border: 0; outline: calc(1.5px / var(--zoom)) solid var(--accent); background: #ffffff; color: #111110;
+}

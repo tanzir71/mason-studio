@@ -506,3 +506,11 @@ checkpoint.
 - Deviations: none
 - Learnings: insertTarget appends inside frame/stack/body and inserts right after other elements; boardPointerDown runs insertElement for insert tools; editablePath only on text/link under the move tool.
 - 2026-11-27 15:09 [ide] T049 PASSED
+
+### T050: Edit text in place on the canvas
+- Result: GATE PASS
+- Files changed: src/ui/canvas/TextEditor.tsx, src/ui/canvas/canvas.css, src/ui/canvas/Canvas.tsx, tests/ui/text-editor.test.tsx
+- Commands run: npx vitest run tests/ui/text-editor.test.tsx -> 2 passed (2); npx vitest run tests/ui/canvas.test.tsx -> 6 passed (6); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: Double-click on a text/link opens TextEditor over the element with its computed font; Enter/blur commits the trimmed changed text once through editText, Escape cancels.
+- 2026-11-27 15:10 [ide] T050 PASSED

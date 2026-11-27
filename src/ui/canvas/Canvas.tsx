@@ -7,10 +7,11 @@ import type { Breakpoint, PageInfo } from "../../contracts/model.ts";
 import { IconButton, cx } from "../components/Button.tsx";
 import { Board } from "./Board.tsx";
 import { Overlay } from "./Overlay.tsx";
-import { boardPointerDown, boardPointerMove, pathAtPoint } from "./tools.ts";
+import { TextEditor } from "./TextEditor.tsx";
+import { boardPointerDown, boardPointerMove, editablePath, pathAtPoint } from "./tools.ts";
 import "./canvas.css";
 
-const INSERT_TOOLS = ["frame", "rect", "ellipse", "text", "image"];
+const INSERT_TOOL_IDS: readonly string[] = ["frame", "rect", "ellipse", "text", "image"];
 
 export function Canvas() {
   const store = useContext(StudioContext)!;
@@ -28,6 +29,7 @@ export function Canvas() {
   const [loads, setLoads] = useState(0);
   const root = useRef<HTMLDivElement>(null);
   const drag = useRef<{ x: number; y: number } | null>(null);
+  const [editing, setEditing] = useState<{ key: string; path: string } | null>(null);
 
   useEffect(() => {
     const el = root.current;
@@ -77,12 +79,21 @@ export function Canvas() {
             <Overlay frame={frame} path={selection} kind={activeBoard === bp.id ? "selection" : "mirror"} version={version} />
           </>
         )}
+        {editing?.key === key && (
+          <TextEditor frame={frame} path={editing.path}
+            onCommit={(text) => { void actions.editText(editing.path, text); }}
+            onClose={() => setEditing(null)} />
+        )}
         {tool !== "hand" && (
           <div
             className="m-board__hit"
             onPointerDown={(e) => { e.stopPropagation(); boardPointerDown(store.getState(), actions, pointer(e)); }}
             onPointerMove={(e) => boardPointerMove(store.getState(), actions, pointer(e))}
             onPointerLeave={() => { if (isOpen) actions.hover(null); }}
+            onDoubleClick={(e) => {
+              const path = editablePath(store.getState(), { page: info.name, board: bp.id, path: pathAtPoint(frames.current.get(key) ?? null, e.currentTarget, e.clientX, e.clientY, store.getState().zoom) });
+              if (path !== null) setEditing({ key, path });
+            }}
           />
         )}
       </Board>
@@ -92,7 +103,7 @@ export function Canvas() {
   return (
     <div
       ref={root}
-      className={cx("m-canvas", tool === "hand" && "is-hand", INSERT_TOOLS.includes(tool) && "is-insert")}
+      className={cx("m-canvas", tool === "hand" && "is-hand", INSERT_TOOL_IDS.includes(tool) && "is-insert")}
       data-testid={TEST_IDS.canvas}
       onPointerDown={onCanvasPointerDown}
       onPointerMove={onCanvasPointerMove}
