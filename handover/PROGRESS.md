@@ -794,3 +794,11 @@ checkpoint.
 - Deviations: none
 - Learnings: The settings dialog edits endpoint/model/key/MCP/theme (empty key keeps stored key) and the workspace mounts ReviewCard, AgentPrompt and SettingsDialog; the agent e2e enables MCP, proposes over HTTP, accepts one change and undoes it.
 - 2026-11-27 16:57 [ide] T080 PASSED
+
+### C9: Phase 9 checkpoint: agents propose, people accept
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all passed; npx tsc --noEmit -> exit 0; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test agent/canvas/checks/code/design/elements/tokens -> 15 passed
+- Deviations: none
+- Learnings: Phase 9 is green end to end: settings, proposals, LLM ask, MCP tools + handler composed, store actions and the review/settings UI all pass together (15 Playwright tests).
+- 2026-11-27 16:59 [ide] C9 PASSED
