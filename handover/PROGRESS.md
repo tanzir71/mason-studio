@@ -530,3 +530,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Phase 5 is green: insert, in-place text edit, delete, move, wrap and layer drag all pass across unit, Vite build and 8 Playwright tests.
 - 2026-11-27 15:15 [ide] C5 PASSED
+
+### T052: Read and write DTCG design tokens
+- Result: GATE PASS
+- Files changed: src/engine/tokens/dtcg.ts, tests/engine/tokens-dtcg.test.ts
+- Commands run: npx vitest run tests/engine/tokens-dtcg.test.ts -> 6 passed (6); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: parseDtcg walks nested DTCG groups with inherited $type, converts colors/dimensions/fonts, reads `dev.mason.breakpoints`, resolves aliases and sorts by name; serializeDtcg round-trips.
+- 2026-11-27 15:16 [ide] T052 PASSED
