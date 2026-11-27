@@ -290,3 +290,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `canvas.css` divides inner sizes by `--zoom`; a Board renders label + iframe of `/p/<file>?r=<revision>`, measures/clamps height and reports the frame on load.
 - 2026-11-27 12:53 [ide] T025 PASSED
+
+### T026: Draw selection, hover and mirror outlines
+- Result: GATE PASS
+- Files changed: src/ui/canvas/Overlay.tsx, tests/ui/overlay.test.tsx
+- Commands run: npx vitest run tests/ui/overlay.test.tsx -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `Overlay` measures the element inside the board's iframe document and renders nothing when the frame, path or element is missing; only the selection gets a `W × H` label.
+- 2026-11-27 12:54 [ide] T026 PASSED
