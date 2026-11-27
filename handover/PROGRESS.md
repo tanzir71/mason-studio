@@ -282,3 +282,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `elementAtPath`/`pathOf` count only `Element.children`, matching the server's parse5 paths; `boxOf` rounds `getBoundingClientRect`.
 - 2026-11-27 12:52 [ide] T024 PASSED
+
+### T025: Build the board component
+- Result: GATE PASS
+- Files changed: src/ui/canvas/canvas.css, src/ui/canvas/Board.tsx, tests/ui/board.test.tsx
+- Commands run: npx vitest run tests/ui/board.test.tsx -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `canvas.css` divides inner sizes by `--zoom`; a Board renders label + iframe of `/p/<file>?r=<revision>`, measures/clamps height and reports the frame on load.
+- 2026-11-27 12:53 [ide] T025 PASSED
