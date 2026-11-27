@@ -66,3 +66,11 @@ checkpoint.
 - Deviations: none
 - Learnings: emit iterates a copy of the listener array so subscribe/unsubscribe during delivery is safe.
 - 2026-11-27 11:56 [ide] T005 PASSED
+
+### T006: Implement the stylesheet parser
+- Result: GATE PASS
+- Files changed: src/engine/css/parse.ts, tests/engine/parse-css.test.ts
+- Commands run: npx vitest run tests/engine/parse-css.test.ts -> 6 passed (6); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: postcss `source.start/end.offset` are exact; decl end offset is exclusive and includes `;`, rule end includes `}`. The fixture parses to 14 rules and media blocks [768, 375].
+- 2026-11-27 11:57 [ide] T006 PASSED
