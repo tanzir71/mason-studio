@@ -842,3 +842,11 @@ checkpoint.
 - Deviations: none
 - Learnings: StartScreen offers typed-folder open (or the desktop picker when window.masonDesktop exists), recent projects with relative times, and template previews that create a project; App renders it (plus SettingsDialog) whenever screen is not "canvas".
 - 2026-11-27 17:03 [ide] T085 PASSED
+
+### T086: Watch the project folder for outside changes
+- Result: GATE PASS
+- Files changed: src/server/infra/watcher.ts, tests/infra/watcher.test.ts
+- Commands run: npx vitest run tests/infra/watcher.test.ts -> 3 passed (3); npx tsc --noEmit -> exit 0
+- Deviations: the watcher skips names that resolve to a directory (statSync on the watch root) because Windows recursive fs.watch also reports the parent folder name ("css") for nested writes, which made the first run fail; the test is unchanged.
+- Learnings: createProjectWatcher debounces 150 ms into one sorted external-change and ignores .git/node_modules; suppressOwnWrites drops files from recent "written" events within 1 s.
+- 2026-11-27 17:05 [ide] T086 PASSED
