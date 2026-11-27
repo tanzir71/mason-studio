@@ -11,6 +11,7 @@ import { createElementGroup } from "./element-group.ts";
 import { createTokensGroup } from "./tokens-group.ts";
 import { createFilesGroup } from "./files-group.ts";
 import { createChecksGroup } from "./checks-group.ts";
+import { createSettingsGroup } from "./settings-group.ts";
 // @seam:imports
 
 /** Every method rejects NOT_IMPLEMENTED until its group is assigned above `@seam:groups`. */
@@ -27,6 +28,7 @@ export const createStudio: CreateStudio = (deps: StudioDeps): StudioService => {
   Object.assign(studio, createTokensGroup(ctx));
   Object.assign(studio, createFilesGroup(ctx));
   Object.assign(studio, createChecksGroup(ctx));
+  Object.assign(studio, createSettingsGroup(ctx));
   // @seam:groups
   return studio as unknown as StudioService;
 };

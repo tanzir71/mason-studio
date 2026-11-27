@@ -706,3 +706,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Phase 8 is green: taste bans, colors, structure/raw checks, contrast and the Checks panel all pass (13 Playwright tests total).
 - 2026-11-27 16:19 [ide] C8 PASSED
+
+### T071: Implement agent and app settings
+- Result: GATE PASS
+- Files changed: src/engine/studio/settings-group.ts, src/engine/studio/create-studio.ts, tests/engine/settings-group.test.ts
+- Commands run: npx vitest run tests/engine/settings-group.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: settings() never returns the stored API key (hasApiKey instead); saveSettings validates http(s) URL and non-empty model, trims URL/model, keeps the stored key when the new key is empty, and set mcpEnabled/theme.
+- 2026-11-27 16:20 [ide] T071 PASSED
