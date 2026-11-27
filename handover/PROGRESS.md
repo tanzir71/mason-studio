@@ -378,3 +378,11 @@ checkpoint.
 - Deviations: none
 - Learnings: matchingRules sorts applies→specificity→sheetIndex→rule.index; resolveCascade inserts important above specificity and marks only an applying first entry winning. Fixture headline resolves 40/32/28px at 1280/768/375.
 - 2026-11-27 13:59 [ide] T034 PASSED
+
+### T035: Implement text edits and rule appends
+- Result: GATE PASS
+- Files changed: src/engine/css/edits.ts, tests/engine/edits.test.ts
+- Commands run: npx vitest run tests/engine/edits.test.ts -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: applyTextEdits sorts and applies from highest start down, rejecting overlaps/shared starts; planAppendRule prepends "\n" when the file lacks a trailing newline.
+- 2026-11-27 14:01 [ide] T035 PASSED
