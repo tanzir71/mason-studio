@@ -1,0 +1,18 @@
+.m-checks { display: grid; gap: var(--space-3); padding: var(--space-3); }
+.m-checks__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.m-checks__summary { font: var(--text-12); color: var(--text-muted); }
+.m-checks__intro { margin: 0; font: var(--text-12); color: var(--text-muted); }
+.m-findings { display: grid; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.m-finding { display: grid; grid-template-columns: 8px 1fr; gap: 2px var(--space-2); padding: var(--space-2); border-radius: var(--radius-8); background: var(--bg-inset); }
+.m-finding .m-dot { margin-top: 5px; }
+.m-finding--blocked .m-dot { background: var(--danger); }
+.m-finding--warning .m-dot { background: var(--warning); }
+.m-finding--info .m-dot { background: var(--text-faint); }
+.m-finding__title { font: var(--label-12); color: var(--text-strong); }
+.m-finding__detail { grid-column: 2; font: var(--text-12); color: var(--text-muted); }
+.m-finding__where { grid-column: 2; display: flex; gap: var(--space-2); }
+.m-finding__link { padding: 0; border: 0; background: transparent; color: var(--accent-strong); font: var(--code-11); }
+.m-finding__link:hover { text-decoration: underline; }
+.m-passed { display: grid; gap: 4px; margin: 0; padding: 0; list-style: none; font: var(--text-12); color: var(--text-muted); }
+.m-passed li { display: flex; align-items: center; gap: 6px; }
+.m-passed svg { width: 14px; height: 14px; color: var(--success); }

@@ -3,6 +3,7 @@ import type { RightTab } from "../../contracts/ui.tsx";
 import { Tabs } from "../components/Tabs.tsx";
 import { DesignPanel } from "./DesignPanel.tsx";
 import { InspectPanel } from "./InspectPanel.tsx";
+import { ChecksPanel } from "./ChecksPanel.tsx";
 import "./panels.css";
 
 const TABS: readonly { id: RightTab; label: string }[] = [
@@ -19,7 +20,7 @@ export function RightPanel() {
       </div>
       {tab === "design" && <DesignPanel />}
       {tab === "inspect" && <InspectPanel />}
-      {tab === "checks" && <div className="m-empty" data-testid={TEST_IDS.checksPanel}>Checks run on the open page.</div>}
+      {tab === "checks" && <ChecksPanel />}
     </aside>
   );
 }

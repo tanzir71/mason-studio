@@ -690,3 +690,11 @@ checkpoint.
 - Deviations: none
 - Learnings: collectContrast measures computed colors in the board iframe (with its own copy of the WCAG formula proven equal to the engine's), flags text below 4.5:1 (3:1 large) and skips hidden elements.
 - 2026-11-27 16:14 [ide] T069 PASSED
+
+### T070: Build the Checks panel
+- Result: GATE PASS
+- Files changed: src/ui/panels/checks.css, src/ui/panels/ChecksPanel.tsx, src/ui/panels/RightPanel.tsx, tests/e2e/checks.spec.ts, tests/ui/checks-panel.test.tsx
+- Commands run: npx vitest run tests/ui/checks-panel.test.tsx -> 4 passed (4); npx vitest run tests/ui/right-panel.test.tsx tests/ui/inspect-panel.test.tsx -> passed; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test checks.spec.ts -> 2 passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: ChecksPanel runs checks + board contrast on open, summarizes by severity, links findings to code/layer, and lists passed checks; the Playwright checks suite proves token suggestions, invalid-regex note and the menu page's missing alt.
+- 2026-11-27 16:16 [ide] T070 PASSED
