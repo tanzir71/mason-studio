@@ -114,3 +114,11 @@ checkpoint.
 - Deviations: annotated the `group` object with its Pick type so its own `createProject` can call `group.openProject` without a circular-inference error.
 - Learnings: createProject copies every template file except `template.json`, strips the `<template>/` prefix, then reuses openProject.
 - 2026-11-27 12:20 [ide] T011 PASSED
+
+### T012: Implement page loading and the page tree
+- Result: GATE PASS
+- Files changed: src/engine/studio/page-group.ts, src/engine/studio/create-studio.ts, tests/engine/page-group.test.ts
+- Commands run: npx vitest run tests/engine/page-group.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: loadPage is the shared page loader for all later groups: it parses only stylesheets that exist in link order and returns { info, html, model, sheets }.
+- 2026-11-27 12:22 [ide] T012 PASSED
