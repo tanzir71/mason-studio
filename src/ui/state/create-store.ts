@@ -10,6 +10,7 @@ import { createAssetActions } from "./asset-actions.ts";
 import { createCodeActions } from "./code-actions.ts";
 import { createCheckActions } from "./check-actions.ts";
 import { createAgentActions } from "./agent-actions.ts";
+import { createGitActions } from "./git-actions.ts";
 // @seam:imports
 
 export const createStudioStore: CreateStudioStore = (client) => {
@@ -41,6 +42,7 @@ export const createStudioStore: CreateStudioStore = (client) => {
   Object.assign(actions, createCodeActions(ctx));
   Object.assign(actions, createCheckActions(ctx));
   Object.assign(actions, createAgentActions(ctx));
+  Object.assign(actions, createGitActions(ctx));
   // @seam:slices
   return store;
 };

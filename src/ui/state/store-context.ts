@@ -26,7 +26,7 @@ export interface StoreContext {
   write(fn: () => Promise<WriteResult>): Promise<WriteResult | null>;
   /** revision = result.revision, busy = false, toast("success", result.message, true), then reloadPage(). */
   afterWrite(result: WriteResult): Promise<void>;
-  /** With a page open: tree = pageTree(page); with a selection: inspect = inspect(page, selection), or null when that fails. */
+  /** Starts refreshGit(); with a page open: tree = pageTree(page); with a selection: inspect = inspect(page, selection), or null when that fails. */
   reloadPage(): Promise<void>;
 }
 
@@ -66,6 +66,7 @@ export function createStoreContext(client: MasonClient, store: StudioStore): Sto
       await ctx.reloadPage();
     },
     async reloadPage() {
+      void store.actions.refreshGit();
       const { page } = store.getState();
       if (!page) return;
       const tree = await client.pageTree(page);

@@ -818,3 +818,11 @@ checkpoint.
 - Deviations: none
 - Learnings: gitStatus reports isRepo/branch/changed files (porcelain parsed, renames and quoted names handled); commit trims the message, requires a repo, runs add -A then commit -m and maps failures to GIT_FAILED with git's first line.
 - 2026-11-27 17:00 [ide] T082 PASSED
+
+### T083: Add Git actions to the store
+- Result: GATE PASS
+- Files changed: src/ui/state/git-actions.ts, src/ui/state/create-store.ts, src/ui/state/store-context.ts, tests/ui/git-actions.test.ts
+- Commands run: npx vitest run tests/ui/git-actions.test.ts -> 3 passed (3); npx vitest run tests/ui/store-context.test.ts -> passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: refreshGit is a silent background refresh (keeps last status, no toast on failure) and reloadPage now kicks it off; commit stores the new status and toasts "Committed".
+- 2026-11-27 17:01 [ide] T083 PASSED
