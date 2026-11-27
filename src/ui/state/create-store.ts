@@ -1,7 +1,30 @@
-import { MasonError } from "../../contracts/errors.ts";
-import type { CreateStudioStore } from "../../contracts/ui.tsx";
+import { INITIAL_STATE } from "../../contracts/ui.tsx";
+import type { CreateStudioStore, StudioActions, StudioState, StudioStore } from "../../contracts/ui.tsx";
+import { createStoreContext, STORE_ACTION_NAMES } from "./store-context.ts";
+import { createProjectActions } from "./project-actions.ts";
+// @seam:imports
 
-/** Stub: implemented by a later card. */
-export const createStudioStore: CreateStudioStore = (_client) => {
-  throw new MasonError("NOT_IMPLEMENTED", "createStudioStore");
+export const createStudioStore: CreateStudioStore = (client) => {
+  let state: StudioState = INITIAL_STATE;
+  const listeners = new Set<() => void>();
+  const actions = {} as StudioActions;
+  const store: StudioStore = {
+    getState: () => state,
+    setState(patch) {
+      state = { ...state, ...(typeof patch === "function" ? patch(state) : patch) };
+      for (const l of [...listeners]) l();
+    },
+    subscribe(listener) { listeners.add(listener); return () => { listeners.delete(listener); }; },
+    actions,
+  };
+  const ctx = createStoreContext(client, store);
+  for (const name of STORE_ACTION_NAMES) {
+    (actions as unknown as Record<string, unknown>)[name] = () => {
+      ctx.toast("info", `${name} is not available yet.`, false);
+      return Promise.resolve();
+    };
+  }
+  Object.assign(actions, createProjectActions(ctx));
+  // @seam:slices
+  return store;
 };

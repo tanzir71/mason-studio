@@ -234,3 +234,11 @@ checkpoint.
 - Deviations: none
 - Learnings: The client POSTs `{ args }` per studio method, maps server `error` bodies back to MasonError keeping the server message, and shares one EventSource until the last unsubscribe.
 - 2026-11-27 12:46 [ide] T018 PASSED
+
+### T019: Implement the studio store core and project actions
+- Result: GATE PASS
+- Files changed: src/ui/state/store-context.ts, src/ui/state/project-actions.ts, src/ui/state/create-store.ts, tests/ui/store-context.test.ts, tests/ui/store-core.test.ts
+- Commands run: npx vitest run tests/ui/store-context.test.ts tests/ui/store-core.test.ts -> 12 passed (12); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: The store fills every STORE_ACTION_NAMES entry with a placeholder toast first, then slices `Object.assign` over them at `// @seam:slices`; `ctx.write` funnels busy/revision/toast/reload.
+- 2026-11-27 12:48 [ide] T019 PASSED
