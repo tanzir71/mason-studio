@@ -522,3 +522,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Only siblings accept drops (dropIndex); the Playwright elements suite proves insert-rect, in-place text edit and footer delete, each undone to keep the fixture clean.
 - 2026-11-27 15:12 [ide] T051 PASSED
+
+### C5: Phase 5 checkpoint: elements can be added, edited and moved
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all passed; npx tsc --noEmit -> exit 0; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test canvas.spec.ts design.spec.ts elements.spec.ts -> 8 passed
+- Deviations: none
+- Learnings: Phase 5 is green: insert, in-place text edit, delete, move, wrap and layer drag all pass across unit, Vite build and 8 Playwright tests.
+- 2026-11-27 15:15 [ide] C5 PASSED
