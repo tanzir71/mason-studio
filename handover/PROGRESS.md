@@ -618,3 +618,11 @@ checkpoint.
 - Deviations: none
 - Learnings: InspectPanel lists rules at the active breakpoint (struck overridden decls, dimmed non-applying rules) and opens the code drawer at file:line; it is now the Inspect tab of RightPanel.
 - 2026-11-27 15:49 [ide] T061 PASSED
+
+### T062: Wrap CodeMirror as the code editor
+- Result: GATE PASS
+- Files changed: src/ui/code/CodeEditor.tsx, tests/ui/code-editor.test.tsx
+- Commands run: npx vitest run tests/ui/code-editor.test.tsx -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: CodeEditor wraps CodeMirror 6 with CSS/HTML/JSON highlighting, a Mason theme, jump-to-line and Mod-S save; external `value` changes replace the document.
+- 2026-11-27 15:50 [ide] T062 PASSED
