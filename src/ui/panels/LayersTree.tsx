@@ -10,6 +10,18 @@ import "./panels.css";
 
 const KIND_ICONS: Record<LayerKind, LucideIcon> = { frame: Hash, stack: Rows3, text: Type, image: Image, link: Link };
 
+/** Parent path of a non-body path. */
+export function parentPath(path: ElementPath): ElementPath {
+  const dot = path.lastIndexOf(".");
+  return dot === -1 ? "" : path.slice(0, dot);
+}
+
+/** The sibling index a dragged row moves to when dropped on `target`, or null when they do not share a parent. */
+export function dropIndex(dragged: ElementPath, target: ElementPath): number | null {
+  if (dragged === "" || target === "" || dragged === target || parentPath(dragged) !== parentPath(target)) return null;
+  return Number(target.slice(target.lastIndexOf(".") + 1));
+}
+
 /** Paths open by default: the body, its children, and every ancestor of the selection. */
 export function defaultOpen(selection: ElementPath | null): Set<ElementPath> {
   const open = new Set<ElementPath>([""]);
@@ -26,6 +38,7 @@ export function LayersTree() {
   const page = useStudio((s) => s.page);
   const selection = useStudio((s) => s.selection);
   const [toggled, setToggled] = useState<Map<ElementPath, boolean>>(new Map());
+  const [dragged, setDragged] = useState<ElementPath | null>(null);
   if (!tree) return <div data-testid={TEST_IDS.layersTree} />;
   const auto = defaultOpen(selection);
   const isOpen = (path: ElementPath) => toggled.get(path) ?? auto.has(path);
@@ -41,6 +54,16 @@ export function LayersTree() {
         key={node.path} role="treeitem" aria-label={label} aria-level={depth + 1} aria-selected={selection === node.path}
         aria-expanded={kids.length ? isOpen(node.path) : undefined} data-path={node.path}
         className={cx("m-row", selection === node.path && "is-selected")} style={{ paddingLeft: 8 + depth * 12 }}
+        draggable={node.path !== ""}
+        onDragStart={(e) => { setDragged(node.path); e.dataTransfer?.setData("text/plain", node.path); }}
+        onDragOver={(e) => { if (dragged !== null && dropIndex(dragged, node.path) !== null) e.preventDefault(); }}
+        onDrop={(e) => {
+          e.preventDefault();
+          const to = dragged === null ? null : dropIndex(dragged, node.path);
+          if (dragged !== null && to !== null) void actions.moveElement(dragged, to);
+          setDragged(null);
+        }}
+        onDragEnd={() => setDragged(null)}
         onClick={() => actions.select(node.path)}
         onMouseEnter={() => actions.hover(node.path)}
         onMouseLeave={() => actions.hover(null)}

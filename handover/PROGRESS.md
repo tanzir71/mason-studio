@@ -514,3 +514,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Double-click on a text/link opens TextEditor over the element with its computed font; Enter/blur commits the trimmed changed text once through editText, Escape cancels.
 - 2026-11-27 15:10 [ide] T050 PASSED
+
+### T051: Reorder layers by dragging
+- Result: GATE PASS
+- Files changed: src/ui/panels/LayersTree.tsx, tests/e2e/elements.spec.ts, tests/ui/layers-drag.test.tsx
+- Commands run: npx vitest run tests/ui/layers-drag.test.tsx tests/ui/layers-tree.test.tsx -> passed; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test elements.spec.ts -> 3 passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: Only siblings accept drops (dropIndex); the Playwright elements suite proves insert-rect, in-place text edit and footer delete, each undone to keep the fixture clean.
+- 2026-11-27 15:12 [ide] T051 PASSED
