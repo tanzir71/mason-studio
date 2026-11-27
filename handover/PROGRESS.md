@@ -402,3 +402,11 @@ checkpoint.
 - Deviations: none
 - Learnings: planResetOverride removes whole rules when all declarations go and whole media blocks when all their rules go; removal ranges start at the preceding "\n" when only indentation separates items.
 - 2026-11-27 14:03 [ide] T037 PASSED
+
+### T038: Implement the write pipeline with undo and redo
+- Result: GATE PASS
+- Files changed: src/engine/studio/write.ts, src/engine/studio/create-studio.ts, tests/engine/write.test.ts
+- Commands run: npx vitest run tests/engine/write.test.ts -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: commitChanges/writeEdits save each step's files once, bump the revision and emit `written` with sorted files; undo/redo restore before/after texts ("Undid:"/"Redid:") and a created file is emptied on undo because the port cannot delete.
+- 2026-11-27 14:04 [ide] T038 PASSED
