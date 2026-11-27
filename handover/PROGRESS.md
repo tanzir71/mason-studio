@@ -682,3 +682,11 @@ checkpoint.
 - Deviations: none
 - Learnings: runChecks stores the open page's report (no-op without a page, guarded against stale page); setContrast stores browser contrast findings.
 - 2026-11-27 16:13 [ide] T068 PASSED
+
+### T069: Measure text contrast inside a board
+- Result: GATE PASS
+- Files changed: src/ui/canvas/contrast.ts, tests/ui/contrast.test.ts
+- Commands run: npx vitest run tests/ui/contrast.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: collectContrast measures computed colors in the board iframe (with its own copy of the WCAG formula proven equal to the engine's), flags text below 4.5:1 (3:1 large) and skips hidden elements.
+- 2026-11-27 16:14 [ide] T069 PASSED
