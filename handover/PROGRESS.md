@@ -874,3 +874,11 @@ checkpoint.
 - Deviations: removed the interim hand-written download card (and its partial CSS block) that had been added ahead of schedule, so the card's canonical privacy/download/footer sections are the only ones; CSS block replaced in place instead of appended twice.
 - Learnings: The landing page passes Mason's own structure/bans checks, has targets for every in-page link, and fits 1440/768/375px with the macOS download CTA scrolling to the Get Mason card.
 - 2026-11-27 17:10 [ide] T090 PASSED
+
+### C11: Phase 11 checkpoint: landing page
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all passed; npx tsc --noEmit -> exit 0; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test site.spec.ts --project=chromium -> 4 passed
+- Deviations: none (a separate user-requested fix commit c183466 repointed the landing page repo links from tanzir71/mason to the live tanzir71/mason-studio repository)
+- Learnings: Phase 11 is green: the finished landing page passes Mason's own checks and the responsive Playwright smoke at 1440/768/375px.
+- 2026-11-27 17:59 [ide] C11 PASSED
