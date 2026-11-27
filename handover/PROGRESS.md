@@ -642,3 +642,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Phase 7 is green: file access, code-drawer actions, Inspect panel, CodeMirror and the code drawer all pass (11 Playwright tests total).
 - 2026-11-27 15:57 [ide] C7 PASSED
+
+### T064: Read the taste profile and match hard bans
+- Result: GATE PASS
+- Files changed: src/engine/checks/taste.ts, tests/engine/taste.test.ts
+- Commands run: npx vitest run tests/engine/taste.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: parseTaste reads lowercase `##` sections and `- literal:`/`- regex:` bans (note split at the last " | ", invalid regexes listed separately); checkBans matches case-insensitively as blocked taste findings.
+- 2026-11-27 15:58 [ide] T064 PASSED
