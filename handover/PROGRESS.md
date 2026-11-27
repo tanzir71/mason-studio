@@ -738,3 +738,11 @@ checkpoint.
 - Deviations: none
 - Learnings: askAgent builds a system prompt (allowed props + taste rules) and a JSON user context, parses the (optionally fenced) reply defaulting scope, then files it via the studio's own propose (source = model).
 - 2026-11-27 16:23 [ide] T074 PASSED
+
+### T075: Implement the MCP tools
+- Result: GATE PASS
+- Files changed: src/server/mcp/tools.ts, tests/mcp/tools.test.ts
+- Commands run: npx vitest run tests/mcp/tools.test.ts -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: runTool implements the seven MCP tools (read-only + propose, never writes); structureOf hides NON_VISUAL_TAGS; propose returns proposal_id, blocked list and the review message.
+- 2026-11-27 16:24 [ide] T075 PASSED
