@@ -858,3 +858,11 @@ checkpoint.
 - Deviations: none
 - Learnings: startMason wires the watcher through suppressOwnWrites and follows project-opened; the phase 10 smoke covers close/reopen from recent, live reload on outside edits, and committing Git changes.
 - 2026-11-27 17:06 [ide] S007 PASSED
+
+### C10: Phase 10 checkpoint: the whole app
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all passed; npx tsc --noEmit -> exit 0; npx storybook build --quiet -> build completed successfully; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test agent/canvas/checks/code/design/elements/start/tokens -> 18 passed
+- Deviations: none
+- Learnings: Phase 10 is green: Git runner/status/commit, store actions, Git chip, start screen and the composed watcher all pass together (18 Playwright tests, Storybook builds).
+- 2026-11-27 17:08 [ide] C10 PASSED
