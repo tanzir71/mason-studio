@@ -770,3 +770,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Agent/settings store slice requires a selection to open the prompt, keeps it open on agent errors, prepends new proposals, marks accepted/rejected statuses (accept through ctx.write so revision + tree refresh apply), and saves settings then closes the drawer.
 - 2026-11-27 16:28 [ide] T077 PASSED
+
+### T078: Build the proposal review card
+- Result: GATE PASS
+- Files changed: src/ui/agent/agent.css, src/ui/agent/ReviewCard.tsx, tests/ui/review-card.test.tsx
+- Commands run: npx vitest run tests/ui/review-card.test.tsx -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: ReviewCard shows the newest pending proposal with numbered "from → value · scope" lines and blocked reasons, calling acceptProposal(id,false/true) or rejectProposal(id); hides when nothing is pending.
+- 2026-11-27 16:29 [ide] T078 PASSED
