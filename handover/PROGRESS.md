@@ -258,3 +258,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `handleEvent` reloads on new `written` revisions and on `external-change`, and replaces proposals by id at the front; toasts are show/dismiss only.
 - 2026-11-27 12:50 [ide] T021 PASSED
+
+### T022: Build the button primitives and their styles
+- Result: GATE PASS
+- Files changed: src/ui/components/primitives.css, src/ui/components/Button.tsx, src/ui/components/Button.stories.tsx, tests/ui/button.test.tsx
+- Commands run: npx vitest run tests/ui/button.test.tsx -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `primitives.css` holds every primitive's styles; `Button`/`IconButton`/`Chip`/`cx` are the shared building blocks. Storybook loads them via `src/ui/**/*.stories.tsx`.
+- 2026-11-27 12:51 [ide] T022 PASSED

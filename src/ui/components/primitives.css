@@ -1,0 +1,64 @@
+/* Mason UI primitives. Every value comes from src/contracts/tokens.css. */
+.m-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-1);
+  height: 28px; padding: 0 var(--space-3); border-radius: var(--radius-6);
+  border: 1px solid transparent; font: var(--label-12); white-space: nowrap;
+}
+.m-btn--sm { height: 24px; padding: 0 var(--space-2); }
+.m-btn--primary { background: var(--accent); color: var(--accent-on); }
+.m-btn--primary:hover { background: var(--accent-strong); }
+.m-btn--secondary { background: var(--bg-raised); color: var(--text-strong); border-color: var(--border-default); }
+.m-btn--secondary:hover { background: var(--bg-hover); }
+.m-btn--ghost { background: transparent; color: var(--text-default); }
+.m-btn--ghost:hover { background: var(--bg-hover); color: var(--text-strong); }
+.m-btn--danger { background: var(--danger-subtle); color: var(--danger); }
+.m-btn:disabled { opacity: 0.5; cursor: default; }
+
+.m-icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 28px; height: 28px; padding: 0; border: 0; border-radius: var(--radius-6);
+  background: transparent; color: var(--text-muted);
+}
+.m-icon-btn:hover { background: var(--bg-hover); color: var(--text-strong); }
+.m-icon-btn.is-active { background: var(--accent); color: var(--accent-on); }
+.m-icon-btn svg { width: 16px; height: 16px; }
+
+.m-chip {
+  display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 var(--space-2);
+  border: 0; border-radius: var(--radius-6); background: transparent; color: var(--text-muted); font: var(--label-12);
+}
+.m-chip:hover { color: var(--text-strong); }
+.m-chip.is-active { background: var(--bg-hover); color: var(--text-strong); }
+.m-chip__meta { font: var(--code-11); color: var(--text-faint); }
+.m-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; flex: none; }
+
+.m-field {
+  display: flex; align-items: center; gap: 6px; height: 28px; min-width: 0; padding: 0 var(--space-2);
+  border: 1px solid transparent; border-radius: var(--radius-6); background: var(--bg-raised);
+}
+.m-field:hover { border-color: var(--border-default); }
+.m-field:focus-within { border-color: var(--accent); }
+.m-field.is-override { border-color: var(--bp-tablet); }
+.m-field__prefix { font: var(--text-11); color: var(--text-faint); flex: none; }
+.m-field__input {
+  flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; outline: 0; background: transparent;
+  color: var(--text-strong); font: var(--text-12);
+}
+.m-field.is-mono .m-field__input { font: var(--code-12); }
+.m-field__suffix { font: var(--code-11); color: var(--text-faint); flex: none; }
+
+.m-tabs { display: flex; align-items: center; gap: 2px; }
+.m-tabs__tab {
+  height: 26px; padding: 0 var(--space-2); border: 0; border-radius: var(--radius-6);
+  background: transparent; color: var(--text-muted); font: var(--label-12);
+}
+.m-tabs__tab:hover { color: var(--text-strong); }
+.m-tabs__tab[aria-selected="true"] { background: var(--bg-hover); color: var(--text-strong); }
+.m-tabs--segmented { padding: 2px; border-radius: var(--radius-8); background: var(--bg-inset); }
+.m-tabs--segmented .m-tabs__tab { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; }
+.m-tabs--segmented .m-tabs__tab[aria-selected="true"] { background: var(--bg-raised); box-shadow: inset 0 0 0 1px var(--border-default); }
+
+.m-section { border-bottom: 1px solid var(--border-subtle); padding: var(--space-3) var(--space-3) var(--space-4); }
+.m-section__head { display: flex; align-items: center; justify-content: space-between; height: 24px; margin-bottom: var(--space-2); }
+.m-section__title { margin: 0; font: var(--title-13); color: var(--text-strong); }
+.m-section__body { display: grid; gap: var(--space-2); }
