@@ -162,3 +162,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Sections are inserted directly above `<!-- sections -->`; the `#files` and `#responsive` anchors now resolve for the nav links. 5 site tests pass total.
 - 2026-11-27 12:36 [ide] T088 PASSED
+
+### T089: Add the agents and Penpot sections
+- Result: GATE PASS
+- Files changed: site/index.html, site/styles.css, tests/site/site-agents.test.ts
+- Commands run: npx vitest run tests/site/site-agents.test.ts -> 2 passed (2); npx vitest run tests/site/site-hero.test.ts tests/site/site-sections.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `#agents` and `#penpot` now resolve; all nav anchors except `#download` work. 7 site tests pass total.
+- 2026-11-27 12:37 [ide] T089 PASSED

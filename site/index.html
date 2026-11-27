@@ -96,6 +96,84 @@
         </div>
       </div>
     </section>
+    <section class="band band--night" id="agents">
+      <div class="wrap">
+        <div class="split split--top">
+          <div>
+            <p class="eyebrow">Agents</p>
+            <h2>Bring your agent. Keep the final say.</h2>
+          </div>
+          <p class="lede">Mason runs a local MCP server. Claude Code, Codex, Cursor or a local Ollama model can read the canvas, select elements and change styles through the same undoable path you use. Your taste rules check every change before it lands.</p>
+        </div>
+        <div class="trio">
+          <figure class="night-card">
+            <figcaption class="night-card__head">Connect in one line</figcaption>
+<pre class="code">{
+  "mcpServers": {
+    "mason": {
+      "url": "http://127.0.0.1:39765/mcp"
+    }
+  }
+}</pre>
+            <ul class="checks">
+              <li>Localhost only, off until you switch it on</li>
+              <li>Every change waits for your review</li>
+              <li>No shell or file-system tools, ever</li>
+            </ul>
+          </figure>
+          <figure class="night-card" aria-label="A proposal from Claude Code waiting for review">
+            <figcaption class="night-card__head"><span class="dot"></span>Claude Code proposes 3 changes</figcaption>
+            <p class="night-card__meta">styles.css · via MCP · nothing saved yet</p>
+            <ol class="proposal">
+              <li><span class="num">1</span><span>Headline size<small>32 → 44 · ≤ 768</small></span></li>
+              <li><span class="num">2</span><span>Eyebrow letter spacing<small>12% → 18% · ≤ 768</small></span></li>
+              <li class="is-blocked"><span class="num">3</span><span>Hero background gradient<small>Blocked: no gradients</small></span></li>
+            </ol>
+            <div class="proposal__actions"><span class="button button--accent button--small">Accept 2</span><span class="button button--ghost button--small">Reject</span></div>
+          </figure>
+          <figure class="night-card" aria-label="The project's taste file with a hard ban that blocked a change">
+            <figcaption class="night-card__head"><span>.mason/taste.md</span><span class="night-card__note">plain Markdown</span></figcaption>
+<pre class="code code--taste">## Design
+- Serif headlines, sans body
+- One accent: rust
+
+## Hard bans
+<span class="hit">- literal: linear-gradient   <span class="hit__note">blocked 1 change</span></span>
+- regex: #(6e56cf|7c3aed)
+- literal: !important</pre>
+            <p class="night-card__foot">Checks run on every agent edit, with no AI in the loop.</p>
+          </figure>
+        </div>
+      </div>
+    </section>
+    <section class="band" id="penpot">
+      <div class="wrap">
+        <div class="split split--top">
+          <div>
+            <p class="eyebrow">For Penpot users</p>
+            <h2>Using Penpot? Keep it.</h2>
+          </div>
+          <p class="lede">Penpot is a strong platform for design teams. Mason is for the moment a design has to become a working website. Bring your Penpot tokens in, design the real pages here, and keep Penpot for flows, comments and team reviews.</p>
+        </div>
+        <div class="table-wrap">
+          <table class="compare">
+            <thead><tr><th scope="col"><span class="sr">Topic</span></th><th scope="col">Penpot</th><th scope="col">Mason</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Where designs live</th><td>Penpot server database</td><td class="lead">Plain files in your folder</td></tr>
+              <tr><th scope="row">What developers get</th><td>Generated CSS from Inspect</td><td class="lead">Your actual stylesheet, rule by rule</td></tr>
+              <tr><th scope="row">Responsive design</th><td>One board per screen size</td><td class="lead">Real @media rules, boards side by side</td></tr>
+              <tr><th scope="row">Working offline</th><td>Run your own Penpot server</td><td class="lead">Desktop app, no server</td></tr>
+              <tr><th scope="row">Teams</th><td class="lead">Real-time multiplayer and comments</td><td>Single-player, share through Git</td></tr>
+              <tr><th scope="row">Prototyping</th><td class="lead">Interactions and flows</td><td>Live links on real pages</td></tr>
+              <tr><th scope="row">Design tokens</th><td>Native tokens and shared libraries</td><td>Imports Penpot tokens, DTCG 2025.10</td></tr>
+              <tr><th scope="row">AI agents</th><td>Official MCP server through a plugin</td><td>Local MCP server with taste checks</td></tr>
+            </tbody>
+            <tfoot><tr><td colspan="3"><span class="dot"></span>Leads on this row. Penpot leads on teamwork and prototyping; Mason leads when the output has to be the website itself.</td></tr></tfoot>
+          </table>
+        </div>
+        <p class="footnote">Compared with Penpot 2.19, November 2026.</p>
+      </div>
+    </section>
     <!-- sections -->
   </main>
 </body>
