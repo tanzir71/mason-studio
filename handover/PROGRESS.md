@@ -154,3 +154,11 @@ checkpoint.
 - Deviations: none
 - Learnings: The server binds HOST only, checks the Host header against `127.0.0.1:<port>`/`localhost:<port>`, and routes are a prefix/exact table with `@seam:routes` and `@seam:fallback` anchors for T014/T015.
 - 2026-11-27 12:35 [ide] T013 PASSED
+
+### T088: Add the files and responsive sections
+- Result: GATE PASS
+- Files changed: site/index.html, site/styles.css, tests/site/site-sections.test.ts
+- Commands run: npx vitest run tests/site/site-sections.test.ts -> 2 passed (2); npx vitest run tests/site/site-hero.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: Sections are inserted directly above `<!-- sections -->`; the `#files` and `#responsive` anchors now resolve for the nav links. 5 site tests pass total.
+- 2026-11-27 12:36 [ide] T088 PASSED

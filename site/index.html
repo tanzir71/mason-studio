@@ -43,6 +43,59 @@
         </ul>
       </div>
     </section>
+    <section class="band" id="files">
+      <div class="wrap split">
+        <div>
+          <p class="eyebrow">The files are the design</p>
+          <h2>No export step.<br>No drift.</h2>
+          <p class="lede split__lede">Most design tools draw a picture of your site and leave someone to rebuild it. In Mason the picture is the site: open a folder, design, and the same files ship.</p>
+          <dl class="facts">
+            <div><dt><code>index.html</code></dt><dd>Each page is a file. Each board is that file at one width.</dd></div>
+            <div><dt><code>styles.css</code></dt><dd>Changes go to the rule that already wins, not a pile of new overrides.</dd></div>
+            <div><dt><code>git</code></dt><dd>History, branches and review come from Git, not a private timeline.</dd></div>
+          </dl>
+        </div>
+        <figure class="card files" aria-label="A Mason project folder and the change the Design panel wrote">
+          <div class="files__head"><span>northfield-site</span><span class="tag">main · 3 changes</span></div>
+          <ul class="files__list">
+            <li>index.html</li>
+            <li>menu.html</li>
+            <li>visit.html</li>
+            <li class="is-changed">styles.css <span>modified</span></li>
+            <li>tokens.json</li>
+            <li>.mason/taste.md</li>
+            <li>images/</li>
+          </ul>
+          <div class="diff">
+            <div class="diff__head"><span>styles.css <span class="diff__count">+3</span></span><span>written by the Design panel</span></div>
+<pre><span>@media (max-width: 768px) {</span>
+<span class="diff__add">  .hero h1 {</span>
+<span class="diff__add">    font-size: 32px;</span>
+<span class="diff__add">  }</span>
+<span>}</span></pre>
+          </div>
+        </figure>
+      </div>
+    </section>
+    <section class="band band--deep" id="responsive">
+      <div class="wrap split split--flip">
+        <figure class="card mini" aria-label="Three boards of one page with the Applies to switch set to tablet">
+          <div class="mini__boards">
+            <div class="mini__board"><span class="mini__label"><span class="dot dot--desktop"></span>Desktop</span><div class="mini__page mini__page--wide"><span class="bar"></span><span class="bar"></span><span class="bar short"></span><span class="block"></span></div></div>
+            <div class="mini__board is-active"><span class="mini__label"><span class="dot dot--tablet"></span>Tablet</span><div class="mini__page"><span class="bar"></span><span class="bar short"></span><span class="block"></span></div></div>
+            <div class="mini__board"><span class="mini__label"><span class="dot dot--mobile"></span>Mobile</span><div class="mini__page mini__page--narrow"><span class="bar"></span><span class="bar short"></span><span class="block"></span></div></div>
+          </div>
+          <p class="mini__caption">Applies to</p>
+          <div class="segmented"><span>All sizes</span><span class="is-on"><span class="dot dot--tablet"></span>≤ 768</span><span><span class="dot dot--mobile"></span>≤ 375</span></div>
+          <div class="prop"><span class="prop__name">Headline size</span><span class="prop__values"><span><span class="dot dot--desktop"></span>40</span><span class="is-on"><span class="dot dot--tablet"></span>32</span><span><span class="dot dot--mobile"></span>28</span><span class="prop__reset">Reset</span></span></div>
+        </figure>
+        <div>
+          <p class="eyebrow">Responsive, done properly</p>
+          <h2>Breakpoints side by side, not separate mockups.</h2>
+          <p class="lede split__lede">Every page shows its breakpoints in one row. Pick where a change applies (all sizes, tablet or mobile) and Mason writes it into the right @media rule. Coloured dots show where each value comes from, so a 28px mobile heading is never a mystery.</p>
+        </div>
+      </div>
+    </section>
     <!-- sections -->
   </main>
 </body>
