@@ -1,2 +1,10 @@
 # deepseek-handover run artifacts (logs, prompts)
 handover/.run/
+node_modules/
+dist/
+release/
+storybook-static/
+test-results/
+playwright-report/
+tests/.tmp/
+*.log

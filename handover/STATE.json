@@ -1,0 +1,11 @@
+{
+    "schema":  "deepseek-handover/state-v1",
+    "cards":  {
+                  "T001":  {
+                               "status":  "passed",
+                               "sessions":  0,
+                               "updated":  "2026-11-27 11:52:57",
+                               "note":  ""
+                           }
+              }
+}
