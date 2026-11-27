@@ -698,3 +698,11 @@ checkpoint.
 - Deviations: none
 - Learnings: ChecksPanel runs checks + board contrast on open, summarizes by severity, links findings to code/layer, and lists passed checks; the Playwright checks suite proves token suggestions, invalid-regex note and the menu page's missing alt.
 - 2026-11-27 16:16 [ide] T070 PASSED
+
+### C8: Phase 8 checkpoint: checks
+- Result: GATE PASS
+- Files changed: none
+- Commands run: npx vitest run -> all passed; npx tsc --noEmit -> exit 0; node tests/e2e/prepare.ts -> prepared; npx vite build -> built; npx playwright test canvas/checks/code/design/elements/tokens -> 13 passed
+- Deviations: none
+- Learnings: Phase 8 is green: taste bans, colors, structure/raw checks, contrast and the Checks panel all pass (13 Playwright tests total).
+- 2026-11-27 16:19 [ide] C8 PASSED
