@@ -98,3 +98,11 @@ checkpoint.
 - Deviations: none
 - Learnings: elementSelector walks ancestors from the immediate parent up to (but not including) body, then falls back to a full `body > tag > tag` chain.
 - 2026-11-27 12:00 [ide] T009 PASSED
+
+### T010: Implement opening projects, recents and templates
+- Result: GATE PASS
+- Files changed: src/engine/studio/project-group.ts, src/engine/studio/create-studio.ts, tests/helpers/fixture.ts, tests/engine/project-group.test.ts
+- Commands run: npx vitest run tests/engine/project-group.test.ts -> 5 passed (5); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: Studio groups are wired with `Object.assign(studio, createXGroup(ctx))` above `// @seam:groups`; openProject resets undo/redo/proposals and records recents capped at 8.
+- 2026-11-27 12:01 [ide] T010 PASSED
