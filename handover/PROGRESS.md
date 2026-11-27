@@ -538,3 +538,11 @@ checkpoint.
 - Deviations: none
 - Learnings: parseDtcg walks nested DTCG groups with inherited $type, converts colors/dimensions/fonts, reads `dev.mason.breakpoints`, resolves aliases and sorts by name; serializeDtcg round-trips.
 - 2026-11-27 15:16 [ide] T052 PASSED
+
+### T053: Import Tokens Studio and Penpot token files
+- Result: GATE PASS
+- Files changed: src/engine/tokens/tokens-studio.ts, tests/engine/tokens-studio.test.ts
+- Commands run: npx vitest run tests/engine/tokens-studio.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: fromTokensStudio reads sets in $metadata.tokenSetOrder (first wins), maps TS/Penpot types (bare dimensions get "px"), handles aliases and skips unsupported types.
+- 2026-11-27 15:17 [ide] T053 PASSED
