@@ -218,3 +218,11 @@ checkpoint.
 - Deviations: none
 - Learnings: Phase 2 backend is green: parsing, studio groups, HTTP server, RPC/events/static routes and the `mason` CLI all pass together.
 - 2026-11-27 12:45 [ide] C2 PASSED
+
+### T017: Implement creating a page
+- Result: GATE PASS
+- Files changed: src/engine/studio/page-group.ts, tests/engine/create-page.test.ts
+- Commands run: npx vitest run tests/engine/create-page.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `createPage` clones the first page's `<head>`, rewrites the `<title>`, writes an empty `<main>`, rescans pages and updates the open project.
+- 2026-11-27 12:45 [ide] T017 PASSED
