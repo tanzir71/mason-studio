@@ -122,3 +122,11 @@ checkpoint.
 - Deviations: none
 - Learnings: loadPage is the shared page loader for all later groups: it parses only stylesheets that exist in link order and returns { info, html, model, sheets }.
 - 2026-11-27 12:22 [ide] T012 PASSED
+
+### S001: Prove the Node file system against the FileSystem contract
+- Result: GATE PASS
+- Files changed: tests/integration/node-fs.contract.test.ts
+- Commands run: npx vitest run tests/integration/node-fs.contract.test.ts -> 7 passed (7); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: createNodeFileSystem passes all 7 FileSystem contract cases on a real temp folder.
+- 2026-11-27 12:23 [ide] S001 PASSED
