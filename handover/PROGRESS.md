@@ -386,3 +386,11 @@ checkpoint.
 - Deviations: none
 - Learnings: applyTextEdits sorts and applies from highest start down, rejecting overlaps/shared starts; planAppendRule prepends "\n" when the file lacks a trailing newline.
 - 2026-11-27 14:01 [ide] T035 PASSED
+
+### T036: Plan style edits at the right rule and breakpoint
+- Result: GATE PASS
+- Files changed: src/engine/css/plan-style.ts, tests/engine/plan-style.test.ts
+- Commands run: npx vitest run tests/engine/plan-style.test.ts -> 10 passed (10); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: planStyleEdit implements the contract exactly: "all" replaces the winning value / inserts into the first applying base rule / appends; "tablet"/"mobile" replace or create the override in the matching `@media` block (last block after the base rule, else a new block appended).
+- 2026-11-27 14:02 [ide] T036 PASSED
