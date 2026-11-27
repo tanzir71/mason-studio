@@ -226,3 +226,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `createPage` clones the first page's `<head>`, rewrites the `<title>`, writes an empty `<main>`, rescans pages and updates the open project.
 - 2026-11-27 12:45 [ide] T017 PASSED
+
+### T018: Implement the browser HTTP client
+- Result: GATE PASS
+- Files changed: src/ui/api/http-client.ts, tests/ui/http-client.test.ts
+- Commands run: npx vitest run tests/ui/http-client.test.ts -> 4 passed (4); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: The client POSTs `{ args }` per studio method, maps server `error` bodies back to MasonError keeping the server message, and shares one EventSource until the last unsubscribe.
+- 2026-11-27 12:46 [ide] T018 PASSED
