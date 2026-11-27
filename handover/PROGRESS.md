@@ -834,3 +834,11 @@ checkpoint.
 - Deviations: none
 - Learnings: GitChip shows "N changes" and a commit box (Enter commits and closes), disables Commit at zero changes, and shows "No Git" when git is null or not a repository.
 - 2026-11-27 17:02 [ide] T084 PASSED
+
+### T085: Build the start screen
+- Result: GATE PASS
+- Files changed: src/ui/start/start.css, src/ui/start/StartScreen.tsx, src/ui/app/App.tsx, tests/ui/start-screen.test.tsx
+- Commands run: npx vitest run tests/ui/start-screen.test.tsx -> 5 passed (5); npx vitest run tests/ui/app.test.tsx -> passed; npx tsc --noEmit -> exit 0
+- Deviations: none
+- Learnings: StartScreen offers typed-folder open (or the desktop picker when window.masonDesktop exists), recent projects with relative times, and template previews that create a project; App renders it (plus SettingsDialog) whenever screen is not "canvas".
+- 2026-11-27 17:03 [ide] T085 PASSED
