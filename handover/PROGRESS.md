@@ -730,3 +730,11 @@ checkpoint.
 - Deviations: none
 - Learnings: createHttpLlmClient posts `{ model, messages, response_format }` to `<baseUrl>/chat/completions` (Bearer only when keyed), maps network/HTTP failures to LLM_UNAVAILABLE and bad replies to LLM_BAD_RESPONSE.
 - 2026-11-27 16:22 [ide] T073 PASSED
+
+### T074: Ask the agent about a layer
+- Result: GATE PASS
+- Files changed: src/engine/studio/agent-group.ts, src/engine/studio/create-studio.ts, tests/engine/agent-group.test.ts
+- Commands run: npx vitest run tests/engine/agent-group.test.ts -> 3 passed (3); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: askAgent builds a system prompt (allowed props + taste rules) and a JSON user context, parses the (optionally fenced) reply defaulting scope, then files it via the studio's own propose (source = model).
+- 2026-11-27 16:23 [ide] T074 PASSED
