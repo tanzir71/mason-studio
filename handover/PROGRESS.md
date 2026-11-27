@@ -202,3 +202,11 @@ checkpoint.
 - Deviations: none
 - Learnings: `parseCliArgs` returns a discriminated union help/error/run; the opener spawns a detached, unref'd, error-swallowing child per platform.
 - 2026-11-27 12:43 [ide] T016 PASSED
+
+### S004: Compose the mason command
+- Result: GATE PASS
+- Files changed: src/cli/bin.ts, tests/cli/bin.test.ts
+- Commands run: npx vitest run tests/cli/bin.test.ts -> 2 passed (2); npx tsc --noEmit -p tsconfig.json -> exit 0
+- Deviations: none
+- Learnings: `node src/cli/bin.ts <folder> --port 0 --no-open --home <dir>` starts the server, prints the URL and serves the project (this is the Playwright webServer command).
+- 2026-11-27 12:44 [ide] S004 PASSED
